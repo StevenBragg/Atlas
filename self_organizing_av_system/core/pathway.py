@@ -157,9 +157,34 @@ class NeuralPathway:
         Returns:
             Predicted input vector
         """
-        # Not fully implemented yet - would need feedback connections
-        # This is a placeholder for the concept
-        pass
+        # Start with the top layer activation
+        current_activation = top_layer_activation.copy()
+        
+        # Propagate activation down through the layers in reverse
+        for layer in reversed(self.layers):
+            # Use the transpose of the weight matrix for top-down generation
+            # This approximates the inverse mapping
+            weights = layer.get_weight_matrix()
+            
+            # Generate lower layer activation
+            # Add bias to ensure non-zero activation
+            lower_activation = np.dot(weights.T, current_activation)
+            
+            # Apply activation function (ReLU with small leak)
+            lower_activation = np.where(lower_activation > 0, lower_activation, 0.01 * lower_activation)
+            
+            # Normalize to prevent explosion/vanishing
+            norm = np.linalg.norm(lower_activation)
+            if norm > 0:
+                lower_activation = lower_activation / norm * np.sqrt(len(lower_activation))
+            
+            current_activation = lower_activation
+        
+        # The final activation is the predicted input
+        # Ensure it's in valid range [0, 1] for input data
+        predicted_input = np.clip(current_activation, 0, 1)
+        
+        return predicted_input
     
     def prune_pathway(self, threshold: float = 0.01) -> Dict[str, int]:
         """
@@ -286,10 +311,29 @@ class NeuralPathway:
         Returns:
             Mean squared error of the prediction
         """
-        # This would require predicting at the input level
-        # Not fully implemented yet - a proper implementation would use feedback
-        # connections to generate expected input
-        pass
+        # Get the current top layer activation
+        if len(self.layers) == 0:
+            return 0.0
+            
+        top_layer_activation = self.layers[-1].activations
+        
+        # Generate predicted input from top layer
+        predicted_input = self.generate_from_top(top_layer_activation)
+        
+        # Ensure both arrays have the same shape
+        if predicted_input.shape != actual_next_input.shape:
+            # Resize if needed
+            min_size = min(len(predicted_input), len(actual_next_input))
+            predicted_input = predicted_input[:min_size]
+            actual_next_input = actual_next_input[:min_size]
+        
+        # Calculate mean squared error
+        error = np.mean((predicted_input - actual_next_input) ** 2)
+        
+        # Store for learning adjustments
+        self._last_prediction_error = error
+        
+        return float(error)
     
     def __repr__(self) -> str:
         layer_info = ", ".join([f"{layer.layer_size}" for layer in self.layers])

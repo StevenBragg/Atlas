@@ -5,9 +5,9 @@ import os
 import pickle
 from typing import List, Dict, Tuple, Optional, Union, Any
 
-from ...core import MultimodalAssociation
-from ..visual.processor import VisualProcessor
-from ..audio.processor import AudioProcessor
+from core.multimodal_association import MultimodalAssociation
+from models.visual.processor import VisualProcessor
+from models.audio.processor import AudioProcessor
 
 
 class SelfOrganizingAVSystem:
@@ -59,15 +59,21 @@ class SelfOrganizingAVSystem:
             self.audio_processor = audio_processor
         
         # Create multimodal association
+        # Get output sizes from the top layers of each pathway
+        visual_output_size = self.visual_processor.visual_pathway.layers[-1].layer_size
+        audio_output_size = self.audio_processor.audio_pathway.layers[-1].layer_size
+        
+        modality_sizes = {
+            'visual': visual_output_size,
+            'audio': audio_output_size
+        }
+        
         self.multimodal = MultimodalAssociation(
-            pathways=[
-                self.visual_processor.visual_pathway,
-                self.audio_processor.audio_pathway
-            ],
-            association_layer_size=multimodal_size,
-            association_sparsity=0.1,
-            correlation_threshold=0.3,
-            learning_rate=learning_rate * 0.5  # Lower learning rate for associations
+            modality_sizes=modality_sizes,
+            association_size=multimodal_size,
+            learning_rate=learning_rate * 0.5,  # Lower learning rate for associations
+            association_threshold=0.1,
+            use_sparse_coding=True
         )
         
         # System state
@@ -120,13 +126,23 @@ class SelfOrganizingAVSystem:
         )
         
         # Process through multimodal layer
-        multimodal_activations = self.multimodal.process(time_step=self.time_step)
+        # First, prepare modality activities dictionary
+        modality_activities = {
+            'visual': visual_activations,
+            'audio': audio_activations
+        }
+        
+        # Update multimodal associations
+        multimodal_result = self.multimodal.update(
+            modality_activities=modality_activities,
+            learning_enabled=learn and self.is_learning
+        )
+        multimodal_activations = multimodal_result['association_activity']
         
         # Apply learning if enabled
         if learn and self.is_learning:
             self.visual_processor.learn(self.learning_rule)
             self.audio_processor.learn(self.learning_rule)
-            self.multimodal.learn(self.learning_rule)
             
             # Periodic maintenance operations
             self._apply_periodic_maintenance()
@@ -200,13 +216,23 @@ class SelfOrganizingAVSystem:
             )
             
             # Process through multimodal layer
-            multimodal_activations = self.multimodal.process(time_step=self.time_step)
+            # Prepare modality activities dictionary
+            modality_activities = {
+                'visual': visual_activations,
+                'audio': audio_activations[i]
+            }
+            
+            # Update multimodal associations
+            multimodal_result = self.multimodal.update(
+                modality_activities=modality_activities,
+                learning_enabled=learn and self.is_learning
+            )
+            multimodal_activations = multimodal_result['association_activity']
             
             # Apply learning if enabled
             if learn and self.is_learning:
                 self.visual_processor.learn(self.learning_rule)
                 # Note: Audio already processed, don't learn twice
-                self.multimodal.learn(self.learning_rule)
                 
                 # Periodic maintenance operations
                 self._apply_periodic_maintenance()
@@ -266,7 +292,11 @@ class SelfOrganizingAVSystem:
         self.visual_processor.visual_pathway.layers[-1].activations = current_visual
         
         # Run multimodal processing - cross-modal weights will influence visual
-        self.multimodal.process()
+        modality_activities = {
+            'audio': audio_activations,
+            'visual': current_visual
+        }
+        self.multimodal.update(modality_activities=modality_activities, learning_enabled=False)
         
         # Return the influenced visual activations
         return self.visual_processor.visual_pathway.layers[-1].activations.copy()
@@ -294,7 +324,11 @@ class SelfOrganizingAVSystem:
         self.audio_processor.audio_pathway.layers[-1].activations = current_audio
         
         # Run multimodal processing - cross-modal weights will influence audio
-        self.multimodal.process()
+        modality_activities = {
+            'visual': visual_activations,
+            'audio': current_audio
+        }
+        self.multimodal.update(modality_activities=modality_activities, learning_enabled=False)
         
         # Return the influenced audio activations
         return self.audio_processor.audio_pathway.layers[-1].activations.copy()
@@ -335,7 +369,9 @@ class SelfOrganizingAVSystem:
         audio_stats = self.audio_processor.audio_pathway.prune_pathway(threshold)
         
         # Prune multimodal connections
-        multimodal_stats = self.multimodal.prune_connections(threshold)
+        # The MultimodalAssociation class doesn't have a prune_connections method
+        # We'll track this as not pruned for now
+        multimodal_stats = {'pruned': 0}
         
         return {
             'visual': visual_stats,
@@ -372,7 +408,8 @@ class SelfOrganizingAVSystem:
         Returns:
             Dictionary with cross-modal strength metrics
         """
-        connections = self.multimodal.get_connection_strengths()
+        # Get connection strengths from forward weights
+        connections = self.multimodal.weights
         
         strengths = {}
         for key, matrix in connections.items():
@@ -397,7 +434,8 @@ class SelfOrganizingAVSystem:
         audio_state = self.audio_processor.get_pathway_state()
         
         multimodal_activity = self.multimodal.get_multimodal_activity()
-        associations = self.multimodal.analyze_associations()
+        # Get multimodal statistics
+        associations = self.multimodal.get_stats()
         
         # Calculate average processing time
         avg_time = np.mean(self.processing_times[-100:]) if self.processing_times else 0
@@ -473,14 +511,7 @@ class SelfOrganizingAVSystem:
                 },
                 
                 # Multimodal associations state
-                'multimodal': {
-                    'association_sparsity': self.multimodal.association_sparsity,
-                    'correlation_threshold': self.multimodal.correlation_threshold,
-                    'learning_rate': self.multimodal.learning_rate,
-                    'layer': self._serialize_layer(self.multimodal.association_layer),
-                    'pathway_output_sizes': self.multimodal.pathway_output_sizes,
-                    'connection_statistics': self.multimodal.connection_statistics
-                }
+                'multimodal': self.multimodal.serialize()
             }
             
             # Save to file using pickle (handles numpy arrays)
@@ -531,12 +562,7 @@ class SelfOrganizingAVSystem:
             self._restore_pathway(self.audio_processor.audio_pathway, state['audio_processor']['pathway'])
             
             # Restore multimodal state
-            self._restore_layer(self.multimodal.association_layer, state['multimodal']['layer'])
-            self.multimodal.association_sparsity = state['multimodal']['association_sparsity']
-            self.multimodal.correlation_threshold = state['multimodal']['correlation_threshold']
-            self.multimodal.learning_rate = state['multimodal']['learning_rate']
-            self.multimodal.pathway_output_sizes = state['multimodal']['pathway_output_sizes']
-            self.multimodal.connection_statistics = state['multimodal']['connection_statistics']
+            self.multimodal = MultimodalAssociation.deserialize(state['multimodal'])
             
             self.logger.info(f"Loaded system state from {filename}")
             self.logger.info(f"Resumed at frame {self.frame_count}, time step {self.time_step}")

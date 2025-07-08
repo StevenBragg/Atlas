@@ -25,10 +25,10 @@ import traceback
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.insert(0, parent_dir)
 
-from self_organizing_av_system.models.visual.processor import VisualProcessor
-from self_organizing_av_system.models.audio.processor import AudioProcessor
-from self_organizing_av_system.core.system import SelfOrganizingAVSystem
-from self_organizing_av_system.gui.tk_monitor import TkMonitor
+from models.visual.processor import VisualProcessor
+from models.audio.processor import AudioProcessor
+from core.system import SelfOrganizingAVSystem
+from gui.tk_monitor import TkMonitor
 
 # Set up logging
 logging.basicConfig(

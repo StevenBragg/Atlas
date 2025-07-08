@@ -1,0 +1,8 @@
+numpy
+scipy
+torch
+opencv-python
+librosa
+matplotlib
+PyYAML
+PyQt5

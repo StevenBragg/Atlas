@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple, Optional, Union
 import logging
 
 # Import directly from the pathway module instead of through core
-from self_organizing_av_system.core.pathway import NeuralPathway
+from core.pathway import NeuralPathway
 
 
 class AudioProcessor:
@@ -306,9 +306,59 @@ class AudioProcessor:
         if layer_idx == 0:
             return rf  # This is already a frequency response
         else:
-            # For higher layers, this is more complex as they respond to patterns
-            # This is a simplified placeholder
-            return None
+            # For higher layers, use activation maximization to find optimal input pattern
+            # Get the pathway up to the specified layer
+            pathway_layers = self.audio_pathway.layers[:layer_idx + 1]
+            
+            # Start with random spectral input
+            # Get the input size from the first layer
+            n_features = pathway_layers[0].input_size
+            rf_input = np.random.randn(n_features) * 0.1
+            
+            # Gradient ascent to maximize the neuron's activation
+            learning_rate = 0.1
+            iterations = 50
+            
+            for _ in range(iterations):
+                # Forward pass through layers
+                current = rf_input
+                for layer in pathway_layers:
+                    weights = layer.get_weight_matrix()
+                    current = np.dot(weights, current)
+                    # Apply activation (ReLU)
+                    current = np.maximum(0, current)
+                
+                # Get activation of target neuron
+                if neuron_idx < len(current):
+                    activation = current[neuron_idx]
+                    
+                    # Approximate gradient
+                    epsilon = 0.001
+                    grad = np.zeros_like(rf_input)
+                    
+                    for i in range(len(rf_input)):
+                        # Perturb input
+                        rf_input_plus = rf_input.copy()
+                        rf_input_plus[i] += epsilon
+                        
+                        # Forward pass with perturbation
+                        current_plus = rf_input_plus
+                        for layer in pathway_layers:
+                            weights = layer.get_weight_matrix()
+                            current_plus = np.dot(weights, current_plus)
+                            current_plus = np.maximum(0, current_plus)
+                        
+                        # Compute gradient
+                        if neuron_idx < len(current_plus):
+                            grad[i] = (current_plus[neuron_idx] - activation) / epsilon
+                    
+                    # Update input
+                    rf_input += learning_rate * grad
+            
+            # Normalize to [0, 1] range for visualization
+            rf_input = (rf_input - np.min(rf_input)) / (np.max(rf_input) - np.min(rf_input) + 1e-10)
+            
+            return rf_input
     
     def get_pathway_state(self) -> Dict:
         """
