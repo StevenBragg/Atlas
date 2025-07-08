@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple, Optional, Union
 import logging
 
 # Import directly from the pathway module instead of through core
-from self_organizing_av_system.core.pathway import NeuralPathway
+from core.pathway import NeuralPathway
 
 
 class VisualProcessor:
@@ -269,10 +269,70 @@ class VisualProcessor:
             
             return rf_image
         else:
-            # For higher layers, this is more complex - we'd need to visualize
-            # what input patterns maximally activate this neuron
-            # This is a simplified placeholder
-            return None
+            # For higher layers, use activation maximization approach
+            # Create a synthetic input that maximally activates this neuron
+            
+            # Get the pathway up to the specified layer
+            pathway_layers = self.visual_pathway.layers[:layer_idx + 1]
+            
+            # Start with random input
+            rf_input = np.random.randn(self.input_width, self.input_height, self.num_channels) * 0.1
+            
+            # Gradient ascent to maximize the neuron's activation
+            learning_rate = 0.1
+            iterations = 50
+            
+            for _ in range(iterations):
+                # Forward pass through layers
+                current = rf_input.reshape(-1)
+                for i, layer in enumerate(pathway_layers):
+                    weights = layer.get_weight_matrix()
+                    current = np.dot(weights, current)
+                    # Apply activation (ReLU)
+                    current = np.maximum(0, current)
+                
+                # Get activation of target neuron
+                if neuron_idx < len(current):
+                    activation = current[neuron_idx]
+                    
+                    # Approximate gradient via finite differences
+                    epsilon = 0.001
+                    grad = np.zeros_like(rf_input)
+                    
+                    for i in range(rf_input.size):
+                        # Perturb input
+                        rf_input_flat = rf_input.flatten()
+                        rf_input_flat[i] += epsilon
+                        rf_input_plus = rf_input_flat.reshape(rf_input.shape)
+                        
+                        # Forward pass with perturbation
+                        current_plus = rf_input_plus.reshape(-1)
+                        for layer in pathway_layers:
+                            weights = layer.get_weight_matrix()
+                            current_plus = np.dot(weights, current_plus)
+                            current_plus = np.maximum(0, current_plus)
+                        
+                        # Compute gradient
+                        if neuron_idx < len(current_plus):
+                            grad_flat = grad.flatten()
+                            grad_flat[i] = (current_plus[neuron_idx] - activation) / epsilon
+                    
+                    # Update input
+                    rf_input += learning_rate * grad
+                    
+                    # Constrain to valid range
+                    rf_input = np.clip(rf_input, 0, 1)
+            
+            # Convert to displayable format
+            if self.use_grayscale:
+                rf_image = (rf_input * 255).astype(np.uint8)
+            else:
+                rf_image = (rf_input * 255).astype(np.uint8)
+            
+            # Resize for better visualization
+            rf_image = cv2.resize(rf_image, (128, 128), interpolation=cv2.INTER_NEAREST)
+            
+            return rf_image
     
     def get_pathway_state(self) -> Dict:
         """

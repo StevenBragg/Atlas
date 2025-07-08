@@ -27,13 +27,13 @@ def test_basic_imports():
     
     try:
         # Test imports
-        from self_organizing_av_system.models.visual.processor import VisualProcessor
-        from self_organizing_av_system.models.audio.processor import AudioProcessor
-        from self_organizing_av_system.core.system import SelfOrganizingAVSystem
-        from self_organizing_av_system.core.structural_plasticity import StructuralPlasticity
-        from self_organizing_av_system.core.multimodal_association import MultimodalAssociation
-        from self_organizing_av_system.core.temporal_prediction import TemporalPrediction
-        from self_organizing_av_system.core.stability import StabilityMechanisms
+        from models.visual.processor import VisualProcessor
+        from models.audio.processor import AudioProcessor
+        from core.system import SelfOrganizingAVSystem
+        from core.structural_plasticity import StructuralPlasticity
+        from core.multimodal_association import MultimodalAssociation
+        from core.temporal_prediction import TemporalPrediction
+        from core.stability import StabilityMechanisms
         
         logger.info("All modules imported successfully")
         return True
@@ -50,9 +50,9 @@ def test_basic_initialization():
     
     try:
         # Import needed classes
-        from self_organizing_av_system.models.visual.processor import VisualProcessor
-        from self_organizing_av_system.models.audio.processor import AudioProcessor
-        from self_organizing_av_system.core.system import SelfOrganizingAVSystem
+        from models.visual.processor import VisualProcessor
+        from models.audio.processor import AudioProcessor
+        from core.system import SelfOrganizingAVSystem
         
         # Create minimal processors
         logger.info("Initializing visual processor...")

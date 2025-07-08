@@ -1420,14 +1420,65 @@ class SelfOrganizingAVSystem:
         Returns:
             Dictionary with association analysis results
         """
-        # This is a simplified implementation
         associations = {
             "visual_to_audio": [],
             "audio_to_visual": [],
-            "stable_associations": []
+            "stable_associations": [],
+            "statistics": {}
         }
         
-        # Todo: Implement actual association analysis
+        # Get association weights from multimodal layer
+        if hasattr(self.multimodal_association, 'weights'):
+            weights = self.multimodal_association.weights
+            
+            # Analyze visual-to-audio associations
+            visual_weights = weights.get('visual', None)
+            if visual_weights is not None:
+                # Find strongest visual-to-multimodal connections
+                strong_visual = np.where(np.abs(visual_weights) > 0.5)
+                for i, j in zip(strong_visual[0], strong_visual[1]):
+                    associations["visual_to_audio"].append({
+                        "visual_neuron": int(j),
+                        "multimodal_neuron": int(i),
+                        "strength": float(visual_weights[i, j])
+                    })
+            
+            # Analyze audio-to-visual associations
+            audio_weights = weights.get('audio', None)
+            if audio_weights is not None:
+                # Find strongest audio-to-multimodal connections
+                strong_audio = np.where(np.abs(audio_weights) > 0.5)
+                for i, j in zip(strong_audio[0], strong_audio[1]):
+                    associations["audio_to_visual"].append({
+                        "audio_neuron": int(j),
+                        "multimodal_neuron": int(i),
+                        "strength": float(audio_weights[i, j])
+                    })
+            
+            # Find stable cross-modal associations
+            if visual_weights is not None and audio_weights is not None:
+                # Neurons that are strongly connected to both modalities
+                visual_strength = np.abs(visual_weights).mean(axis=1)
+                audio_strength = np.abs(audio_weights).mean(axis=1)
+                
+                # Find neurons with strong connections to both
+                strong_both = np.where((visual_strength > 0.3) & (audio_strength > 0.3))[0]
+                for neuron in strong_both:
+                    associations["stable_associations"].append({
+                        "multimodal_neuron": int(neuron),
+                        "visual_strength": float(visual_strength[neuron]),
+                        "audio_strength": float(audio_strength[neuron]),
+                        "combined_strength": float(visual_strength[neuron] * audio_strength[neuron])
+                    })
+                
+                # Add statistics
+                associations["statistics"] = {
+                    "total_visual_connections": int(np.sum(np.abs(visual_weights) > 0.1)),
+                    "total_audio_connections": int(np.sum(np.abs(audio_weights) > 0.1)),
+                    "strong_associations": len(associations["stable_associations"]),
+                    "avg_visual_weight": float(np.mean(np.abs(visual_weights))),
+                    "avg_audio_weight": float(np.mean(np.abs(audio_weights)))
+                }
         
         return associations
 

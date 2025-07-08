@@ -29,13 +29,13 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.insert(0, parent_dir)
 
 # Import directly from modules to avoid circular imports
-from self_organizing_av_system.models.visual.processor import VisualProcessor
-from self_organizing_av_system.models.audio.processor import AudioProcessor
+from models.visual.processor import VisualProcessor
+from models.audio.processor import AudioProcessor
 # Import system directly from core.system instead of through core
-from self_organizing_av_system.core.system import SelfOrganizingAVSystem
-from self_organizing_av_system.utils.capture import AVCapture
+from core.system import SelfOrganizingAVSystem
+from utils.capture import AVCapture
 # Import the new Tkinter monitor
-from self_organizing_av_system.gui.tk_monitor import TkMonitor
+from gui.tk_monitor import TkMonitor
 
 # Configure logging
 logging.basicConfig(

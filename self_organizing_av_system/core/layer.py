@@ -698,4 +698,16 @@ class NeuralLayer:
         fields = np.zeros((self.layer_size, self.input_size))
         for i, neuron in enumerate(self.neurons):
             fields[i] = neuron.get_receptive_field()
-        return fields 
+        return fields
+    
+    def get_weight_matrix(self) -> np.ndarray:
+        """
+        Get the weight matrix for the layer.
+        
+        Returns:
+            Weight matrix of shape (layer_size, input_size)
+        """
+        weights = np.zeros((self.layer_size, self.input_size))
+        for i, neuron in enumerate(self.neurons):
+            weights[i] = neuron.weights
+        return weights 
