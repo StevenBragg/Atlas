@@ -6,6 +6,16 @@ from .structural_plasticity import StructuralPlasticity, PlasticityMode
 from .system_config import SystemConfig
 from .pathway import NeuralPathway
 
+# Import image classification components
+from .image_classification import (
+    ImageClassificationLearner,
+    ImageDataset,
+    ClassificationResult,
+    LearningMetrics,
+    ClassPrototypeLayer,
+    quick_train_classifier,
+)
+
 # Keep this for reference but mark as legacy/deprecated
 from .multimodal import LegacyMultimodalAssociation
 
@@ -16,12 +26,19 @@ __version__ = "0.1.0"
 __all__ = [
     'MultimodalAssociation',
     'AssociationMode',
-    'TemporalPrediction', 
+    'TemporalPrediction',
     'PredictionMode',
     'StabilityMechanisms',
     'InhibitionStrategy',
     'StructuralPlasticity',
     'PlasticityMode',
     'SystemConfig',
-    'NeuralPathway'
+    'NeuralPathway',
+    # Image classification
+    'ImageClassificationLearner',
+    'ImageDataset',
+    'ClassificationResult',
+    'LearningMetrics',
+    'ClassPrototypeLayer',
+    'quick_train_classifier',
 ] 
