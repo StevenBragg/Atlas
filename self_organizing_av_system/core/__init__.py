@@ -74,7 +74,7 @@ from .symbolic_reasoning import (
 from .world_model import (
     Variable as WorldModelVariable,
     CausalEdge as WorldModelCausalEdge,
-    Object as WorldModelObject,
+    WorldObject as WorldModelObject,
 )
 
 # Keep this for reference but mark as legacy/deprecated
