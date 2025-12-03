@@ -1,0 +1,79 @@
+# Atlas Web Stack Docker Compose
+# Runs the React frontend + Python backend
+
+version: '3.8'
+
+services:
+  # Atlas Web Application
+  atlas-web:
+    build:
+      context: ..
+      dockerfile: web/Dockerfile
+    container_name: atlas-web
+    ports:
+      - "8000:8000"
+    environment:
+      - ATLAS_WEB_PORT=8000
+      - ATLAS_WEB_HOST=0.0.0.0
+      - ATLAS_CHECKPOINT_DIR=/app/checkpoints
+      - LOG_LEVEL=INFO
+      - ATLAS_ENABLE_UNIFIED_INTELLIGENCE=true
+    volumes:
+      - atlas-checkpoints:/app/checkpoints
+      - atlas-logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Development mode: separate frontend dev server
+  atlas-frontend-dev:
+    image: node:20-alpine
+    container_name: atlas-frontend-dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    profiles:
+      - dev
+    depends_on:
+      - atlas-backend-dev
+
+  # Development mode: backend only
+  atlas-backend-dev:
+    build:
+      context: ..
+      dockerfile: web/Dockerfile.backend
+    container_name: atlas-backend-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - ATLAS_WEB_PORT=8000
+      - ATLAS_WEB_HOST=0.0.0.0
+      - ATLAS_CHECKPOINT_DIR=/app/checkpoints
+      - LOG_LEVEL=DEBUG
+    volumes:
+      - ./backend:/app/backend
+      - ../self_organizing_av_system:/app/self_organizing_av_system
+      - atlas-checkpoints:/app/checkpoints
+    profiles:
+      - dev
+    command: python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  atlas-checkpoints:
+    driver: local
+  atlas-logs:
+    driver: local
+
+networks:
+  default:
+    name: atlas-network

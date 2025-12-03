@@ -1,0 +1,33 @@
+# Atlas Backend Development Dockerfile
+# For development with hot-reload
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and install requirements
+COPY web/backend/requirements.txt ./backend/
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Copy Atlas core
+COPY self_organizing_av_system/ ./self_organizing_av_system/
+
+# Copy backend code (will be mounted in dev mode)
+COPY web/backend/ ./backend/
+
+# Create directories
+RUN mkdir -p checkpoints logs
+
+# Environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
