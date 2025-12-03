@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: atlas-config
+  namespace: atlas
+  labels:
+    app: atlas
+    component: configuration
+data:
+  # System Configuration
+  ATLAS_LOG_LEVEL: "INFO"
+  ATLAS_CHECKPOINT_INTERVAL: "1000"
+  ATLAS_MAX_CHECKPOINTS: "10"
+  ATLAS_HTTP_PORT: "8080"
+  ATLAS_MAX_VIDEO_FRAMES: "10000"
+
+  # Learning Configuration
+  ATLAS_LEARNING_RATE: "0.01"
+  ATLAS_MULTIMODAL_SIZE: "128"
+  ATLAS_ENABLE_UNIFIED_INTELLIGENCE: "true"
+  ATLAS_ENABLE_EXPLORATION: "true"
+
+  # Data Ingestion Configuration
+  INGESTION_INTERVAL: "60"
+  INGESTION_YOUTUBE_ENABLED: "false"
+  INGESTION_WEBCAM_ENABLED: "false"
+  INGESTION_SAMPLE_VIDEOS: "true"
+  INGESTION_SYNTHETIC_ENABLED: "true"
+
+  # Default Configuration YAML
+  default_config.yaml: |
+    system:
+      multimodal_size: 128
+      learning_rate: 0.01
+      learning_rule: "oja"
+      prune_interval: 1000
+      structural_plasticity_interval: 2000
+
+    visual:
+      input_width: 64
+      input_height: 64
+      use_grayscale: true
+      patch_size: 8
+      stride: 4
+      contrast_normalize: true
+      layer_sizes: [200, 100, 50]
+
+    audio:
+      sample_rate: 22050
+      window_size: 2048
+      hop_length: 512
+      n_mels: 64
+      min_freq: 20
+      max_freq: 8000
+      normalize: true
+      layer_sizes: [150, 75, 40]
+
+    checkpointing:
+      enabled: true
+      checkpoint_dir: /data/checkpoints
+      checkpoint_interval: 1000
+      max_checkpoints: 10
+      save_on_exit: true
+      load_latest: true

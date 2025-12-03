@@ -1,0 +1,66 @@
+# Prometheus Configuration for Atlas Monitoring
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'atlas-monitor'
+
+# Alerting configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Rule files
+rule_files:
+  # - "alerts/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Atlas Brain Service
+  - job_name: 'atlas-brain'
+    static_configs:
+      - targets: ['atlas:8080']
+    metrics_path: /metrics
+    scrape_interval: 10s
+
+  # Atlas Ingestion Service
+  - job_name: 'atlas-ingestion'
+    static_configs:
+      - targets: ['data-ingestion:8080']
+    metrics_path: /metrics
+    scrape_interval: 30s
+
+  # Redis Exporter (if enabled)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+
+  # Docker containers (via cAdvisor if deployed)
+  # - job_name: 'cadvisor'
+  #   static_configs:
+  #     - targets: ['cadvisor:8080']
+
+  # Kubernetes service discovery (for K8s deployments)
+  # - job_name: 'kubernetes-pods'
+  #   kubernetes_sd_configs:
+  #     - role: pod
+  #   relabel_configs:
+  #     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+  #       action: keep
+  #       regex: true
+  #     - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+  #       action: replace
+  #       target_label: __metrics_path__
+  #       regex: (.+)
+  #     - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+  #       action: replace
+  #       regex: ([^:]+)(?::\d+)?;(\d+)
+  #       replacement: $1:$2
+  #       target_label: __address__

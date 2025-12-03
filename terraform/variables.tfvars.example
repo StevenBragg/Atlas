@@ -1,0 +1,35 @@
+# ============================================
+# Atlas Terraform Variables - Example
+# ============================================
+# Copy this file to terraform.tfvars and customize
+
+# AWS Region
+aws_region = "us-west-2"
+
+# Environment (dev, staging, prod)
+environment = "dev"
+
+# EKS Cluster Name
+cluster_name = "atlas-cluster"
+
+# Node instance types (CPU nodes)
+node_instance_types = ["t3.xlarge", "t3.2xlarge"]
+
+# GPU instance types (for accelerated learning)
+gpu_instance_types = ["g4dn.xlarge", "g4dn.2xlarge"]
+
+# Node scaling
+min_nodes = 2
+max_nodes = 10
+
+# Enable GPU nodes for faster learning
+enable_gpu_nodes = false
+
+# Resource tags
+tags = {
+  Project     = "Atlas"
+  ManagedBy   = "Terraform"
+  Purpose     = "Autonomous-Learning"
+  Owner       = "your-team"
+  CostCenter  = "engineering"
+}

@@ -1,0 +1,195 @@
+version: '3.8'
+
+# ============================================
+# Atlas Cloud Hosting - Docker Compose
+# ============================================
+# Local development and testing environment
+# For production, use Kubernetes deployment
+# ============================================
+
+services:
+  # ============================================
+  # Main Atlas Service
+  # ============================================
+  atlas:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: atlas-brain
+    restart: unless-stopped
+    environment:
+      - ATLAS_LOG_LEVEL=INFO
+      - ATLAS_CHECKPOINT_DIR=/data/checkpoints
+      - ATLAS_INPUT_DIR=/data/input
+      - ATLAS_CHECKPOINT_INTERVAL=500
+      - ATLAS_MAX_CHECKPOINTS=10
+      - ATLAS_ENABLE_UNIFIED_INTELLIGENCE=true
+      - ATLAS_ENABLE_EXPLORATION=true
+      - ATLAS_LEARNING_RATE=0.01
+      - ATLAS_MULTIMODAL_SIZE=128
+      - ATLAS_HTTP_PORT=8080
+      - ATLAS_MAX_VIDEO_FRAMES=5000
+    volumes:
+      - atlas-data:/data
+      - atlas-checkpoints:/data/checkpoints
+      - atlas-input:/data/input
+      - atlas-logs:/data/logs
+    ports:
+      - "8080:8080"   # HTTP API / Health checks
+      - "9090:9090"   # Prometheus metrics
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 1G
+    networks:
+      - atlas-network
+
+  # ============================================
+  # Data Ingestion Service
+  # ============================================
+  data-ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: atlas-ingestion
+    restart: unless-stopped
+    command: ["python", "-m", "cloud.data_ingestion"]
+    environment:
+      - ATLAS_LOG_LEVEL=INFO
+      - ATLAS_INPUT_DIR=/data/input
+      - INGESTION_YOUTUBE_ENABLED=false
+      - INGESTION_WEBCAM_ENABLED=false
+      - INGESTION_SAMPLE_VIDEOS=true
+      - INGESTION_INTERVAL=60
+    volumes:
+      - atlas-input:/data/input
+      - atlas-logs:/data/logs
+    depends_on:
+      - atlas
+    networks:
+      - atlas-network
+
+  # ============================================
+  # Redis - Knowledge Cache & Message Broker
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: atlas-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - atlas-network
+
+  # ============================================
+  # Prometheus - Metrics Collection
+  # ============================================
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: atlas-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9091:9090"
+    depends_on:
+      - atlas
+    networks:
+      - atlas-network
+
+  # ============================================
+  # Grafana - Visualization & Dashboards
+  # ============================================
+  grafana:
+    image: grafana/grafana:10.1.0
+    container_name: atlas-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=atlas-admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=http://localhost:3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    networks:
+      - atlas-network
+
+  # ============================================
+  # MinIO - Object Storage for Data
+  # ============================================
+  minio:
+    image: minio/minio:latest
+    container_name: atlas-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=atlas
+      - MINIO_ROOT_PASSWORD=atlas-secret-key
+    volumes:
+      - minio-data:/data
+    ports:
+      - "9000:9000"   # S3 API
+      - "9001:9001"   # Console
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - atlas-network
+
+# ============================================
+# Volumes - Persistent Storage
+# ============================================
+volumes:
+  atlas-data:
+    name: atlas-data
+  atlas-checkpoints:
+    name: atlas-checkpoints
+  atlas-input:
+    name: atlas-input
+  atlas-logs:
+    name: atlas-logs
+  redis-data:
+    name: atlas-redis-data
+  prometheus-data:
+    name: atlas-prometheus-data
+  grafana-data:
+    name: atlas-grafana-data
+  minio-data:
+    name: atlas-minio-data
+
+# ============================================
+# Networks
+# ============================================
+networks:
+  atlas-network:
+    name: atlas-network
+    driver: bridge

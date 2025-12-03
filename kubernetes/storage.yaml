@@ -1,0 +1,75 @@
+---
+# Persistent Volume Claims for Atlas
+# These provide durable storage for learned knowledge
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-checkpoints-pvc
+  namespace: atlas
+  labels:
+    app: atlas
+    component: storage
+    type: checkpoints
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: standard  # Adjust for your cloud provider
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-input-pvc
+  namespace: atlas
+  labels:
+    app: atlas
+    component: storage
+    type: input
+spec:
+  accessModes:
+    - ReadWriteMany  # Allow multiple pods to read input
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: standard
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-logs-pvc
+  namespace: atlas
+  labels:
+    app: atlas
+    component: storage
+    type: logs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: standard
+
+---
+# Redis Storage for Knowledge Cache
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: atlas-redis-pvc
+  namespace: atlas
+  labels:
+    app: atlas
+    component: storage
+    type: redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard

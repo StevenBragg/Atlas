@@ -1,0 +1,241 @@
+---
+# Atlas Main Deployment
+# The core learning brain that runs continuously
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-brain
+  namespace: atlas
+  labels:
+    app: atlas
+    component: brain
+    tier: compute
+spec:
+  replicas: 1  # Single brain for coherent learning
+  strategy:
+    type: Recreate  # Don't run multiple instances
+  selector:
+    matchLabels:
+      app: atlas
+      component: brain
+  template:
+    metadata:
+      labels:
+        app: atlas
+        component: brain
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: atlas-sa
+      terminationGracePeriodSeconds: 120  # Allow time for checkpoint save
+
+      initContainers:
+        - name: init-directories
+          image: busybox:1.35
+          command: ['sh', '-c', 'mkdir -p /data/checkpoints /data/input /data/logs /data/output && chown -R 1000:1000 /data']
+          volumeMounts:
+            - name: checkpoints
+              mountPath: /data/checkpoints
+            - name: input
+              mountPath: /data/input
+            - name: logs
+              mountPath: /data/logs
+
+      containers:
+        - name: atlas
+          image: atlas:latest
+          imagePullPolicy: Always
+          command: ["python", "-m", "cloud.atlas_service"]
+
+          envFrom:
+            - configMapRef:
+                name: atlas-config
+
+          env:
+            - name: ATLAS_CHECKPOINT_DIR
+              value: "/data/checkpoints"
+            - name: ATLAS_INPUT_DIR
+              value: "/data/input"
+            - name: ATLAS_LOG_DIR
+              value: "/data/logs"
+            - name: PYTHONUNBUFFERED
+              value: "1"
+
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+
+          volumeMounts:
+            - name: checkpoints
+              mountPath: /data/checkpoints
+            - name: input
+              mountPath: /data/input
+            - name: logs
+              mountPath: /data/logs
+            - name: config-volume
+              mountPath: /app/config/cloud_config.yaml
+              subPath: default_config.yaml
+
+          resources:
+            requests:
+              memory: "2Gi"
+              cpu: "1000m"
+            limits:
+              memory: "8Gi"
+              cpu: "4000m"
+              # Uncomment for GPU acceleration
+              # nvidia.com/gpu: 1
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/bin/sh", "-c", "sleep 30"]  # Allow checkpoint save
+
+      volumes:
+        - name: checkpoints
+          persistentVolumeClaim:
+            claimName: atlas-checkpoints-pvc
+        - name: input
+          persistentVolumeClaim:
+            claimName: atlas-input-pvc
+        - name: logs
+          persistentVolumeClaim:
+            claimName: atlas-logs-pvc
+        - name: config-volume
+          configMap:
+            name: atlas-config
+
+---
+# Data Ingestion Deployment
+# Continuously feeds data to Atlas for learning
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-ingestion
+  namespace: atlas
+  labels:
+    app: atlas
+    component: ingestion
+    tier: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas
+      component: ingestion
+  template:
+    metadata:
+      labels:
+        app: atlas
+        component: ingestion
+    spec:
+      serviceAccountName: atlas-sa
+
+      containers:
+        - name: ingestion
+          image: atlas:latest
+          imagePullPolicy: Always
+          command: ["python", "-m", "cloud.data_ingestion"]
+
+          envFrom:
+            - configMapRef:
+                name: atlas-config
+
+          env:
+            - name: ATLAS_INPUT_DIR
+              value: "/data/input"
+
+          volumeMounts:
+            - name: input
+              mountPath: /data/input
+
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+
+      volumes:
+        - name: input
+          persistentVolumeClaim:
+            claimName: atlas-input-pvc
+
+---
+# Redis Deployment for Knowledge Caching
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atlas-redis
+  namespace: atlas
+  labels:
+    app: atlas
+    component: redis
+    tier: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: atlas
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: atlas
+        component: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          command: ["redis-server", "--appendonly", "yes"]
+
+          ports:
+            - containerPort: 6379
+
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+
+          livenessProbe:
+            exec:
+              command: ["redis-cli", "ping"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: atlas-redis-pvc

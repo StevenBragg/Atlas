@@ -1,0 +1,75 @@
+---
+# Horizontal Pod Autoscaler for Data Ingestion
+# Scales ingestion pods based on CPU usage
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: atlas-ingestion-hpa
+  namespace: atlas
+  labels:
+    app: atlas
+    component: ingestion
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: atlas-ingestion
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 120
+
+---
+# Vertical Pod Autoscaler for Atlas Brain
+# Automatically adjusts resource requests
+
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: atlas-brain-vpa
+  namespace: atlas
+  labels:
+    app: atlas
+    component: brain
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: atlas-brain
+  updatePolicy:
+    updateMode: "Auto"  # Can be "Off", "Initial", "Recreate", or "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: atlas
+        minAllowed:
+          cpu: "500m"
+          memory: "1Gi"
+        maxAllowed:
+          cpu: "8000m"
+          memory: "16Gi"
+        controlledResources: ["cpu", "memory"]
