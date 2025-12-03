@@ -6,7 +6,7 @@
 # ============================================
 
 # Use NVIDIA CUDA base image for GPU acceleration
-FROM nvidia/cuda:12.1-cudnn8-runtime-ubuntu22.04 AS runtime
+FROM nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04 AS runtime
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
