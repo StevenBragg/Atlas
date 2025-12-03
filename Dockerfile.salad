@@ -49,12 +49,17 @@ RUN useradd --create-home --shell /bin/bash atlas \
 # Install Python dependencies
 COPY --chown=atlas:atlas self_organizing_av_system/requirements.txt /tmp/requirements.txt
 
-RUN pip3 install --no-cache-dir --upgrade pip && \
-    pip3 install --no-cache-dir \
+# Upgrade pip first
+RUN pip3 install --no-cache-dir --upgrade pip
+
+# Install PyTorch with CUDA support (must use separate command with --index-url)
+RUN pip3 install --no-cache-dir \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# Install remaining Python dependencies
+RUN pip3 install --no-cache-dir \
     numpy \
     scipy \
-    # PyTorch with CUDA support
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     opencv-python-headless \
     librosa \
     matplotlib \
