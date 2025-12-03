@@ -80,8 +80,25 @@ from .world_model import (
 # Keep this for reference but mark as legacy/deprecated
 from .multimodal import LegacyMultimodalAssociation
 
+# Import challenge-based learning components
+from .challenge import (
+    Challenge,
+    ChallengeType,
+    ChallengeStatus,
+    Modality,
+    TrainingData,
+    SuccessCriteria,
+    LearningResult,
+    LearnedCapability,
+    ProgressReport,
+)
+from .challenge_parser import ChallengeParser
+from .challenge_learner import ChallengeLearner, learn_challenge
+from .progress_tracker import ProgressTracker
+from .learning_engine import LearningEngine
+
 # Define package version
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 # Define public API
 __all__ = [
@@ -150,4 +167,19 @@ __all__ = [
     'WorldModelVariable',
     'WorldModelCausalEdge',
     'WorldModelObject',
+    # Challenge-based learning
+    'Challenge',
+    'ChallengeType',
+    'ChallengeStatus',
+    'Modality',
+    'TrainingData',
+    'SuccessCriteria',
+    'LearningResult',
+    'LearnedCapability',
+    'ProgressReport',
+    'ChallengeParser',
+    'ChallengeLearner',
+    'learn_challenge',
+    'ProgressTracker',
+    'LearningEngine',
 ] 
