@@ -1,0 +1,24 @@
+# Kustomization for Atlas Kubernetes deployment
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: atlas
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - rbac.yaml
+  - storage.yaml
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+
+commonLabels:
+  app: atlas
+  version: v1.0.0
+  managed-by: kustomize
+
+images:
+  - name: atlas
+    newName: atlas
+    newTag: latest
