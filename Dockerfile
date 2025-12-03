@@ -28,12 +28,16 @@ ENV PATH="/opt/venv/bin:$PATH"
 COPY self_organizing_av_system/requirements.txt /tmp/requirements.txt
 COPY self_organizing_av_system/requirements_no_audio.txt /tmp/requirements_no_audio.txt
 
-# Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir \
+# Upgrade pip first
+RUN pip install --no-cache-dir --upgrade pip
+
+# Install PyTorch CPU version (must use separate command with --index-url)
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
+# Install remaining Python dependencies
+RUN pip install --no-cache-dir \
     numpy \
     scipy \
-    torch --index-url https://download.pytorch.org/whl/cpu \
     opencv-python-headless \
     librosa \
     matplotlib \

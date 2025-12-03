@@ -1,6 +1,7 @@
-import numpy as np
 import logging
 from typing import List, Dict, Tuple, Optional, Any, Union, Callable
+
+from .backend import xp, to_cpu
 from .neuron import Neuron
 
 logger = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ class LateralInhibition:
             "activation_variance": []
         }
     
-    def initialize(self, num_neurons: int, weight_vectors: List[np.ndarray]) -> None:
+    def initialize(self, num_neurons: int, weight_vectors: List[xp.ndarray]) -> None:
         """
         Initialize or update internal structures based on neuron count and weights.
         
@@ -91,7 +92,7 @@ class LateralInhibition:
             self.inhibition_matrix.shape[0] != num_neurons):
             
             # Create new matrix
-            self.inhibition_matrix = np.zeros((num_neurons, num_neurons))
+            self.inhibition_matrix = xp.zeros((num_neurons, num_neurons))
             
             # Compute similarity/distance between neurons
             for i in range(num_neurons):
@@ -106,53 +107,53 @@ class LateralInhibition:
                         
                         if self.similarity_metric == "cosine":
                             # Cosine similarity
-                            similarity = np.dot(w_i, w_j) / (np.linalg.norm(w_i) * np.linalg.norm(w_j) + 1e-10)
+                            similarity = xp.dot(w_i, w_j) / (xp.linalg.norm(w_i) * xp.linalg.norm(w_j) + 1e-10)
                             # Convert similarity to inhibition strength (more similar = more inhibition)
                             self.inhibition_matrix[i, j] = similarity * self.inhibition_strength
                         elif self.similarity_metric == "euclidean":
                             # Euclidean distance
-                            distance = np.linalg.norm(w_i - w_j)
+                            distance = xp.linalg.norm(w_i - w_j)
                             # Convert distance to inhibition (closer = more inhibition)
                             # Using a gaussian falloff
                             if self.inhibition_radius > 0:
                                 # Local inhibition based on radius
-                                radius = self.inhibition_radius * np.sqrt(len(w_i))
+                                radius = self.inhibition_radius * xp.sqrt(len(w_i))
                                 self.inhibition_matrix[i, j] = (
                                     self.inhibition_strength * 
-                                    np.exp(-distance**2 / (2 * radius**2))
+                                    xp.exp(-distance**2 / (2 * radius**2))
                                 )
                             else:
                                 # Global inhibition with distance modulation
                                 self.inhibition_matrix[i, j] = (
                                     self.inhibition_strength * 
-                                    (1.0 - np.tanh(distance / 2.0))
+                                    (1.0 - xp.tanh(distance / 2.0))
                                 )
             
             # Initialize inhibition state and adaptive threshold
-            self.inhibition_state = np.zeros(num_neurons)
-            self.neuron_excitation = np.zeros(num_neurons)
+            self.inhibition_state = xp.zeros(num_neurons)
+            self.neuron_excitation = xp.zeros(num_neurons)
             
             if self.adaptive_threshold is None or len(self.adaptive_threshold) != num_neurons:
-                self.adaptive_threshold = np.ones(num_neurons) * 0.5
+                self.adaptive_threshold = xp.ones(num_neurons) * 0.5
             
             # Truncate or extend previous winners list if needed
             if self.prev_winners is not None:
                 if len(self.prev_winners) > num_neurons:
                     self.prev_winners = self.prev_winners[:num_neurons]
                 elif len(self.prev_winners) < num_neurons:
-                    self.prev_winners = np.concatenate([
+                    self.prev_winners = xp.concatenate([
                         self.prev_winners,
-                        np.zeros(num_neurons - len(self.prev_winners))
+                        xp.zeros(num_neurons - len(self.prev_winners))
                     ])
             else:
-                self.prev_winners = np.zeros(num_neurons)
+                self.prev_winners = xp.zeros(num_neurons)
     
     def apply(
         self, 
-        activations: np.ndarray, 
-        weight_vectors: Optional[List[np.ndarray]] = None,
+        activations: xp.ndarray, 
+        weight_vectors: Optional[List[xp.ndarray]] = None,
         learning_enabled: bool = True
-    ) -> np.ndarray:
+    ) -> xp.ndarray:
         """
         Apply lateral inhibition to neuron activations.
         
@@ -172,7 +173,7 @@ class LateralInhibition:
         elif (self.inhibition_matrix is None or 
               self.inhibition_matrix.shape[0] != num_neurons):
             # Can't calculate proper inhibition without weights, use default
-            fake_weights = [np.ones(10) for _ in range(num_neurons)]
+            fake_weights = [xp.ones(10) for _ in range(num_neurons)]
             self.initialize(num_neurons, fake_weights)
         
         # Apply specific inhibition strategy
@@ -192,7 +193,7 @@ class LateralInhibition:
         self.inhibition_state = self.inhibition_state * self.inhibition_decay
         
         # Record active neuron count
-        active_count = np.sum(inhibited_act > 0)
+        active_count = xp.sum(inhibited_act > 0)
         self.active_count_history.append(active_count)
         if len(self.active_count_history) > 1000:
             self.active_count_history.pop(0)
@@ -216,7 +217,7 @@ class LateralInhibition:
         
         return inhibited_act
     
-    def _apply_wta(self, activations: np.ndarray) -> np.ndarray:
+    def _apply_wta(self, activations: xp.ndarray) -> xp.ndarray:
         """
         Apply strict Winner-Take-All inhibition.
         
@@ -226,15 +227,15 @@ class LateralInhibition:
         Returns:
             Inhibited activations (only k winners active)
         """
-        inhibited = np.zeros_like(activations)
+        inhibited = xp.zeros_like(activations)
         
-        if np.max(activations) <= 0:
+        if xp.max(activations) <= 0:
             # No active neurons
             return inhibited
         
         # Find top-k neurons
         k = min(self.k_winners, len(activations))
-        top_k_indices = np.argsort(activations)[-k:]
+        top_k_indices = xp.argsort(activations)[-k:]
         
         # Only winners remain active
         inhibited[top_k_indices] = activations[top_k_indices]
@@ -246,7 +247,7 @@ class LateralInhibition:
         
         return inhibited
     
-    def _apply_soft_wta(self, activations: np.ndarray) -> np.ndarray:
+    def _apply_soft_wta(self, activations: xp.ndarray) -> xp.ndarray:
         """
         Apply soft Winner-Take-All inhibition, allowing graded activations.
         
@@ -256,9 +257,9 @@ class LateralInhibition:
         Returns:
             Soft-inhibited activations
         """
-        if np.max(activations) <= 0:
+        if xp.max(activations) <= 0:
             # No active neurons
-            return np.zeros_like(activations)
+            return xp.zeros_like(activations)
         
         # Start with original activations
         inhibited = activations.copy()
@@ -271,10 +272,10 @@ class LateralInhibition:
             inhibited = inhibited - self.adaptive_threshold
         
         # Rectify negative values
-        inhibited = np.maximum(0, inhibited)
+        inhibited = xp.maximum(0, inhibited)
         
         # Calculate total inhibition to apply
-        total_inhibition = np.zeros_like(activations)
+        total_inhibition = xp.zeros_like(activations)
         for i in range(len(activations)):
             if inhibited[i] > 0:
                 # Each neuron inhibits others proportionally to its activation
@@ -282,7 +283,7 @@ class LateralInhibition:
                 total_inhibition += inhibition
         
         # Apply lateral excitation based on previous winners
-        if np.any(self.prev_winners > 0):
+        if xp.any(self.prev_winners > 0):
             # Each previously active neuron provides excitation
             excitation = self.prev_winners * self.excitation_strength
             inhibited += excitation
@@ -291,19 +292,19 @@ class LateralInhibition:
         inhibited = inhibited - total_inhibition
         
         # Ensure no negative values
-        inhibited = np.maximum(0, inhibited)
+        inhibited = xp.maximum(0, inhibited)
         
         # Update inhibition state for next timestep
         active_mask = inhibited > 0
-        if np.any(active_mask):
-            self.inhibition_state += np.sum(
-                [self.inhibition_matrix[i] * inhibited[i] for i in np.where(active_mask)[0]], 
+        if xp.any(active_mask):
+            self.inhibition_state += xp.sum(
+                [self.inhibition_matrix[i] * inhibited[i] for i in xp.where(active_mask)[0]], 
                 axis=0
             )
         
         return inhibited
     
-    def _apply_local_inhibition(self, activations: np.ndarray) -> np.ndarray:
+    def _apply_local_inhibition(self, activations: xp.ndarray) -> xp.ndarray:
         """
         Apply local inhibition where neurons inhibit only their neighbors.
         
@@ -324,7 +325,7 @@ class LateralInhibition:
             inhibited = inhibited - self.adaptive_threshold
         
         # Rectify negative values
-        inhibited = np.maximum(0, inhibited)
+        inhibited = xp.maximum(0, inhibited)
         
         # Each active neuron inhibits its neighbors based on inhibition matrix
         for i in range(len(activations)):
@@ -335,17 +336,17 @@ class LateralInhibition:
                         inhibited[j] -= inhibited[i] * self.inhibition_matrix[i, j]
         
         # Ensure no negative values
-        inhibited = np.maximum(0, inhibited)
+        inhibited = xp.maximum(0, inhibited)
         
         # Update inhibition state for next timestep
         active_mask = inhibited > 0
-        if np.any(active_mask):
-            for i in np.where(active_mask)[0]:
+        if xp.any(active_mask):
+            for i in xp.where(active_mask)[0]:
                 self.inhibition_state += self.inhibition_matrix[i] * inhibited[i]
         
         return inhibited
     
-    def _apply_global_inhibition(self, activations: np.ndarray) -> np.ndarray:
+    def _apply_global_inhibition(self, activations: xp.ndarray) -> xp.ndarray:
         """
         Apply global inhibition with sparsity target.
         
@@ -366,14 +367,14 @@ class LateralInhibition:
             inhibited = inhibited - self.adaptive_threshold
         
         # Rectify
-        inhibited = np.maximum(0, inhibited)
+        inhibited = xp.maximum(0, inhibited)
         
         # Determine threshold to achieve target sparsity
-        if np.sum(inhibited > 0) > 0:
+        if xp.sum(inhibited > 0) > 0:
             target_active = max(1, int(self.sparsity_target * len(activations)))
             
             # Sort activations
-            sorted_act = np.sort(inhibited)
+            sorted_act = xp.sort(inhibited)
             
             # Find threshold that gives desired sparsity
             if len(sorted_act) > target_active:
@@ -386,14 +387,14 @@ class LateralInhibition:
             
             # Update inhibition state
             active_mask = inhibited > 0
-            if np.any(active_mask):
+            if xp.any(active_mask):
                 # Global inhibition depends on total activity
-                total_activity = np.sum(inhibited)
+                total_activity = xp.sum(inhibited)
                 self.inhibition_state += self.inhibition_strength * (total_activity / len(activations))
         
         return inhibited
     
-    def _adapt_thresholds(self, raw_activations: np.ndarray, inhibited_activations: np.ndarray) -> None:
+    def _adapt_thresholds(self, raw_activations: xp.ndarray, inhibited_activations: xp.ndarray) -> None:
         """
         Adapt neuron thresholds based on activity to maintain target sparsity.
         
@@ -402,16 +403,16 @@ class LateralInhibition:
             inhibited_activations: Post-inhibition activations
         """
         if self.adaptive_threshold is None or len(self.adaptive_threshold) != len(raw_activations):
-            self.adaptive_threshold = np.ones(len(raw_activations)) * 0.5
+            self.adaptive_threshold = xp.ones(len(raw_activations)) * 0.5
         
         # Calculate current activity level
-        activity_level = np.mean(inhibited_activations > 0)
+        activity_level = xp.mean(inhibited_activations > 0)
         self.activity_history.append(activity_level)
         if len(self.activity_history) > 100:
             self.activity_history.pop(0)
         
         # Calculate average recent activity
-        avg_activity = np.mean(self.activity_history) if self.activity_history else activity_level
+        avg_activity = xp.mean(self.activity_history) if self.activity_history else activity_level
         
         # Adjust thresholds based on difference from target sparsity
         activity_error = avg_activity - self.sparsity_target
@@ -431,7 +432,7 @@ class LateralInhibition:
                     self.adaptive_threshold[i] -= global_adjustment * 0.1
             
             # Ensure thresholds stay in reasonable range
-            self.adaptive_threshold[i] = np.clip(self.adaptive_threshold[i], 0.0, 1.0)
+            self.adaptive_threshold[i] = xp.clip(self.adaptive_threshold[i], 0.0, 1.0)
     
     def _update_stability_metrics(self) -> None:
         """Update metrics that track representational stability."""
@@ -440,21 +441,21 @@ class LateralInhibition:
         
         # Calculate redundancy (how many neurons respond to multiple inputs)
         # Higher is more redundant
-        recent_winners = np.array(self.winner_history[-10:])
-        winner_counts = np.sum(recent_winners, axis=0)
-        redundancy = np.mean(winner_counts > 1) if len(winner_counts) > 0 else 0
+        recent_winners = xp.array(self.winner_history[-10:])
+        winner_counts = xp.sum(recent_winners, axis=0)
+        redundancy = xp.mean(winner_counts > 1) if len(winner_counts) > 0 else 0
         self.stability_metrics["redundancy"].append(redundancy)
         
         # Calculate selectivity (how selective neurons are to specific inputs)
         # Higher means more selective
-        selectivity = 1.0 - np.mean(winner_counts / 10) if len(winner_counts) > 0 else 0
+        selectivity = 1.0 - xp.mean(winner_counts / 10) if len(winner_counts) > 0 else 0
         self.stability_metrics["selectivity"].append(selectivity)
         
         # Calculate activation variance (stability of individual neuron activations)
         # Lower means more stable
         if recent_winners.shape[1] > 0:
-            variances = np.var(recent_winners, axis=0)
-            avg_variance = np.mean(variances)
+            variances = xp.var(recent_winners, axis=0)
+            avg_variance = xp.mean(variances)
             self.stability_metrics["activation_variance"].append(avg_variance)
         
         # Keep metrics history limited
@@ -465,10 +466,10 @@ class LateralInhibition:
     def reset(self) -> None:
         """Reset inhibition state and history."""
         if self.inhibition_state is not None:
-            self.inhibition_state = np.zeros_like(self.inhibition_state)
+            self.inhibition_state = xp.zeros_like(self.inhibition_state)
         
         if self.prev_winners is not None:
-            self.prev_winners = np.zeros_like(self.prev_winners)
+            self.prev_winners = xp.zeros_like(self.prev_winners)
         
         self.activity_history = []
         self.active_count_history = []
@@ -486,7 +487,7 @@ class LateralInhibition:
         """
         # Calculate average activity level
         avg_activity = (
-            np.mean(self.active_count_history) / len(self.inhibition_state) 
+            xp.mean(self.active_count_history) / len(self.inhibition_state) 
             if self.inhibition_state is not None and len(self.active_count_history) > 0
             else 0
         )
@@ -495,7 +496,7 @@ class LateralInhibition:
         stability = {}
         for key in self.stability_metrics:
             if len(self.stability_metrics[key]) > 0:
-                stability[key] = np.mean(self.stability_metrics[key][-100:])
+                stability[key] = xp.mean(self.stability_metrics[key][-100:])
             else:
                 stability[key] = 0
         
@@ -553,9 +554,9 @@ class LateralInhibition:
         
         # Restore internal state
         if "adaptive_threshold" in data and data["adaptive_threshold"] is not None:
-            instance.adaptive_threshold = np.array(data["adaptive_threshold"])
+            instance.adaptive_threshold = xp.array(data["adaptive_threshold"])
         
         if "inhibition_state" in data and data["inhibition_state"] is not None:
-            instance.inhibition_state = np.array(data["inhibition_state"])
+            instance.inhibition_state = xp.array(data["inhibition_state"])
         
         return instance 

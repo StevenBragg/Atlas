@@ -1,3 +1,6 @@
+# Import GPU backend (CuPy or NumPy fallback)
+from .backend import xp, HAS_GPU, to_cpu, to_gpu, get_backend_info, sync
+
 # Import core components
 from .multimodal_association import MultimodalAssociation, AssociationMode
 from .temporal_prediction import TemporalPrediction, PredictionMode
@@ -68,6 +71,13 @@ __version__ = "0.2.0"
 
 # Define public API
 __all__ = [
+    # GPU Backend
+    'xp',
+    'HAS_GPU',
+    'to_cpu',
+    'to_gpu',
+    'get_backend_info',
+    'sync',
     # Core components
     'MultimodalAssociation',
     'AssociationMode',

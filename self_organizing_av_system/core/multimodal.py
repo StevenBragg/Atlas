@@ -1,7 +1,7 @@
-import numpy as np
 from typing import List, Dict, Tuple, Optional, Union, Any
 import logging
 
+from .backend import xp, to_cpu
 from .neuron import Neuron
 from .layer import NeuralLayer
 from .pathway import NeuralPathway
@@ -86,7 +86,7 @@ class LegacyMultimodalAssociation:
                 if i != j:  # Skip self-connections
                     key = f"{self.pathway_names[i]}_to_{self.pathway_names[j]}"
                     # Initially very small random weights
-                    self.cross_modal_connections[key] = np.random.normal(
+                    self.cross_modal_connections[key] = xp.random.normal(
                         0, 0.01, 
                         (self.pathway_output_sizes[i], self.pathway_output_sizes[j])
                     )
@@ -117,7 +117,7 @@ class LegacyMultimodalAssociation:
         # Logger setup
         self.logger = logging.getLogger('LegacyMultimodalAssociation')
     
-    def process(self, time_step: Optional[int] = None) -> np.ndarray:
+    def process(self, time_step: Optional[int] = None) -> xp.ndarray:
         """
         Process top-layer activations from all pathways through the multimodal layer.
         
@@ -141,7 +141,7 @@ class LegacyMultimodalAssociation:
         self._process_cross_modal_connections()
         
         # Concatenate all pathway activations for the multimodal layer
-        multimodal_input = np.concatenate(pathway_activations)
+        multimodal_input = xp.concatenate(pathway_activations)
         
         # Process through multimodal association layer
         multimodal_activations = self.association_layer.activate(multimodal_input, time_step)
@@ -183,7 +183,7 @@ class LegacyMultimodalAssociation:
                 if target_name in self.last_activations and self.last_activations[target_name] is not None:
                     # Apply influence to target pathway's activations
                     # This is a simplified form of predictive coding
-                    target_influence = np.dot(source_activations, connection_matrix)
+                    target_influence = xp.dot(source_activations, connection_matrix)
                     
                     # Update target pathway's layer directly
                     target_pathway = self.pathways[j]
@@ -208,10 +208,10 @@ class LegacyMultimodalAssociation:
                     if len(self.connection_statistics['recent_activations'][connection_key]) > 10:
                         self.connection_statistics['recent_activations'][connection_key].pop(0)
                     self.connection_statistics['recent_activations'][connection_key].append(
-                        np.mean(np.abs(target_influence))
+                        xp.mean(xp.abs(target_influence))
                     )
     
-    def _apply_reentrant_processing(self, multimodal_activations: np.ndarray) -> None:
+    def _apply_reentrant_processing(self, multimodal_activations: xp.ndarray) -> None:
         """
         Apply top-down influence from multimodal layer to individual pathways.
         
@@ -223,7 +223,7 @@ class LegacyMultimodalAssociation:
         # This is a form of expectation or attention signal.
         
         # Get weights from multimodal layer
-        multimodal_weights = np.array([n.weights for n in self.association_layer.neurons])
+        multimodal_weights = xp.array([n.weights for n in self.association_layer.neurons])
         
         # For each pathway, calculate the influence
         for i, pathway in enumerate(self.pathways):
@@ -235,7 +235,7 @@ class LegacyMultimodalAssociation:
             pathway_weights = multimodal_weights[:, start_idx:end_idx]
             
             # Calculate top-down influence (transpose to get right dimensions)
-            top_down_signal = np.dot(multimodal_activations, pathway_weights)
+            top_down_signal = xp.dot(multimodal_activations, pathway_weights)
             
             # Apply to pathway's top layer
             top_layer = pathway.layers[-1]
@@ -269,7 +269,7 @@ class LegacyMultimodalAssociation:
             pathway_activations.append(top_activations)
         
         # Concatenated input
-        multimodal_input = np.concatenate(pathway_activations)
+        multimodal_input = xp.concatenate(pathway_activations)
         
         # Learn in the association layer
         self.association_layer.learn(multimodal_input, learning_rule)
@@ -314,13 +314,13 @@ class LegacyMultimodalAssociation:
                 
                 # Hebbian update (outer product)
                 # When source and target are both active, strengthen connection
-                update = self.learning_rate * np.outer(source_act, target_act)
+                update = self.learning_rate * xp.outer(source_act, target_act)
                 
                 # Apply Oja-like normalization to prevent weight explosion
                 # We subtract a small fraction of the current weights scaled by activity
                 # This is a form of weight decay proportional to the output
                 normalization = self.learning_rate * 0.1 * (
-                    connection_matrix * np.mean(source_act) * np.mean(target_act)
+                    connection_matrix * xp.mean(source_act) * xp.mean(target_act)
                 )
                 
                 # Update connection matrix
@@ -328,12 +328,12 @@ class LegacyMultimodalAssociation:
                 
                 # Apply soft constraints to keep weights in reasonable range
                 # Clip to prevent extreme values
-                np.clip(connection_matrix, -1.0, 1.0, out=connection_matrix)
+                xp.clip(connection_matrix, -1.0, 1.0, out=connection_matrix)
                 
                 # Update statistics
                 # Count non-zero connections
-                connection_count = np.sum(np.abs(connection_matrix) > 0.05)
-                avg_strength = np.mean(np.abs(connection_matrix))
+                connection_count = xp.sum(xp.abs(connection_matrix) > 0.05)
+                avg_strength = xp.mean(xp.abs(connection_matrix))
                 
                 self.connection_statistics['connection_count'][connection_key] = connection_count
                 self.connection_statistics['connection_strength'][connection_key] = avg_strength
@@ -373,7 +373,7 @@ class LegacyMultimodalAssociation:
         connection_matrix = self.cross_modal_connections[connection_key]
         
         # Check if connection weight is significant
-        return np.abs(connection_matrix[source_idx, target_idx]) > 0.05
+        return xp.abs(connection_matrix[source_idx, target_idx]) > 0.05
     
     def create_association(
         self,
@@ -435,7 +435,7 @@ class LegacyMultimodalAssociation:
         
         return True
     
-    def get_connection_strengths(self) -> Dict[str, np.ndarray]:
+    def get_connection_strengths(self) -> Dict[str, xp.ndarray]:
         """
         Get the current strength of all connection matrices.
         
@@ -454,9 +454,9 @@ class LegacyMultimodalAssociation:
         multimodal_act = self.association_layer.activations
         
         # Calculate statistics
-        sparsity = np.mean(multimodal_act > 0)
-        avg_activation = np.mean(multimodal_act)
-        active_count = np.sum(multimodal_act > 0)
+        sparsity = xp.mean(multimodal_act > 0)
+        avg_activation = xp.mean(multimodal_act)
+        active_count = xp.sum(multimodal_act > 0)
         
         return {
             'activations': multimodal_act,
@@ -521,8 +521,8 @@ class LegacyMultimodalAssociation:
         # Process each cross-modal connection
         for key, matrix in self.cross_modal_connections.items():
             # Find weak connections
-            weak_mask = np.abs(matrix) < threshold
-            pruned_count = np.sum(weak_mask)
+            weak_mask = xp.abs(matrix) < threshold
+            pruned_count = xp.sum(weak_mask)
             
             # Zero out weak connections
             if pruned_count > 0:
@@ -541,8 +541,8 @@ class LegacyMultimodalAssociation:
     def predict_cross_modal(
         self, 
         source_pathway: str, 
-        source_activations: np.ndarray
-    ) -> Dict[str, np.ndarray]:
+        source_activations: xp.ndarray
+    ) -> Dict[str, xp.ndarray]:
         """
         Predict activations in other modalities given source activations.
         
@@ -575,7 +575,7 @@ class LegacyMultimodalAssociation:
             matrix = self.cross_modal_connections[key]
             
             # Calculate prediction
-            predicted_activations = np.dot(source_activations, matrix)
+            predicted_activations = xp.dot(source_activations, matrix)
             
             # Add to results
             predictions[target_pathway] = predicted_activations

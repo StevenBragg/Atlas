@@ -1,6 +1,7 @@
-import numpy as np
 import logging
 from typing import List, Dict, Optional, Tuple, Union, Any
+
+from .backend import xp, to_cpu
 from .neuron import Neuron
 
 
@@ -71,8 +72,8 @@ class NeuralLayer:
         ]
         
         # Initialize activations
-        self.activations = np.zeros(layer_size)
-        self.activations_raw = np.zeros(layer_size)  # Pre-competition activation
+        self.activations = xp.zeros(layer_size)
+        self.activations_raw = xp.zeros(layer_size)  # Pre-competition activation
         
         # Lateral connectivity (for inhibition and excitation)
         if lateral_inhibition_strength > 0 or lateral_excitation_strength > 0:
@@ -95,16 +96,16 @@ class NeuralLayer:
         
         # Momentum for weight updates (helps with stability)
         self.weight_momentum = 0.5
-        self.momentum_buffer = [np.zeros((input_size)) for _ in range(layer_size)]
+        self.momentum_buffer = [xp.zeros((input_size)) for _ in range(layer_size)]
         
         # For diversity maintenance
-        self.correlation_matrix = np.zeros((layer_size, layer_size))
+        self.correlation_matrix = xp.zeros((layer_size, layer_size))
         self.decorrelation_strength = 0.1  # Strength of decorrelation pressure
         
         # Logger setup
         self.logger = logging.getLogger(f'Layer.{name}')
     
-    def _initialize_lateral_weights(self) -> np.ndarray:
+    def _initialize_lateral_weights(self) -> xp.ndarray:
         """
         Initialize the lateral connectivity weights between neurons.
         
@@ -112,30 +113,30 @@ class NeuralLayer:
             Matrix of lateral weights
         """
         # Initialize with mostly inhibitory connections
-        weights = -self.lateral_inhibition_strength * np.ones((self.layer_size, self.layer_size))
-        np.fill_diagonal(weights, 0.0)  # No self-connections
+        weights = -self.lateral_inhibition_strength * xp.ones((self.layer_size, self.layer_size))
+        xp.fill_diagonal(weights, 0.0)  # No self-connections
         
         # Add local excitation (helps with topographic organization)
         if self.lateral_excitation_strength > 0:
             # Calculate distances between neuron indices
             # This is a simplified 1D topography - could be extended to 2D
-            indices = np.arange(self.layer_size)
-            distances = np.abs(indices[:, np.newaxis] - indices[np.newaxis, :])
+            indices = xp.arange(self.layer_size)
+            distances = xp.abs(indices[:, xp.newaxis] - indices[xp.newaxis, :])
             
             # Add excitation for nearby neurons (Mexican hat function)
             # Neurons close to each other excite, further ones inhibit
-            proximity = np.exp(-0.5 * (distances / 2.0) ** 2)
+            proximity = xp.exp(-0.5 * (distances / 2.0) ** 2)
             excitation = self.lateral_excitation_strength * proximity
             
             # Combine excitation and inhibition
             weights += excitation
             
             # Ensure no self-connections
-            np.fill_diagonal(weights, 0.0)
+            xp.fill_diagonal(weights, 0.0)
         
         return weights
     
-    def activate(self, inputs: np.ndarray, time_step: Optional[int] = None) -> np.ndarray:
+    def activate(self, inputs: xp.ndarray, time_step: Optional[int] = None) -> xp.ndarray:
         """
         Compute activations for all neurons given input.
         
@@ -150,7 +151,7 @@ class NeuralLayer:
             raise ValueError(f"Input size {inputs.shape[0]} doesn't match expected {self.input_size}")
         
         # Compute initial activations for all neurons
-        self.activations_raw = np.zeros(self.layer_size)
+        self.activations_raw = xp.zeros(self.layer_size)
         
         for i, neuron in enumerate(self.neurons):
             # Compute basic feedforward activation
@@ -158,8 +159,8 @@ class NeuralLayer:
             self.activations_raw[i] = activation
         
         # Apply recurrent influence if available
-        if self.recurrent_weights is not None and np.any(self.activations):
-            recurrent_input = np.dot(self.activations, self.recurrent_weights)
+        if self.recurrent_weights is not None and xp.any(self.activations):
+            recurrent_input = xp.dot(self.activations, self.recurrent_weights)
             # Blend with raw activations
             self.activations_raw = 0.7 * self.activations_raw + 0.3 * recurrent_input
         
@@ -186,11 +187,11 @@ class NeuralLayer:
             self._apply_lateral_competition()
         else:
             # Simple threshold activation
-            self.activations = np.maximum(0, self.activations_raw - self.threshold)
+            self.activations = xp.maximum(0, self.activations_raw - self.threshold)
         
         # Track sparsity and mean activation
-        sparsity = np.mean(self.activations > 0)
-        mean_activation = np.mean(self.activations)
+        sparsity = xp.mean(self.activations > 0)
+        mean_activation = xp.mean(self.activations)
         
         # Add to history
         self.sparsity_history.append(float(sparsity))
@@ -214,14 +215,14 @@ class NeuralLayer:
         
         if k <= 0:
             # No competition, just apply threshold
-            self.activations = np.maximum(0, self.activations_raw - self.threshold)
+            self.activations = xp.maximum(0, self.activations_raw - self.threshold)
             return
         
         # Get top k indices
-        top_k_indices = np.argsort(self.activations_raw)[-k:]
+        top_k_indices = xp.argsort(self.activations_raw)[-k:]
         
         # Set activations to zero except for winners
-        self.activations = np.zeros_like(self.activations_raw)
+        self.activations = xp.zeros_like(self.activations_raw)
         
         # Set winner activations to their raw values (optionally minus a threshold)
         for idx in top_k_indices:
@@ -237,13 +238,13 @@ class NeuralLayer:
     def _apply_lateral_competition(self) -> None:
         """Apply lateral inhibition based on explicit weights."""
         # Apply lateral influence from current activations
-        lateral_influence = np.dot(self.activations_raw, self.lateral_weights)
+        lateral_influence = xp.dot(self.activations_raw, self.lateral_weights)
         
         # Combine feedforward and lateral inputs
         combined_input = self.activations_raw + lateral_influence
         
         # Apply threshold activation
-        self.activations = np.maximum(0, combined_input - self.threshold)
+        self.activations = xp.maximum(0, combined_input - self.threshold)
         
         # Mark winners for learning
         winners = self.activations > 0
@@ -251,9 +252,9 @@ class NeuralLayer:
             neuron.is_winner = winners[i]
         
         # Keep track of winners for diversity
-        self.last_winners = list(np.where(winners)[0])
+        self.last_winners = list(xp.where(winners)[0])
     
-    def learn(self, inputs: np.ndarray, learning_rule: str = 'oja') -> None:
+    def learn(self, inputs: xp.ndarray, learning_rule: str = 'oja') -> None:
         """
         Apply learning to all neurons in the layer.
         
@@ -301,14 +302,14 @@ class NeuralLayer:
             return
             
         # Extract weight vectors
-        weight_vectors = np.array([n.weights for n in self.neurons])
+        weight_vectors = xp.array([n.weights for n in self.neurons])
         
         # Calculate correlation matrix
-        self.correlation_matrix = np.corrcoef(weight_vectors)
+        self.correlation_matrix = xp.corrcoef(weight_vectors)
         
         # Ensure valid values (NaN can happen with constant weights)
-        np.fill_diagonal(self.correlation_matrix, 1.0)
-        self.correlation_matrix = np.nan_to_num(self.correlation_matrix)
+        xp.fill_diagonal(self.correlation_matrix, 1.0)
+        self.correlation_matrix = xp.nan_to_num(self.correlation_matrix)
     
     def _apply_weight_decorrelation(self, neuron_idx: int) -> None:
         """
@@ -324,7 +325,7 @@ class NeuralLayer:
         neuron = self.neurons[neuron_idx]
         
         # Calculate decorrelation term (away from correlated neurons)
-        decorrelation_pressure = np.zeros_like(neuron.weights)
+        decorrelation_pressure = xp.zeros_like(neuron.weights)
         
         for j, other_neuron in enumerate(self.neurons):
             if j == neuron_idx:
@@ -340,7 +341,7 @@ class NeuralLayer:
                 decorrelation_pressure -= correlation * other_neuron.weights
         
         # Normalize and apply decorrelation pressure
-        norm = np.linalg.norm(decorrelation_pressure)
+        norm = xp.linalg.norm(decorrelation_pressure)
         if norm > 0:
             decorrelation_pressure /= norm
             
@@ -365,7 +366,7 @@ class NeuralLayer:
         if len(self.mean_activation_history) > 100:
             # Calculate recent activation variance
             recent_history = self.mean_activation_history[-100:]
-            activation_variance = np.var(recent_history)
+            activation_variance = xp.var(recent_history)
             
             # If variance is high, reduce learning rate (instability)
             if activation_variance > 0.1:
@@ -374,7 +375,7 @@ class NeuralLayer:
                 effective_rate *= stability_factor
             
             # If activations are consistently too low, increase rate
-            if np.mean(recent_history) < 0.01:
+            if xp.mean(recent_history) < 0.01:
                 effective_rate *= 1.5
         
         return effective_rate
@@ -389,7 +390,7 @@ class NeuralLayer:
         
         # Update layer-level threshold for new neurons
         if len(self.mean_activation_history) > 10:
-            recent_mean = np.mean(self.mean_activation_history[-10:])
+            recent_mean = xp.mean(self.mean_activation_history[-10:])
             
             # Adjust layer threshold based on overall activity
             if recent_mean > self.target_activation * 1.5:
@@ -411,12 +412,12 @@ class NeuralLayer:
             return
             
         # Calculate long-term and short-term statistics
-        long_term_mean = np.mean(self.mean_activation_history[-100:])
-        long_term_sparsity = np.mean(self.sparsity_history[-100:])
+        long_term_mean = xp.mean(self.mean_activation_history[-100:])
+        long_term_sparsity = xp.mean(self.sparsity_history[-100:])
         
         # Calculate ideal sparsity based on layer size
         # Larger layers should have lower activation ratios
-        ideal_sparsity = min(0.3, 2.0 / np.sqrt(self.layer_size))
+        ideal_sparsity = min(0.3, 2.0 / xp.sqrt(self.layer_size))
         
         # Adjust target activation if actual sparsity is far from ideal
         if long_term_sparsity > ideal_sparsity * 1.5:
@@ -445,10 +446,10 @@ class NeuralLayer:
         Initialize recurrent connections for sequence learning.
         """
         # Create recurrent weight matrix (initially small random weights)
-        self.recurrent_weights = np.random.normal(0, 0.01, (self.layer_size, self.layer_size))
+        self.recurrent_weights = xp.random.normal(0, 0.01, (self.layer_size, self.layer_size))
         
         # No self-recurrence initially
-        np.fill_diagonal(self.recurrent_weights, 0)
+        xp.fill_diagonal(self.recurrent_weights, 0)
     
     def update_recurrent_connections(self) -> None:
         """
@@ -469,7 +470,7 @@ class NeuralLayer:
         current_act = self.activations
         
         # No updates if not enough activity
-        if np.sum(current_act > 0) < 2:
+        if xp.sum(current_act > 0) < 2:
             return
         
         # Get previous layer state (assuming we recorded it)
@@ -482,7 +483,7 @@ class NeuralLayer:
         prev_act = self.previous_activations
         
         # Create outer product of previous with current
-        temporal_coincidence = np.outer(prev_act, current_act)
+        temporal_coincidence = xp.outer(prev_act, current_act)
         
         # Update recurrent weights
         recurrent_lr = self.learning_rate * 0.1  # Typically slower than feedforward
@@ -491,33 +492,33 @@ class NeuralLayer:
         # Apply simple normalization to keep weights bounded
         # Row-wise normalization
         for i in range(self.layer_size):
-            row_sum = np.sum(np.abs(self.recurrent_weights[i, :]))
+            row_sum = xp.sum(xp.abs(self.recurrent_weights[i, :]))
             if row_sum > 0.001:
                 self.recurrent_weights[i, :] /= row_sum
         
         # Ensure no self-recurrence (optional, depends on model)
-        np.fill_diagonal(self.recurrent_weights, 0)
+        xp.fill_diagonal(self.recurrent_weights, 0)
         
         # Update previous activations
         self.previous_activations = current_act.copy()
     
-    def predict_next_activation(self) -> np.ndarray:
+    def predict_next_activation(self) -> xp.ndarray:
         """
         Predict the next expected activations based on current state.
         
         Returns:
             Predicted next activation vector
         """
-        if self.recurrent_weights is None or not np.any(self.activations):
-            return np.zeros(self.layer_size)
+        if self.recurrent_weights is None or not xp.any(self.activations):
+            return xp.zeros(self.layer_size)
             
         # Simple linear prediction using recurrent weights
-        predicted_activations = np.dot(self.activations, self.recurrent_weights)
+        predicted_activations = xp.dot(self.activations, self.recurrent_weights)
         
         # Apply threshold for realistic prediction
-        return np.maximum(0, predicted_activations - self.threshold * 0.5)
+        return xp.maximum(0, predicted_activations - self.threshold * 0.5)
     
-    def add_neuron(self, initial_weights: Optional[np.ndarray] = None) -> int:
+    def add_neuron(self, initial_weights: Optional[xp.ndarray] = None) -> int:
         """
         Add a new neuron to the layer.
         
@@ -544,18 +545,18 @@ class NeuralLayer:
         self.layer_size += 1
         
         # Extend activations array
-        self.activations = np.append(self.activations, 0.0)
-        self.activations_raw = np.append(self.activations_raw, 0.0)
+        self.activations = xp.append(self.activations, 0.0)
+        self.activations_raw = xp.append(self.activations_raw, 0.0)
         
         # Update lateral weights if using inhibition
         if self.lateral_weights is not None:
             # Expand matrix with new row and column
-            new_row = -self.lateral_inhibition_strength * np.ones(self.layer_size - 1)
-            new_col = -self.lateral_inhibition_strength * np.ones((self.layer_size - 1, 1))
+            new_row = -self.lateral_inhibition_strength * xp.ones(self.layer_size - 1)
+            new_col = -self.lateral_inhibition_strength * xp.ones((self.layer_size - 1, 1))
             
             # Combine
-            self.lateral_weights = np.vstack((self.lateral_weights, new_row))
-            self.lateral_weights = np.hstack((self.lateral_weights, np.zeros((self.layer_size, 1))))
+            self.lateral_weights = xp.vstack((self.lateral_weights, new_row))
+            self.lateral_weights = xp.hstack((self.lateral_weights, xp.zeros((self.layer_size, 1))))
             self.lateral_weights[-1, -1] = 0.0  # No self-inhibition
             
             # Add local excitation if used
@@ -566,20 +567,20 @@ class NeuralLayer:
         # Extend recurrent weights if using them
         if self.recurrent_weights is not None:
             # Add zero row and column
-            self.recurrent_weights = np.vstack((
+            self.recurrent_weights = xp.vstack((
                 self.recurrent_weights, 
-                np.zeros(self.layer_size - 1)
+                xp.zeros(self.layer_size - 1)
             ))
-            self.recurrent_weights = np.hstack((
+            self.recurrent_weights = xp.hstack((
                 self.recurrent_weights, 
-                np.zeros((self.layer_size, 1))
+                xp.zeros((self.layer_size, 1))
             ))
         
         # Extend correlation matrix for weight diversity
         if self.decorrelation_strength > 0:
             # Expand with new row and column
             new_size = self.correlation_matrix.shape[0] + 1
-            new_matrix = np.ones((new_size, new_size))
+            new_matrix = xp.ones((new_size, new_size))
             new_matrix[:-1, :-1] = self.correlation_matrix
             new_matrix[-1, :] = 0.0
             new_matrix[:, -1] = 0.0
@@ -588,12 +589,12 @@ class NeuralLayer:
         
         # Add a momentum buffer entry
         if self.weight_momentum > 0:
-            self.momentum_buffer.append(np.zeros(self.input_size))
+            self.momentum_buffer.append(xp.zeros(self.input_size))
         
         self.logger.debug(f"Added neuron {new_idx} to layer {self.name}")
         return new_idx
     
-    def replace_neuron(self, neuron_idx: int, initial_weights: Optional[np.ndarray] = None) -> None:
+    def replace_neuron(self, neuron_idx: int, initial_weights: Optional[xp.ndarray] = None) -> None:
         """
         Replace the weights of an existing neuron.
         
@@ -624,7 +625,7 @@ class NeuralLayer:
         
         # Reset momentum buffer if using momentum
         if self.weight_momentum > 0:
-            self.momentum_buffer[neuron_idx] = np.zeros(self.input_size)
+            self.momentum_buffer[neuron_idx] = xp.zeros(self.input_size)
             
         self.logger.debug(f"Replaced neuron {neuron_idx} in layer {self.name}")
     
@@ -642,10 +643,10 @@ class NeuralLayer:
         
         for neuron in self.neurons:
             # Find weights smaller than threshold
-            small_weights = np.abs(neuron.weights) < threshold
+            small_weights = xp.abs(neuron.weights) < threshold
             
             # Count them
-            pruned = np.sum(small_weights)
+            pruned = xp.sum(small_weights)
             
             # Zero them out
             if pruned > 0:
@@ -664,10 +665,11 @@ class NeuralLayer:
     def get_layer_state(self) -> Dict[str, Any]:
         """
         Get the current state of the layer.
-        
+
         Returns:
             Dictionary with layer state information
         """
+        # Convert GPU arrays to CPU for serialization
         return {
             'name': self.name,
             'input_size': self.input_size,
@@ -675,10 +677,10 @@ class NeuralLayer:
             'learning_rate': self.learning_rate,
             'threshold': self.threshold,
             'target_activation': self.target_activation,
-            'activations': self.activations.copy(),
-            'activations_raw': self.activations_raw.copy(),
-            'mean_activation': np.mean(self.activations),
-            'sparsity': np.mean(self.activations > 0),
+            'activations': to_cpu(self.activations).copy(),
+            'activations_raw': to_cpu(self.activations_raw).copy(),
+            'mean_activation': float(xp.mean(self.activations)),
+            'sparsity': float(xp.mean(self.activations > 0)),
             'neuron_states': [
                 {
                     'threshold': neuron.threshold,
@@ -688,26 +690,26 @@ class NeuralLayer:
             ]
         }
     
-    def get_all_receptive_fields(self) -> np.ndarray:
+    def get_all_receptive_fields(self) -> xp.ndarray:
         """
         Get receptive fields (weights) of all neurons in the layer.
         
         Returns:
             Matrix of receptive fields, one per row
         """
-        fields = np.zeros((self.layer_size, self.input_size))
+        fields = xp.zeros((self.layer_size, self.input_size))
         for i, neuron in enumerate(self.neurons):
             fields[i] = neuron.get_receptive_field()
         return fields
     
-    def get_weight_matrix(self) -> np.ndarray:
+    def get_weight_matrix(self) -> xp.ndarray:
         """
         Get the weight matrix for the layer.
         
         Returns:
             Weight matrix of shape (layer_size, input_size)
         """
-        weights = np.zeros((self.layer_size, self.input_size))
+        weights = xp.zeros((self.layer_size, self.input_size))
         for i, neuron in enumerate(self.neurons):
             weights[i] = neuron.weights
         return weights 

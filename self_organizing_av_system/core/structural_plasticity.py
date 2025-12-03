@@ -5,13 +5,13 @@ This implements dynamic neuron addition, synapse sprouting, and pruning
 as described in the architecture document.
 """
 
-import numpy as np
 import logging
 from typing import List, Dict, Tuple, Optional, Union, Any, Set, Callable
 import time
 from collections import defaultdict
 from enum import Enum
 
+from .backend import xp, to_cpu
 from .neuron import Neuron
 from .layer import NeuralLayer
 from .pathway import NeuralPathway
@@ -157,8 +157,8 @@ class StructuralPlasticity:
         
         # Activity history for utility calculations
         self.activity_history = []
-        self.utility_scores = np.ones(initial_size)  # Initialize with uniform utility
-        self.activation_frequency = np.zeros(initial_size)
+        self.utility_scores = xp.ones(initial_size)  # Initialize with uniform utility
+        self.activation_frequency = xp.zeros(initial_size)
         self.reconstruction_errors = []
         
         # Growth and pruning history
@@ -185,15 +185,15 @@ class StructuralPlasticity:
         
         # Set random seed if provided
         if random_seed is not None:
-            np.random.seed(random_seed)
+            xp.random.seed(random_seed)
         
         logger.info(f"Initialized structural plasticity: size={initial_size}, max={max_size}, "
                    f"growth_strategy={growth_strategy.value}, pruning_strategy={pruning_strategy.value}")
     
     def update(
         self,
-        activity: np.ndarray,
-        weights: Optional[np.ndarray] = None,
+        activity: xp.ndarray,
+        weights: Optional[xp.ndarray] = None,
         reconstruction_error: Optional[float] = None,
         force_check: bool = False
     ) -> Dict[str, Any]:
@@ -256,8 +256,8 @@ class StructuralPlasticity:
                 result['grown'] = growth_neurons
                 result['size_changed'] = True
                 self.current_size += growth_neurons
-                self.utility_scores = np.append(self.utility_scores, np.ones(growth_neurons))
-                self.activation_frequency = np.append(self.activation_frequency, np.zeros(growth_neurons))
+                self.utility_scores = xp.append(self.utility_scores, xp.ones(growth_neurons))
+                self.activation_frequency = xp.append(self.activation_frequency, xp.zeros(growth_neurons))
                 
                 # Record growth event
                 self.growth_events.append({
@@ -295,7 +295,7 @@ class StructuralPlasticity:
         self.update_count += 1
         return result
     
-    def _update_activity_history(self, activity: np.ndarray) -> None:
+    def _update_activity_history(self, activity: xp.ndarray) -> None:
         """
         Update the activity history with current activity.
         
@@ -307,9 +307,9 @@ class StructuralPlasticity:
             self.activity_history = self.activity_history[-self.utility_window:]
         
         # Update activation frequency
-        self.activation_frequency = np.mean([a > 0.1 for a in self.activity_history], axis=0)
+        self.activation_frequency = xp.mean([a > 0.1 for a in self.activity_history], axis=0)
     
-    def _update_utility_scores(self, activity: np.ndarray) -> None:
+    def _update_utility_scores(self, activity: xp.ndarray) -> None:
         """
         Update utility scores for all neurons.
         
@@ -321,25 +321,25 @@ class StructuralPlasticity:
             return
         
         # Convert history to array for calculations
-        history_array = np.array(self.activity_history)
+        history_array = xp.array(self.activity_history)
         
         # Get mean activity per neuron
-        mean_activity = np.mean(history_array, axis=0)
+        mean_activity = xp.mean(history_array, axis=0)
         
         # Get variance of activity per neuron
-        var_activity = np.var(history_array, axis=0)
+        var_activity = xp.var(history_array, axis=0)
         
         # Calculate activation sparsity (% of time neuron is active)
-        sparsity = np.mean(history_array > 0.1, axis=0)
+        sparsity = xp.mean(history_array > 0.1, axis=0)
         
         # Calculate utility as combination of variance and activation frequency
         # Neurons with high variance and moderate activation are most useful
         self.utility_scores = (var_activity + 0.1) * (4 * sparsity * (1 - sparsity) + 0.1)
         
         # Normalize utility scores
-        self.utility_scores = self.utility_scores / (np.mean(self.utility_scores) + 1e-10)
+        self.utility_scores = self.utility_scores / (xp.mean(self.utility_scores) + 1e-10)
     
-    def _check_novelty(self, activity: np.ndarray) -> bool:
+    def _check_novelty(self, activity: xp.ndarray) -> bool:
         """
         Check if current activity pattern represents a novel input.
         
@@ -350,12 +350,12 @@ class StructuralPlasticity:
             Boolean indicating novelty
         """
         # Skip if activity is too sparse
-        if np.sum(activity > 0.1) < 2:
+        if xp.sum(activity > 0.1) < 2:
             return False
         
         # If no prototypes exist, add the first and return True
         if not self.prototype_patterns:
-            if np.max(activity) > 0.5:  # Only add as prototype if activity is significant
+            if xp.max(activity) > 0.5:  # Only add as prototype if activity is significant
                 self.prototype_patterns.append(activity.copy())
                 self.pattern_counts.append(1)
             return True
@@ -365,18 +365,18 @@ class StructuralPlasticity:
         max_idx = 0
         
         # Normalize activity for similarity comparison
-        norm_activity = activity / (np.linalg.norm(activity) + 1e-10)
+        norm_activity = activity / (xp.linalg.norm(activity) + 1e-10)
         
         # Find most similar prototype
         for i, prototype in enumerate(self.prototype_patterns):
-            norm_prototype = prototype / (np.linalg.norm(prototype) + 1e-10)
-            similarity = np.dot(norm_activity, norm_prototype)
+            norm_prototype = prototype / (xp.linalg.norm(prototype) + 1e-10)
+            similarity = xp.dot(norm_activity, norm_prototype)
             if similarity > max_similarity:
                 max_similarity = similarity
                 max_idx = i
         
         # If similarity is below threshold, this is a novel pattern
-        if max_similarity < self.novelty_threshold and np.max(activity) > 0.5:
+        if max_similarity < self.novelty_threshold and xp.max(activity) > 0.5:
             # Add as new prototype if we haven't reached the limit
             if len(self.prototype_patterns) < 50:  # Limit number of prototypes
                 self.prototype_patterns.append(activity.copy())
@@ -390,8 +390,8 @@ class StructuralPlasticity:
     
     def _evaluate_growth_needs(
         self, 
-        activity: np.ndarray,
-        weights: Optional[np.ndarray] = None,
+        activity: xp.ndarray,
+        weights: Optional[xp.ndarray] = None,
         reconstruction_error: Optional[float] = None
     ) -> int:
         """
@@ -420,23 +420,23 @@ class StructuralPlasticity:
                 return 0
                 
             # Check if activity is concentrated in few neurons
-            history_array = np.array(self.activity_history[-10:])
-            mean_activity = np.mean(history_array, axis=0)
+            history_array = xp.array(self.activity_history[-10:])
+            mean_activity = xp.mean(history_array, axis=0)
             
             # Calculate concentration of activity (Gini-like coefficient)
-            sorted_activity = np.sort(mean_activity)
-            cumsum = np.cumsum(sorted_activity)
-            concentration = np.sum(cumsum) / (self.current_size * np.sum(mean_activity))
+            sorted_activity = xp.sort(mean_activity)
+            cumsum = xp.cumsum(sorted_activity)
+            concentration = xp.sum(cumsum) / (self.current_size * xp.sum(mean_activity))
             
             # Grow if activity is high and concentrated
-            if concentration > self.growth_threshold and np.mean(mean_activity) > 0.3:
-                growth_size = int(np.ceil(self.current_size * self.growth_rate))
+            if concentration > self.growth_threshold and xp.mean(mean_activity) > 0.3:
+                growth_size = int(xp.ceil(self.current_size * self.growth_rate))
                 return min(growth_size, self.max_growth_per_step)
                 
         elif self.growth_strategy == GrowthStrategy.NOVELTY_BASED:
             # Check if we're seeing consistently novel patterns
             if len(self.prototype_patterns) > self.current_size * 0.5:
-                growth_size = int(np.ceil(self.current_size * self.growth_rate))
+                growth_size = int(xp.ceil(self.current_size * self.growth_rate))
                 return min(growth_size, self.max_growth_per_step)
                 
         elif self.growth_strategy == GrowthStrategy.ERROR_BASED:
@@ -445,11 +445,11 @@ class StructuralPlasticity:
                 return 0
                 
             # Compare current error to recent average
-            recent_error_avg = np.mean(self.reconstruction_errors[-10:])
+            recent_error_avg = xp.mean(self.reconstruction_errors[-10:])
             
             # Grow if error is consistently high
             if reconstruction_error > recent_error_avg * 1.2 and recent_error_avg > 0.2:
-                growth_size = int(np.ceil(self.current_size * self.growth_rate))
+                growth_size = int(xp.ceil(self.current_size * self.growth_rate))
                 return min(growth_size, self.max_growth_per_step)
                 
         elif self.growth_strategy == GrowthStrategy.HYBRID:
@@ -458,13 +458,13 @@ class StructuralPlasticity:
             
             # Activity-based signal
             if len(self.activity_history) >= 10:
-                history_array = np.array(self.activity_history[-10:])
-                mean_activity = np.mean(history_array, axis=0)
-                sorted_activity = np.sort(mean_activity)
-                cumsum = np.cumsum(sorted_activity)
-                concentration = np.sum(cumsum) / (self.current_size * np.sum(mean_activity) + 1e-10)
+                history_array = xp.array(self.activity_history[-10:])
+                mean_activity = xp.mean(history_array, axis=0)
+                sorted_activity = xp.sort(mean_activity)
+                cumsum = xp.cumsum(sorted_activity)
+                concentration = xp.sum(cumsum) / (self.current_size * xp.sum(mean_activity) + 1e-10)
                 
-                if concentration > self.growth_threshold and np.mean(mean_activity) > 0.3:
+                if concentration > self.growth_threshold and xp.mean(mean_activity) > 0.3:
                     growth_signals += 1
             
             # Novelty-based signal
@@ -473,17 +473,17 @@ class StructuralPlasticity:
             
             # Error-based signal
             if (self.reconstruction_errors and reconstruction_error is not None and 
-                reconstruction_error > np.mean(self.reconstruction_errors) * 1.2):
+                reconstruction_error > xp.mean(self.reconstruction_errors) * 1.2):
                 growth_signals += 1
             
             # Grow if multiple signals agree
             if growth_signals >= 2:
-                growth_size = int(np.ceil(self.current_size * self.growth_rate))
+                growth_size = int(xp.ceil(self.current_size * self.growth_rate))
                 return min(growth_size, self.max_growth_per_step)
         
         return 0
     
-    def _evaluate_pruning_needs(self, weights: Optional[np.ndarray] = None) -> List[int]:
+    def _evaluate_pruning_needs(self, weights: Optional[xp.ndarray] = None) -> List[int]:
         """
         Evaluate need for pruning based on utility scores.
         
@@ -510,15 +510,15 @@ class StructuralPlasticity:
                 
             # Get row weights (for outgoing connections)
             if len(weights.shape) == 2:
-                row_norms = np.sum(np.abs(weights), axis=1)
+                row_norms = xp.sum(xp.abs(weights), axis=1)
                 
                 # Identify candidates with low weights
-                candidates = np.where(row_norms < self.prune_threshold * np.mean(row_norms))[0]
+                candidates = xp.where(row_norms < self.prune_threshold * xp.mean(row_norms))[0]
                 
                 # Select up to max_prune_per_step of the weakest neurons
                 if len(candidates) > 0:
                     # Sort by increasing strength
-                    sorted_candidates = candidates[np.argsort(row_norms[candidates])]
+                    sorted_candidates = candidates[xp.argsort(row_norms[candidates])]
                     # Take the weakest ones
                     prune_indices = sorted_candidates[:min(len(sorted_candidates), self.max_prune_per_step)]
         
@@ -526,15 +526,15 @@ class StructuralPlasticity:
             # Prune neurons with consistently low activity
             
             # Calculate average activation
-            history_array = np.array(self.activity_history)
-            mean_activity = np.mean(history_array, axis=0)
+            history_array = xp.array(self.activity_history)
+            mean_activity = xp.mean(history_array, axis=0)
             
             # Identify candidates with very low activity
-            candidates = np.where(mean_activity < self.prune_threshold * np.mean(mean_activity))[0]
+            candidates = xp.where(mean_activity < self.prune_threshold * xp.mean(mean_activity))[0]
             
             # Ensure we don't prune too many at once
             if len(candidates) > 0:
-                sorted_candidates = candidates[np.argsort(mean_activity[candidates])]
+                sorted_candidates = candidates[xp.argsort(mean_activity[candidates])]
                 prune_indices = sorted_candidates[:min(len(sorted_candidates), self.max_prune_per_step)]
         
         elif self.pruning_strategy == PruningStrategy.CORRELATION_BASED:
@@ -543,10 +543,10 @@ class StructuralPlasticity:
                 return []
                 
             # Calculate correlation between neuron activities
-            history_array = np.array(self.activity_history[-30:])
+            history_array = xp.array(self.activity_history[-30:])
             
             # Skip if variance is too low
-            if np.mean(np.var(history_array, axis=0)) < 0.01:
+            if xp.mean(xp.var(history_array, axis=0)) < 0.01:
                 return []
             
             # Calculate correlation matrix between neurons
@@ -556,27 +556,27 @@ class StructuralPlasticity:
                     return []
                     
                 # Calculate correlation
-                correlations = np.corrcoef(history_array.T)
-                np.fill_diagonal(correlations, 0)  # Exclude self-correlations
+                correlations = xp.corrcoef(history_array.T)
+                xp.fill_diagonal(correlations, 0)  # Exclude self-correlations
                 
                 # Find pairs with correlation above threshold
-                high_corr_pairs = np.argwhere(correlations > self.redundancy_threshold)
+                high_corr_pairs = xp.argwhere(correlations > self.redundancy_threshold)
                 
                 # Identify redundant neurons (appear in multiple pairs)
                 if len(high_corr_pairs) > 0:
                     # Count occurrences of each neuron in high correlation pairs
-                    neuron_counts = np.bincount(high_corr_pairs.flatten(), minlength=self.current_size)
+                    neuron_counts = xp.bincount(high_corr_pairs.flatten(), minlength=self.current_size)
                     
                     # Find neurons involved in multiple high correlations
-                    redundant_candidates = np.where(neuron_counts > 1)[0]
+                    redundant_candidates = xp.where(neuron_counts > 1)[0]
                     
                     # For each candidate, choose the one with lower utility
                     for idx in redundant_candidates:
                         # Find its partners
-                        partners = np.where(correlations[idx] > self.redundancy_threshold)[0]
+                        partners = xp.where(correlations[idx] > self.redundancy_threshold)[0]
                         
                         # Compare utility scores
-                        if np.any(self.utility_scores[partners] > self.utility_scores[idx]):
+                        if xp.any(self.utility_scores[partners] > self.utility_scores[idx]):
                             if idx not in prune_indices and len(prune_indices) < self.max_prune_per_step:
                                 prune_indices.append(idx)
         
@@ -584,14 +584,14 @@ class StructuralPlasticity:
             # Prune based on comprehensive utility metric
             
             # Identify candidates with low utility
-            sorted_utility = np.argsort(self.utility_scores)
+            sorted_utility = xp.argsort(self.utility_scores)
             
             # Consider lowest 10% as candidates
             n_candidates = max(1, int(0.1 * self.current_size))
             candidates = sorted_utility[:n_candidates]
             
             # Prune only if utility is very low compared to average
-            prune_threshold = np.mean(self.utility_scores) * self.prune_threshold
+            prune_threshold = xp.mean(self.utility_scores) * self.prune_threshold
             final_candidates = [idx for idx in candidates if self.utility_scores[idx] < prune_threshold]
             
             # Limit number pruned per step
@@ -600,7 +600,7 @@ class StructuralPlasticity:
         # Convert to list of integers
         return sorted([int(i) for i in prune_indices])
     
-    def _consolidate_representations(self, weights: Optional[np.ndarray] = None) -> bool:
+    def _consolidate_representations(self, weights: Optional[xp.ndarray] = None) -> bool:
         """
         Consolidate neural representations by reinforcing useful pattern separations.
         
@@ -655,8 +655,8 @@ class StructuralPlasticity:
             # Resize utility scores and activation frequency
             if size_diff > 0:
                 # Growing
-                self.utility_scores = np.append(self.utility_scores, np.ones(size_diff))
-                self.activation_frequency = np.append(self.activation_frequency, np.zeros(size_diff))
+                self.utility_scores = xp.append(self.utility_scores, xp.ones(size_diff))
+                self.activation_frequency = xp.append(self.activation_frequency, xp.zeros(size_diff))
                 
                 # Record growth event
                 self.growth_events.append({
@@ -671,7 +671,7 @@ class StructuralPlasticity:
                 
             else:
                 # Shrinking - keep neurons with highest utility
-                sorted_utility = np.argsort(self.utility_scores)[::-1]  # Sort by descending utility
+                sorted_utility = xp.argsort(self.utility_scores)[::-1]  # Sort by descending utility
                 keep_indices = sorted_utility[:new_size]
                 
                 # Resize arrays
@@ -703,10 +703,10 @@ class StructuralPlasticity:
             Dictionary with structural statistics
         """
         # Calculate stats on utility distribution
-        utility_mean = np.mean(self.utility_scores) if len(self.utility_scores) > 0 else 0
-        utility_std = np.std(self.utility_scores) if len(self.utility_scores) > 0 else 0
-        utility_min = np.min(self.utility_scores) if len(self.utility_scores) > 0 else 0
-        utility_max = np.max(self.utility_scores) if len(self.utility_scores) > 0 else 0
+        utility_mean = xp.mean(self.utility_scores) if len(self.utility_scores) > 0 else 0
+        utility_std = xp.std(self.utility_scores) if len(self.utility_scores) > 0 else 0
+        utility_min = xp.min(self.utility_scores) if len(self.utility_scores) > 0 else 0
+        utility_max = xp.max(self.utility_scores) if len(self.utility_scores) > 0 else 0
         
         # Summary of growth and pruning history
         total_grown = sum(event['grown'] for event in self.growth_events)
@@ -829,8 +829,8 @@ class StructuralPlasticity:
         instance.update_count = data['update_count']
         instance.last_growth_update = data['last_growth_update']
         instance.last_prune_update = data['last_prune_update']
-        instance.utility_scores = np.array(data['utility_scores'])
-        instance.activation_frequency = np.array(data['activation_frequency'])
+        instance.utility_scores = xp.array(data['utility_scores'])
+        instance.activation_frequency = xp.array(data['activation_frequency'])
         instance.growth_events = data.get('growth_events', [])
         instance.prune_events = data.get('prune_events', [])
         

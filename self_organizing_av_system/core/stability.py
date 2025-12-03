@@ -1,7 +1,8 @@
-import numpy as np
 import logging
 from typing import Dict, List, Tuple, Optional, Union, Any
 from enum import Enum
+
+from .backend import xp, to_cpu
 
 logger = logging.getLogger(__name__)
 
@@ -91,29 +92,29 @@ class StabilityMechanisms:
         self.weight_decay = weight_decay
         
         # Initialize adaptive thresholds
-        self.thresholds = np.ones(representation_size) * 0.5
+        self.thresholds = xp.ones(representation_size) * 0.5
         
         # Activity statistics tracking
-        self.activity_history = np.zeros((100, representation_size))
+        self.activity_history = xp.zeros((100, representation_size))
         self.activity_history_index = 0
         self.activity_history_filled = False
         
         # Neuron firing rates
-        self.firing_rates = np.zeros(representation_size)
+        self.firing_rates = xp.zeros(representation_size)
         
         # Initialization tracking
         self.update_count = 0
         
         # Homeostatic factors (intrinsic excitability)
-        self.homeostatic_factors = np.ones(representation_size)
+        self.homeostatic_factors = xp.ones(representation_size)
         
         # Weight scaling factors
-        self.input_scaling_factors = np.ones(representation_size)
-        self.output_scaling_factors = np.ones(representation_size)
+        self.input_scaling_factors = xp.ones(representation_size)
+        self.output_scaling_factors = xp.ones(representation_size)
         
         # Diversity tracking
         self.diversity_score = 1.0
-        self.correlation_matrix = np.zeros((representation_size, representation_size))
+        self.correlation_matrix = xp.zeros((representation_size, representation_size))
         
         # Adaptive inhibition parameters
         if self.inhibition_strategy == InhibitionStrategy.ADAPTIVE:
@@ -128,7 +129,7 @@ class StabilityMechanisms:
                    f"target_activity={target_activity}, "
                    f"inhibition_strategy={inhibition_strategy.value}")
     
-    def _create_mexican_hat_kernel(self, size: int, width_ratio: float = 0.15) -> np.ndarray:
+    def _create_mexican_hat_kernel(self, size: int, width_ratio: float = 0.15) -> xp.ndarray:
         """
         Create a Mexican hat kernel for lateral inhibition.
         
@@ -140,29 +141,29 @@ class StabilityMechanisms:
             Mexican hat kernel
         """
         # Create distance matrix
-        x = np.arange(size)
-        distances = np.abs(x[:, np.newaxis] - x[np.newaxis, :])
+        x = xp.arange(size)
+        distances = xp.abs(x[:, xp.newaxis] - x[xp.newaxis, :])
         
         # Calculate width parameters
         sigma_e = width_ratio * size
         sigma_i = 2 * sigma_e
         
         # Mexican hat function
-        excitatory = np.exp(-(distances**2) / (2 * sigma_e**2))
-        inhibitory = 0.5 * np.exp(-(distances**2) / (2 * sigma_i**2))
+        excitatory = xp.exp(-(distances**2) / (2 * sigma_e**2))
+        inhibitory = 0.5 * xp.exp(-(distances**2) / (2 * sigma_i**2))
         
         # Combine to create Mexican hat
         kernel = excitatory - inhibitory
         
         # Zero out the diagonal (self connections)
-        np.fill_diagonal(kernel, 0)
+        xp.fill_diagonal(kernel, 0)
         
         # Normalize
-        kernel = kernel / np.max(np.abs(kernel))
+        kernel = kernel / xp.max(xp.abs(kernel))
         
         return kernel
     
-    def apply_inhibition(self, activity: np.ndarray) -> np.ndarray:
+    def apply_inhibition(self, activity: xp.ndarray) -> xp.ndarray:
         """
         Apply lateral inhibition to neural activity.
         
@@ -182,17 +183,17 @@ class StabilityMechanisms:
         
         elif self.inhibition_strategy == InhibitionStrategy.WTA:
             # Winner-take-all: only the strongest neuron remains active
-            if np.max(inhibited) > 0:
-                winner_idx = np.argmax(inhibited)
-                mask = np.zeros_like(inhibited)
+            if xp.max(inhibited) > 0:
+                winner_idx = xp.argmax(inhibited)
+                mask = xp.zeros_like(inhibited)
                 mask[winner_idx] = 1
                 inhibited = inhibited * mask
         
         elif self.inhibition_strategy == InhibitionStrategy.KWA:
             # K-winners-allowed: only the k strongest neurons remain active
-            if np.sum(inhibited > 0) > self.k_winners:
+            if xp.sum(inhibited > 0) > self.k_winners:
                 # Find the k largest activities
-                threshold = np.sort(inhibited)[-self.k_winners]
+                threshold = xp.sort(inhibited)[-self.k_winners]
                 # Create mask for values above threshold
                 mask = (inhibited >= threshold).astype(float)
                 # Apply mask
@@ -201,17 +202,17 @@ class StabilityMechanisms:
         elif self.inhibition_strategy == InhibitionStrategy.MEXICAN_HAT:
             # Mexican hat: local excitation, distant inhibition
             # Convolve with inhibition kernel
-            inhibition = np.zeros_like(inhibited)
-            active_indices = np.where(inhibited > 0)[0]
+            inhibition = xp.zeros_like(inhibited)
+            active_indices = xp.where(inhibited > 0)[0]
             
             for i in active_indices:
                 # Distance-based inhibition
-                distances = np.abs(np.arange(len(inhibited)) - i)
+                distances = xp.abs(xp.arange(len(inhibited)) - i)
                 # Mexican hat function: local excitation, distant inhibition
                 sigma_e = int(0.05 * len(inhibited))
                 sigma_i = int(0.15 * len(inhibited))
-                excitatory = np.exp(-(distances**2) / (2 * sigma_e**2))
-                inhibitory = self.inhibition_strength * np.exp(-(distances**2) / (2 * sigma_i**2))
+                excitatory = xp.exp(-(distances**2) / (2 * sigma_e**2))
+                inhibitory = self.inhibition_strength * xp.exp(-(distances**2) / (2 * sigma_i**2))
                 effect = inhibited[i] * (excitatory - inhibitory)
                 # Accumulate effects (excitatory and inhibitory)
                 inhibition += effect
@@ -220,28 +221,28 @@ class StabilityMechanisms:
             inhibited = inhibited + inhibition
             
             # Ensure non-negative values
-            inhibited = np.maximum(0, inhibited)
+            inhibited = xp.maximum(0, inhibited)
         
         elif self.inhibition_strategy == InhibitionStrategy.ADAPTIVE:
             # Adaptive inhibition based on learned correlation matrix
             if self.inhibition_kernel is not None:
                 # Apply inhibition kernel: multiply current activity vector by kernel matrix
-                inhibition = np.dot(inhibited, self.inhibition_kernel)
+                inhibition = xp.dot(inhibited, self.inhibition_kernel)
                 # Adjust inhibition strength
                 inhibition *= self.inhibition_strength
                 # Apply inhibition
                 inhibited = inhibited + inhibition
                 # Ensure non-negative values
-                inhibited = np.maximum(0, inhibited)
+                inhibited = xp.maximum(0, inhibited)
         
         # Normalize to preserve energy
-        if np.sum(inhibited) > 0:
-            total_activity = np.sum(activity)
-            inhibited = inhibited * (total_activity / (np.sum(inhibited) + 1e-10))
+        if xp.sum(inhibited) > 0:
+            total_activity = xp.sum(activity)
+            inhibited = inhibited * (total_activity / (xp.sum(inhibited) + 1e-10))
         
         return inhibited
     
-    def apply_homeostasis(self, activity: np.ndarray) -> np.ndarray:
+    def apply_homeostasis(self, activity: xp.ndarray) -> xp.ndarray:
         """
         Apply homeostatic plasticity to neural activity.
         
@@ -255,11 +256,11 @@ class StabilityMechanisms:
         adjusted = activity * self.homeostatic_factors
         
         # Ensure non-negative values
-        adjusted = np.maximum(0, adjusted)
+        adjusted = xp.maximum(0, adjusted)
         
         return adjusted
     
-    def apply_thresholds(self, activity: np.ndarray) -> np.ndarray:
+    def apply_thresholds(self, activity: xp.ndarray) -> xp.ndarray:
         """
         Apply adaptive thresholds to neural activity.
         
@@ -270,16 +271,16 @@ class StabilityMechanisms:
             Thresholded activity pattern
         """
         # Apply thresholds
-        thresholded = np.maximum(0, activity - self.thresholds)
+        thresholded = xp.maximum(0, activity - self.thresholds)
         
         return thresholded
     
     def update(
         self,
-        pre_activity: np.ndarray,
-        post_activity: np.ndarray,
-        weights: Optional[np.ndarray] = None
-    ) -> Dict[str, np.ndarray]:
+        pre_activity: xp.ndarray,
+        post_activity: xp.ndarray,
+        weights: Optional[xp.ndarray] = None
+    ) -> Dict[str, xp.ndarray]:
         """
         Update stability mechanisms based on current activity.
         
@@ -326,7 +327,7 @@ class StabilityMechanisms:
             'output_scaling_factors': self.output_scaling_factors.copy()
         }
     
-    def _update_activity_history(self, activity: np.ndarray):
+    def _update_activity_history(self, activity: xp.ndarray):
         """
         Update activity history with current activity.
         
@@ -341,7 +342,7 @@ class StabilityMechanisms:
         if self.activity_history_index == 0:
             self.activity_history_filled = True
     
-    def _update_firing_rates(self, activity: np.ndarray):
+    def _update_firing_rates(self, activity: xp.ndarray):
         """
         Update firing rate estimates.
         
@@ -352,7 +353,7 @@ class StabilityMechanisms:
         tau = 0.01 if self.update_count > 100 else 0.1  # faster initial adaptation
         self.firing_rates = (1 - tau) * self.firing_rates + tau * (activity > 0).astype(float)
     
-    def _update_thresholds(self, activity: np.ndarray):
+    def _update_thresholds(self, activity: xp.ndarray):
         """
         Update adaptive thresholds based on recent activity.
         
@@ -371,7 +372,7 @@ class StabilityMechanisms:
         self.thresholds += threshold_delta
         
         # Clip to min/max range
-        self.thresholds = np.clip(self.thresholds, self.minimum_threshold, self.maximum_threshold)
+        self.thresholds = xp.clip(self.thresholds, self.minimum_threshold, self.maximum_threshold)
     
     def _update_homeostatic_factors(self):
         """Update homeostatic factors based on firing rates."""
@@ -381,15 +382,15 @@ class StabilityMechanisms:
         rate_ratio = self.target_activity / (self.firing_rates + 1e-10)
         
         # Clip ratio to prevent extreme adjustments
-        rate_ratio = np.clip(rate_ratio, 0.1, 10.0)
+        rate_ratio = xp.clip(rate_ratio, 0.1, 10.0)
         
         # Gradually adjust homeostatic factors
         self.homeostatic_factors *= (1.0 - self.homeostatic_rate)
         self.homeostatic_factors += self.homeostatic_rate * rate_ratio
         
         # Normalize to keep overall activity level stable
-        if np.mean(self.homeostatic_factors) > 0:
-            self.homeostatic_factors *= (1.0 / np.mean(self.homeostatic_factors))
+        if xp.mean(self.homeostatic_factors) > 0:
+            self.homeostatic_factors *= (1.0 / xp.mean(self.homeostatic_factors))
     
     def _update_correlation_matrix(self):
         """Update correlation matrix and diversity score."""
@@ -408,17 +409,17 @@ class StabilityMechanisms:
         
         # Calculate correlation matrix
         # Normalize each activity vector
-        norms = np.sqrt(np.sum(history**2, axis=1))
-        normalized_history = history / (norms[:, np.newaxis] + 1e-10)
+        norms = xp.sqrt(xp.sum(history**2, axis=1))
+        normalized_history = history / (norms[:, xp.newaxis] + 1e-10)
         
         # Calculate correlation matrix
-        corr_matrix = np.zeros((self.representation_size, self.representation_size))
+        corr_matrix = xp.zeros((self.representation_size, self.representation_size))
         for i in range(self.representation_size):
             for j in range(i, self.representation_size):
                 if i == j:
                     corr_matrix[i, j] = 1.0
                 else:
-                    corr = np.mean(normalized_history[:, i] * normalized_history[:, j])
+                    corr = xp.mean(normalized_history[:, i] * normalized_history[:, j])
                     corr_matrix[i, j] = corr
                     corr_matrix[j, i] = corr
         
@@ -431,13 +432,13 @@ class StabilityMechanisms:
         
         # Calculate diversity score
         # Lower absolute correlations mean higher diversity
-        off_diagonal = self.correlation_matrix[~np.eye(self.representation_size, dtype=bool)]
-        mean_abs_corr = np.mean(np.abs(off_diagonal))
+        off_diagonal = self.correlation_matrix[~xp.eye(self.representation_size, dtype=bool)]
+        mean_abs_corr = xp.mean(xp.abs(off_diagonal))
         
         # Convert to diversity score (1 = perfectly diverse, 0 = perfectly correlated)
         self.diversity_score = 1.0 - mean_abs_corr
     
-    def _update_weight_scaling(self, weights: np.ndarray):
+    def _update_weight_scaling(self, weights: xp.ndarray):
         """
         Update weight scaling factors.
         
@@ -449,19 +450,19 @@ class StabilityMechanisms:
             return
         
         # Calculate row and column norms
-        row_norms = np.sqrt(np.sum(weights**2, axis=1))
-        col_norms = np.sqrt(np.sum(weights**2, axis=0))
+        row_norms = xp.sqrt(xp.sum(weights**2, axis=1))
+        col_norms = xp.sqrt(xp.sum(weights**2, axis=0))
         
         # Detect weights that are too strong
         strong_inputs = row_norms > self.normalization_threshold
         strong_outputs = col_norms > self.normalization_threshold
         
         # Adjust scaling factors for strong weights
-        if np.any(strong_inputs):
+        if xp.any(strong_inputs):
             # Scale down input weights that are too strong
             self.input_scaling_factors[strong_inputs] *= 0.95
         
-        if np.any(strong_outputs):
+        if xp.any(strong_outputs):
             # Scale down output weights that are too strong
             self.output_scaling_factors[strong_outputs] *= 0.95
         
@@ -470,8 +471,8 @@ class StabilityMechanisms:
         self.output_scaling_factors[~strong_outputs] *= 1.01
         
         # Clip scaling factors
-        self.input_scaling_factors = np.clip(self.input_scaling_factors, 0.1, 1.0)
-        self.output_scaling_factors = np.clip(self.output_scaling_factors, 0.1, 1.0)
+        self.input_scaling_factors = xp.clip(self.input_scaling_factors, 0.1, 1.0)
+        self.output_scaling_factors = xp.clip(self.output_scaling_factors, 0.1, 1.0)
     
     def _update_inhibition_kernel(self):
         """Update adaptive inhibition kernel based on correlation matrix."""
@@ -482,13 +483,13 @@ class StabilityMechanisms:
         kernel = -self.correlation_matrix.copy()
         
         # Set diagonal to zero (no self-inhibition)
-        np.fill_diagonal(kernel, 0)
+        xp.fill_diagonal(kernel, 0)
         
         # Scale kernel based on inhibition strength
         kernel *= self.inhibition_strength
         
         # Ensure kernel has zero mean
-        kernel = kernel - np.mean(kernel)
+        kernel = kernel - xp.mean(kernel)
         
         # Update inhibition kernel
         if self.inhibition_kernel is None:
@@ -497,7 +498,7 @@ class StabilityMechanisms:
             # Gradually update
             self.inhibition_kernel = 0.9 * self.inhibition_kernel + 0.1 * kernel
     
-    def normalize_weights(self, weights: np.ndarray) -> np.ndarray:
+    def normalize_weights(self, weights: xp.ndarray) -> xp.ndarray:
         """
         Apply weight normalization.
         
@@ -510,9 +511,9 @@ class StabilityMechanisms:
         # Apply input and output scaling factors
         if weights.ndim == 2:
             # Apply input scaling (rows)
-            scaled_weights = weights * self.input_scaling_factors[:, np.newaxis]
+            scaled_weights = weights * self.input_scaling_factors[:, xp.newaxis]
             # Apply output scaling (columns)
-            scaled_weights = scaled_weights * self.output_scaling_factors[np.newaxis, :]
+            scaled_weights = scaled_weights * self.output_scaling_factors[xp.newaxis, :]
             
             # Apply weight decay
             if self.weight_decay > 0:
@@ -525,9 +526,9 @@ class StabilityMechanisms:
     
     def adjust_diversity(
         self,
-        weights: np.ndarray,
+        weights: xp.ndarray,
         adjust_rate: float = None
-    ) -> np.ndarray:
+    ) -> xp.ndarray:
         """
         Adjust weight matrix to promote representational diversity.
         
@@ -552,10 +553,10 @@ class StabilityMechanisms:
         diversity_deficit = self.diversity_target - self.diversity_score
         
         # Calculate decorrelation adjustment
-        adjustment = np.zeros_like(weights)
+        adjustment = xp.zeros_like(weights)
         
         # If high positive correlation, reduce one of the weights
-        high_corr_pairs = np.where(self.correlation_matrix > 0.7)
+        high_corr_pairs = xp.where(self.correlation_matrix > 0.7)
         for i, j in zip(*high_corr_pairs):
             if i != j:
                 # Reduce weights for one of the neurons
@@ -569,9 +570,9 @@ class StabilityMechanisms:
     
     def enforce_sparse_activity(
         self,
-        activity: np.ndarray,
+        activity: xp.ndarray,
         sparsity: float = None
-    ) -> np.ndarray:
+    ) -> xp.ndarray:
         """
         Enforce sparse activity by keeping only strongest activations.
         
@@ -586,16 +587,16 @@ class StabilityMechanisms:
             sparsity = self.target_activity
         
         # If activity is already sparse enough, return as is
-        active_fraction = np.mean(activity > 0)
+        active_fraction = xp.mean(activity > 0)
         if active_fraction <= sparsity:
             return activity
         
         # Determine threshold to achieve target sparsity
         k = max(1, int(len(activity) * sparsity))
-        threshold = np.sort(activity)[-k]
+        threshold = xp.sort(activity)[-k]
         
         # Apply threshold
-        sparse_activity = np.zeros_like(activity)
+        sparse_activity = xp.zeros_like(activity)
         strong_indices = activity >= threshold
         sparse_activity[strong_indices] = activity[strong_indices]
         
@@ -619,36 +620,36 @@ class StabilityMechanisms:
         # Resize thresholds
         if new_size > old_size:
             # Growing
-            new_thresholds = np.ones(new_size) * np.mean(self.thresholds)
+            new_thresholds = xp.ones(new_size) * xp.mean(self.thresholds)
             new_thresholds[:old_size] = self.thresholds
             self.thresholds = new_thresholds
             
             # Resize homeostatic factors
-            new_homeostatic = np.ones(new_size)
+            new_homeostatic = xp.ones(new_size)
             new_homeostatic[:old_size] = self.homeostatic_factors
             self.homeostatic_factors = new_homeostatic
             
             # Resize firing rates
-            new_firing_rates = np.zeros(new_size)
+            new_firing_rates = xp.zeros(new_size)
             new_firing_rates[:old_size] = self.firing_rates
             self.firing_rates = new_firing_rates
             
             # Resize scaling factors
-            new_input_scaling = np.ones(new_size)
+            new_input_scaling = xp.ones(new_size)
             new_input_scaling[:old_size] = self.input_scaling_factors
             self.input_scaling_factors = new_input_scaling
             
-            new_output_scaling = np.ones(new_size)
+            new_output_scaling = xp.ones(new_size)
             new_output_scaling[:old_size] = self.output_scaling_factors
             self.output_scaling_factors = new_output_scaling
             
             # Resize correlation matrix
-            new_correlation = np.identity(new_size)
+            new_correlation = xp.identity(new_size)
             new_correlation[:old_size, :old_size] = self.correlation_matrix
             self.correlation_matrix = new_correlation
             
             # Reset activity history
-            self.activity_history = np.zeros((100, new_size))
+            self.activity_history = xp.zeros((100, new_size))
             self.activity_history_index = 0
             self.activity_history_filled = False
             
@@ -669,7 +670,7 @@ class StabilityMechanisms:
             self.correlation_matrix = self.correlation_matrix[:new_size, :new_size]
             
             # Reset activity history
-            self.activity_history = np.zeros((100, new_size))
+            self.activity_history = xp.zeros((100, new_size))
             self.activity_history_index = 0
             self.activity_history_filled = False
             
@@ -702,12 +703,12 @@ class StabilityMechanisms:
         return {
             'representation_size': self.representation_size,
             'diversity_score': float(self.diversity_score),
-            'mean_threshold': float(np.mean(self.thresholds)),
-            'threshold_std': float(np.std(self.thresholds)),
-            'mean_homeostatic_factor': float(np.mean(self.homeostatic_factors)),
-            'homeostatic_range': float(np.max(self.homeostatic_factors) - np.min(self.homeostatic_factors)),
-            'mean_firing_rate': float(np.mean(self.firing_rates)),
-            'active_neuron_fraction': float(np.mean(self.firing_rates > 0.01)),
+            'mean_threshold': float(xp.mean(self.thresholds)),
+            'threshold_std': float(xp.std(self.thresholds)),
+            'mean_homeostatic_factor': float(xp.mean(self.homeostatic_factors)),
+            'homeostatic_range': float(xp.max(self.homeostatic_factors) - xp.min(self.homeostatic_factors)),
+            'mean_firing_rate': float(xp.mean(self.firing_rates)),
+            'active_neuron_fraction': float(xp.mean(self.firing_rates > 0.01)),
             'k_winners': self.k_winners,
             'inhibition_strategy': self.inhibition_strategy.value
         }
@@ -771,8 +772,8 @@ class StabilityMechanisms:
         )
         
         # Restore state
-        instance.thresholds = np.array(data['thresholds'])
-        instance.homeostatic_factors = np.array(data['homeostatic_factors'])
+        instance.thresholds = xp.array(data['thresholds'])
+        instance.homeostatic_factors = xp.array(data['homeostatic_factors'])
         instance.diversity_score = data['diversity_score']
         instance.update_count = data['update_count']
         

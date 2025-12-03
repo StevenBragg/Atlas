@@ -1,4 +1,3 @@
-import numpy as np
 import logging
 import time
 from typing import Dict, List, Tuple, Optional, Union, Any
@@ -6,6 +5,9 @@ from pathlib import Path
 import os
 import yaml
 import cv2
+import numpy as np
+
+from .backend import xp, to_cpu
 
 # Remove the imports of processor classes - they'll be imported inside the load_checkpoint method
 # from ..models.visual.processor import VisualProcessor

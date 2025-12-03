@@ -6,4 +6,6 @@ librosa
 matplotlib
 PyAudio
 PyYAML
-PyQt5 
+PyQt5
+# GPU acceleration (optional - install cupy-cuda12x for CUDA 12.x support)
+# cupy-cuda12x 
