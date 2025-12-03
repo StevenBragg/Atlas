@@ -1,5 +1,6 @@
-import numpy as np
 from typing import List, Dict, Optional, Tuple, Union, Any
+
+from .backend import xp, to_cpu
 
 
 class Neuron:
@@ -23,7 +24,7 @@ class Neuron:
         refactory_period: int = 3,
         hebbian_learning_window: int = 5,
         eligibility_trace_decay: float = 0.95,
-        initial_weights: Optional[np.ndarray] = None
+        initial_weights: Optional['xp.ndarray'] = None
     ):
         """
         Initialize neuron with given parameters.
@@ -60,7 +61,7 @@ class Neuron:
         if initial_weights is not None:
             self.weights = self._normalize_weights(initial_weights)
         else:
-            raw_weights = np.random.randn(input_size)
+            raw_weights = xp.random.randn(input_size)
             self.weights = self._normalize_weights(raw_weights)
         
         # State variables
@@ -72,7 +73,7 @@ class Neuron:
         # Temporal dynamics and learning
         self.activation_history = []  # Recent activation values
         self.recent_mean_activation = 0.0  # For homeostasis
-        self.eligibility_traces = np.zeros(input_size)  # For STDP
+        self.eligibility_traces = xp.zeros(input_size)  # For STDP
         self.input_history = []  # Recent input vectors (for STDP)
         self.activation_times = []  # When this neuron fired
         
@@ -80,7 +81,7 @@ class Neuron:
         self.adaptation = 0.0
         
         # For STDP trace-based learning
-        self.pre_synaptic_traces = np.zeros(input_size)
+        self.pre_synaptic_traces = xp.zeros(input_size)
         self.post_synaptic_trace = 0.0
         
         # For BCM-like learning (activity-dependent thresholding)
@@ -89,7 +90,7 @@ class Neuron:
         # For debugging and analysis
         self.debug_info = {}
         
-    def activate(self, inputs: np.ndarray, time_step: Optional[int] = None) -> float:
+    def activate(self, inputs: xp.ndarray, time_step: Optional[int] = None) -> float:
         """
         Compute activation for given inputs.
         
@@ -105,7 +106,7 @@ class Neuron:
             self.current_time_step = time_step
             
         # Calculate activation (weighted sum of inputs)
-        raw_activation = np.dot(self.weights, inputs)
+        raw_activation = xp.dot(self.weights, inputs)
         
         # Apply threshold and adaptation
         if raw_activation > (self.threshold + self.adaptation):
@@ -142,7 +143,7 @@ class Neuron:
             
         # Update recent activation mean
         if len(self.activation_history) > 0:
-            self.recent_mean_activation = np.mean(
+            self.recent_mean_activation = xp.mean(
                 [a > 0 for a in self.activation_history]
             )
             
@@ -155,7 +156,7 @@ class Neuron:
         # Adaptation decays toward zero over time
         self.adaptation *= (1.0 - self.adaptation_time_constant)
         
-    def _update_traces(self, inputs: np.ndarray) -> None:
+    def _update_traces(self, inputs: xp.ndarray) -> None:
         """
         Update traces for STDP learning.
         
@@ -187,7 +188,7 @@ class Neuron:
         time_since_last_activation = self.current_time_step - self.last_activation_time
         return time_since_last_activation < self.refractory_period
     
-    def update_weights_hebbian(self, inputs: np.ndarray, use_oja: bool = True) -> None:
+    def update_weights_hebbian(self, inputs: xp.ndarray, use_oja: bool = True) -> None:
         """
         Update weights using Hebbian learning with optional Oja normalization.
         
@@ -221,7 +222,7 @@ class Neuron:
     
     def update_weights_stdp(
         self, 
-        inputs: np.ndarray, 
+        inputs: xp.ndarray, 
         pre_spike_times: Optional[List[Optional[int]]] = None,
         post_spike_time: Optional[int] = None
     ) -> None:
@@ -255,11 +256,11 @@ class Neuron:
             if time_diff > 0:
                 # Pre-before-post: strengthen connection
                 # (causal relationship, LTP - Long-Term Potentiation)
-                delta_w = self.learning_rate * np.exp(-time_diff / 20.0)
+                delta_w = self.learning_rate * xp.exp(-time_diff / 20.0)
             else:
                 # Post-before-pre: weaken connection
                 # (acausal relationship, LTD - Long-Term Depression)
-                delta_w = -self.learning_rate * 0.5 * np.exp(time_diff / 20.0)
+                delta_w = -self.learning_rate * 0.5 * xp.exp(time_diff / 20.0)
                 
             # Apply weight change
             self.weights[i] += delta_w
@@ -295,7 +296,7 @@ class Neuron:
         # Normalize weights
         self.weights = self._normalize_weights(self.weights)
     
-    def update_weights_bcm(self, inputs: np.ndarray) -> None:
+    def update_weights_bcm(self, inputs: xp.ndarray) -> None:
         """
         Update weights using BCM learning rule with sliding threshold.
         
@@ -307,7 +308,7 @@ class Neuron:
             inputs: Input activation vector
         """
         # Skip if no inputs are active
-        if np.sum(inputs) <= 0:
+        if xp.sum(inputs) <= 0:
             return
             
         # Calculate BCM weight change:
@@ -353,14 +354,14 @@ class Neuron:
             Indices of pruned connections
         """
         # Find weak connections (below threshold)
-        weak_indices = np.where(np.abs(self.weights) < threshold)[0]
+        weak_indices = xp.where(xp.abs(self.weights) < threshold)[0]
         
         # Set weak weights to zero
         self.weights[weak_indices] = 0.0
         
         return list(weak_indices)
     
-    def get_receptive_field(self) -> np.ndarray:
+    def get_receptive_field(self) -> xp.ndarray:
         """
         Get the neuron's weights (receptive field).
         
@@ -369,7 +370,7 @@ class Neuron:
         """
         return self.weights.copy()
     
-    def set_receptive_field(self, weights: np.ndarray) -> None:
+    def set_receptive_field(self, weights: xp.ndarray) -> None:
         """
         Set the neuron's weights to the specified values.
         
@@ -389,10 +390,11 @@ class Neuron:
     def get_state(self) -> Dict[str, Any]:
         """
         Get the current state of the neuron.
-        
+
         Returns:
             Dictionary with neuron state information
         """
+        # Convert GPU arrays to CPU scalars for serialization
         return {
             'id': self.id,
             'activation': self.activation,
@@ -400,15 +402,15 @@ class Neuron:
             'is_winner': self.is_winner,
             'recent_mean_activation': self.recent_mean_activation,
             'adaptation': self.adaptation,
-            'weights_norm': np.linalg.norm(self.weights),
-            'weights_min': np.min(self.weights),
-            'weights_max': np.max(self.weights),
-            'weights_mean': np.mean(self.weights),
-            'weights_std': np.std(self.weights),
-            'non_zero_weights': np.sum(np.abs(self.weights) > 0.001)
+            'weights_norm': float(xp.linalg.norm(self.weights)),
+            'weights_min': float(xp.min(self.weights)),
+            'weights_max': float(xp.max(self.weights)),
+            'weights_mean': float(xp.mean(self.weights)),
+            'weights_std': float(xp.std(self.weights)),
+            'non_zero_weights': int(xp.sum(xp.abs(self.weights) > 0.001))
         }
     
-    def _normalize_weights(self, weights: np.ndarray) -> np.ndarray:
+    def _normalize_weights(self, weights: xp.ndarray) -> xp.ndarray:
         """
         Normalize weight vector to unit length.
         
@@ -419,13 +421,13 @@ class Neuron:
             Normalized weights
         """
         # Calculate norm (L2 norm/Euclidean length)
-        norm = np.linalg.norm(weights)
+        norm = xp.linalg.norm(weights)
         
         # Avoid division by zero
         if norm < 1e-10:
             # Initialize with random unit vector if all weights are zero
-            random_weights = np.random.randn(self.input_size)
-            return random_weights / (np.linalg.norm(random_weights) + 1e-10)
+            random_weights = xp.random.randn(self.input_size)
+            return random_weights / (xp.linalg.norm(random_weights) + 1e-10)
         else:
             # Normalize to unit length
             return weights / norm

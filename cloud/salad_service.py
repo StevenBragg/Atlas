@@ -22,20 +22,28 @@ from typing import Optional, Dict, Any, List
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import numpy as np
 
-# Check for GPU availability
+# Check for GPU availability using CuPy backend (preferred) or torch fallback
 try:
-    import torch
-    HAS_CUDA = torch.cuda.is_available()
-    if HAS_CUDA:
-        GPU_NAME = torch.cuda.get_device_name(0)
-        GPU_MEMORY = torch.cuda.get_device_properties(0).total_memory / (1024**3)
-    else:
+    from core.backend import HAS_GPU, get_backend_info
+    backend_info = get_backend_info()
+    HAS_CUDA = HAS_GPU
+    GPU_NAME = backend_info.get('device_name', 'GPU') if HAS_GPU else 'CPU'
+    GPU_MEMORY = backend_info.get('device_memory_gb', 0) if HAS_GPU else 0
+except ImportError:
+    # Fall back to torch for GPU detection
+    try:
+        import torch
+        HAS_CUDA = torch.cuda.is_available()
+        if HAS_CUDA:
+            GPU_NAME = torch.cuda.get_device_name(0)
+            GPU_MEMORY = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+        else:
+            GPU_NAME = "CPU"
+            GPU_MEMORY = 0
+    except ImportError:
+        HAS_CUDA = False
         GPU_NAME = "CPU"
         GPU_MEMORY = 0
-except ImportError:
-    HAS_CUDA = False
-    GPU_NAME = "CPU"
-    GPU_MEMORY = 0
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

@@ -1,7 +1,8 @@
-import numpy as np
 import logging
 from typing import Dict, List, Tuple, Optional, Any, Union
 import time
+
+from .backend import xp, to_cpu
 
 logger = logging.getLogger(__name__)
 
@@ -72,20 +73,20 @@ class CrossModalAssociation:
         
         # Initialize association matrices with random small weights
         # Visual to audio associations
-        self.visual_to_audio = np.random.normal(
+        self.visual_to_audio = xp.random.normal(
             0, initial_weight_scale, (visual_size, audio_size)
         )
         
         # Audio to visual associations
-        self.audio_to_visual = np.random.normal(
+        self.audio_to_visual = xp.random.normal(
             0, initial_weight_scale, (audio_size, visual_size)
         )
         
         # Apply connection sparsity if < 1.0
         if connection_sparsity < 1.0:
             # Create connection masks
-            v2a_mask = np.random.random((visual_size, audio_size)) < connection_sparsity
-            a2v_mask = np.random.random((audio_size, visual_size)) < connection_sparsity
+            v2a_mask = xp.random.random((visual_size, audio_size)) < connection_sparsity
+            a2v_mask = xp.random.random((audio_size, visual_size)) < connection_sparsity
             
             # Apply masks
             self.visual_to_audio *= v2a_mask
@@ -111,10 +112,10 @@ class CrossModalAssociation:
     
     def update(
         self,
-        visual_activity: np.ndarray,
-        audio_activity: np.ndarray,
+        visual_activity: xp.ndarray,
+        audio_activity: xp.ndarray,
         learn: bool = True
-    ) -> Dict[str, np.ndarray]:
+    ) -> Dict[str, xp.ndarray]:
         """
         Update cross-modal associations based on concurrent sensory input.
         
@@ -167,7 +168,7 @@ class CrossModalAssociation:
             'combined_audio': combined_audio
         }
     
-    def _update_buffers(self, visual_activity: np.ndarray, audio_activity: np.ndarray) -> None:
+    def _update_buffers(self, visual_activity: xp.ndarray, audio_activity: xp.ndarray) -> None:
         """
         Update temporal buffers with current activities.
         
@@ -185,7 +186,7 @@ class CrossModalAssociation:
         if len(self.audio_buffer) > self.max_buffer_size:
             self.audio_buffer.pop(0)
     
-    def _hebbian_update(self, visual_activity: np.ndarray, audio_activity: np.ndarray) -> None:
+    def _hebbian_update(self, visual_activity: xp.ndarray, audio_activity: xp.ndarray) -> None:
         """
         Apply Hebbian learning to update association matrices.
         
@@ -198,12 +199,12 @@ class CrossModalAssociation:
         
         # Update visual to audio associations
         # Outer product gives all pairwise activities
-        hebbian_update = np.outer(visual_activity, audio_activity)
+        hebbian_update = xp.outer(visual_activity, audio_activity)
         self.visual_to_audio += self.learning_rate * hebbian_update
         
         # Update audio to visual associations if bidirectional
         if self.bidirectional:
-            hebbian_update = np.outer(audio_activity, visual_activity)
+            hebbian_update = xp.outer(audio_activity, visual_activity)
             self.audio_to_visual += self.learning_rate * hebbian_update
         
         # Apply decay to all associations (forgetting)
@@ -240,11 +241,11 @@ class CrossModalAssociation:
             a_activity = self.audio_buffer[t]
             
             # Apply weighted Hebbian updates
-            hebbian_update = np.outer(v_activity, a_activity)
+            hebbian_update = xp.outer(v_activity, a_activity)
             self.visual_to_audio += self.learning_rate * weight * hebbian_update
             
             if self.bidirectional:
-                hebbian_update = np.outer(a_activity, v_activity)
+                hebbian_update = xp.outer(a_activity, v_activity)
                 self.audio_to_visual += self.learning_rate * weight * hebbian_update
     
     def _get_temporal_weights(self, current_idx: int) -> Dict[int, float]:
@@ -267,7 +268,7 @@ class CrossModalAssociation:
             else:
                 # Calculate temporal weight with distance-based falloff
                 distance = abs(t - current_idx)
-                weights[t] = np.exp(-0.5 * (distance / (self.temporal_window_size / 2))**2)
+                weights[t] = xp.exp(-0.5 * (distance / (self.temporal_window_size / 2))**2)
         
         return weights
     
@@ -276,14 +277,14 @@ class CrossModalAssociation:
         Enforce constraints on association matrices.
         """
         # Clip weights to maximum value
-        self.visual_to_audio = np.clip(self.visual_to_audio, 0, self.max_weight)
-        self.audio_to_visual = np.clip(self.audio_to_visual, 0, self.max_weight)
+        self.visual_to_audio = xp.clip(self.visual_to_audio, 0, self.max_weight)
+        self.audio_to_visual = xp.clip(self.audio_to_visual, 0, self.max_weight)
         
         # Normalize association matrices if enabled
         if self.normalize_associations:
             # Normalize by row (source neurons)
-            row_sums_v2a = np.sum(self.visual_to_audio, axis=1, keepdims=True)
-            row_sums_a2v = np.sum(self.audio_to_visual, axis=1, keepdims=True)
+            row_sums_v2a = xp.sum(self.visual_to_audio, axis=1, keepdims=True)
+            row_sums_a2v = xp.sum(self.audio_to_visual, axis=1, keepdims=True)
             
             # Avoid division by zero
             row_sums_v2a[row_sums_v2a == 0] = 1.0
@@ -293,7 +294,7 @@ class CrossModalAssociation:
             self.visual_to_audio = self.visual_to_audio / row_sums_v2a
             self.audio_to_visual = self.audio_to_visual / row_sums_a2v
     
-    def _predict_visual_from_audio(self, audio_activity: np.ndarray) -> np.ndarray:
+    def _predict_visual_from_audio(self, audio_activity: xp.ndarray) -> xp.ndarray:
         """
         Predict visual activity based on audio input.
         
@@ -304,14 +305,14 @@ class CrossModalAssociation:
             Predicted visual activity
         """
         # Matrix multiplication: audio_activity.dot(audio_to_visual_matrix)
-        prediction = np.dot(audio_activity, self.audio_to_visual)
+        prediction = xp.dot(audio_activity, self.audio_to_visual)
         
         # Only keep predictions above threshold
         prediction[prediction < self.association_threshold] = 0
         
         return prediction
     
-    def _predict_audio_from_visual(self, visual_activity: np.ndarray) -> np.ndarray:
+    def _predict_audio_from_visual(self, visual_activity: xp.ndarray) -> xp.ndarray:
         """
         Predict audio activity based on visual input.
         
@@ -322,7 +323,7 @@ class CrossModalAssociation:
             Predicted audio activity
         """
         # Matrix multiplication: visual_activity.dot(visual_to_audio_matrix)
-        prediction = np.dot(visual_activity, self.visual_to_audio)
+        prediction = xp.dot(visual_activity, self.visual_to_audio)
         
         # Only keep predictions above threshold
         prediction[prediction < self.association_threshold] = 0
@@ -338,15 +339,15 @@ class CrossModalAssociation:
         self.audio_to_visual[self.audio_to_visual < self.prune_threshold] = 0
         
         logger.debug(f"Pruned associations. Remaining: "
-                     f"V→A: {np.sum(self.visual_to_audio > 0)}, "
-                     f"A→V: {np.sum(self.audio_to_visual > 0)}")
+                     f"V→A: {xp.sum(self.visual_to_audio > 0)}, "
+                     f"A→V: {xp.sum(self.audio_to_visual > 0)}")
     
     def _update_metrics(
         self,
-        visual_activity: np.ndarray,
-        audio_activity: np.ndarray,
-        visual_prediction: np.ndarray,
-        audio_prediction: np.ndarray
+        visual_activity: xp.ndarray,
+        audio_activity: xp.ndarray,
+        visual_prediction: xp.ndarray,
+        audio_prediction: xp.ndarray
     ) -> None:
         """
         Update association metrics.
@@ -358,8 +359,8 @@ class CrossModalAssociation:
             audio_prediction: Predicted audio activity
         """
         # Calculate overall association strength
-        v2a_strength = np.mean(self.visual_to_audio)
-        a2v_strength = np.mean(self.audio_to_visual)
+        v2a_strength = xp.mean(self.visual_to_audio)
+        a2v_strength = xp.mean(self.audio_to_visual)
         
         # Record association strength
         self.association_strength_history.append({
@@ -374,20 +375,20 @@ class CrossModalAssociation:
             self.association_strength_history = self.association_strength_history[-1000:]
         
         # Calculate prediction accuracy
-        if np.sum(visual_activity) > 0 and np.sum(audio_activity) > 0:
+        if xp.sum(visual_activity) > 0 and xp.sum(audio_activity) > 0:
             # Cosine similarity between prediction and actual
-            v_norm = np.linalg.norm(visual_activity)
-            a_norm = np.linalg.norm(audio_activity)
-            vp_norm = np.linalg.norm(visual_prediction)
-            ap_norm = np.linalg.norm(audio_prediction)
+            v_norm = xp.linalg.norm(visual_activity)
+            a_norm = xp.linalg.norm(audio_activity)
+            vp_norm = xp.linalg.norm(visual_prediction)
+            ap_norm = xp.linalg.norm(audio_prediction)
             
             # Avoid division by zero
             if v_norm > 0 and vp_norm > 0:
-                a2v_accuracy = np.dot(visual_activity, visual_prediction) / (v_norm * vp_norm)
+                a2v_accuracy = xp.dot(visual_activity, visual_prediction) / (v_norm * vp_norm)
                 self.prediction_accuracy_history['audio_to_visual'].append(float(a2v_accuracy))
             
             if a_norm > 0 and ap_norm > 0:
-                v2a_accuracy = np.dot(audio_activity, audio_prediction) / (a_norm * ap_norm)
+                v2a_accuracy = xp.dot(audio_activity, audio_prediction) / (a_norm * ap_norm)
                 self.prediction_accuracy_history['visual_to_audio'].append(float(v2a_accuracy))
             
             # Trim history
@@ -402,15 +403,15 @@ class CrossModalAssociation:
         Returns:
             Dictionary with association statistics
         """
-        v2a_density = np.mean(self.visual_to_audio > 0)
-        a2v_density = np.mean(self.audio_to_visual > 0)
+        v2a_density = xp.mean(self.visual_to_audio > 0)
+        a2v_density = xp.mean(self.audio_to_visual > 0)
         
         # Most strongly associated pairs
-        top_v2a_idx = np.unravel_index(
-            np.argmax(self.visual_to_audio), self.visual_to_audio.shape
+        top_v2a_idx = xp.unravel_index(
+            xp.argmax(self.visual_to_audio), self.visual_to_audio.shape
         )
-        top_a2v_idx = np.unravel_index(
-            np.argmax(self.audio_to_visual), self.audio_to_visual.shape
+        top_a2v_idx = xp.unravel_index(
+            xp.argmax(self.audio_to_visual), self.audio_to_visual.shape
         )
         
         # Get prediction accuracy metrics
@@ -418,16 +419,16 @@ class CrossModalAssociation:
         a2v_accuracy = 0.0
         
         if self.prediction_accuracy_history['visual_to_audio']:
-            v2a_accuracy = np.mean(self.prediction_accuracy_history['visual_to_audio'][-20:])
+            v2a_accuracy = xp.mean(self.prediction_accuracy_history['visual_to_audio'][-20:])
         
         if self.prediction_accuracy_history['audio_to_visual']:
-            a2v_accuracy = np.mean(self.prediction_accuracy_history['audio_to_visual'][-20:])
+            a2v_accuracy = xp.mean(self.prediction_accuracy_history['audio_to_visual'][-20:])
         
         return {
             'v2a_density': float(v2a_density),
             'a2v_density': float(a2v_density),
-            'v2a_strength': float(np.mean(self.visual_to_audio)),
-            'a2v_strength': float(np.mean(self.audio_to_visual)),
+            'v2a_strength': float(xp.mean(self.visual_to_audio)),
+            'a2v_strength': float(xp.mean(self.audio_to_visual)),
             'top_v2a_weight': float(self.visual_to_audio[top_v2a_idx]),
             'top_a2v_weight': float(self.audio_to_visual[top_a2v_idx]),
             'top_v2a_indices': (int(top_v2a_idx[0]), int(top_v2a_idx[1])),
@@ -462,8 +463,8 @@ class CrossModalAssociation:
         old_a2v = self.audio_to_visual
         
         # Create new matrices
-        new_v2a = np.zeros((new_visual_size, new_audio_size))
-        new_a2v = np.zeros((new_audio_size, new_visual_size))
+        new_v2a = xp.zeros((new_visual_size, new_audio_size))
+        new_a2v = xp.zeros((new_audio_size, new_visual_size))
         
         # Copy existing weights
         min_visual = min(self.visual_size, new_visual_size)
@@ -474,20 +475,20 @@ class CrossModalAssociation:
         
         # Initialize new regions with small random values
         if new_visual_size > self.visual_size:
-            new_v2a[self.visual_size:, :min_audio] = np.random.normal(
+            new_v2a[self.visual_size:, :min_audio] = xp.random.normal(
                 0, 0.01, (new_visual_size - self.visual_size, min_audio)
             )
         
         if new_audio_size > self.audio_size:
-            new_v2a[:min_visual, self.audio_size:] = np.random.normal(
+            new_v2a[:min_visual, self.audio_size:] = xp.random.normal(
                 0, 0.01, (min_visual, new_audio_size - self.audio_size)
             )
-            new_a2v[self.audio_size:, :min_visual] = np.random.normal(
+            new_a2v[self.audio_size:, :min_visual] = xp.random.normal(
                 0, 0.01, (new_audio_size - self.audio_size, min_visual)
             )
         
         if new_visual_size > self.visual_size and new_audio_size > self.audio_size:
-            new_v2a[self.visual_size:, self.audio_size:] = np.random.normal(
+            new_v2a[self.visual_size:, self.audio_size:] = xp.random.normal(
                 0, 0.01, (new_visual_size - self.visual_size, new_audio_size - self.audio_size)
             )
         
@@ -516,20 +517,20 @@ class CrossModalAssociation:
         a2v_flat = self.audio_to_visual.flatten()
         
         # Get indices of top n weights
-        top_v2a_flat_idx = np.argsort(v2a_flat)[-n:][::-1]
-        top_a2v_flat_idx = np.argsort(a2v_flat)[-n:][::-1]
+        top_v2a_flat_idx = xp.argsort(v2a_flat)[-n:][::-1]
+        top_a2v_flat_idx = xp.argsort(a2v_flat)[-n:][::-1]
         
         # Convert to 2D indices and weights
         top_v2a = []
         for idx in top_v2a_flat_idx:
-            v_idx, a_idx = np.unravel_index(idx, self.visual_to_audio.shape)
+            v_idx, a_idx = xp.unravel_index(idx, self.visual_to_audio.shape)
             weight = self.visual_to_audio[v_idx, a_idx]
             if weight > 0:  # Only include non-zero weights
                 top_v2a.append((int(v_idx), int(a_idx), float(weight)))
         
         top_a2v = []
         for idx in top_a2v_flat_idx:
-            a_idx, v_idx = np.unravel_index(idx, self.audio_to_visual.shape)
+            a_idx, v_idx = xp.unravel_index(idx, self.audio_to_visual.shape)
             weight = self.audio_to_visual[a_idx, v_idx]
             if weight > 0:  # Only include non-zero weights
                 top_a2v.append((int(a_idx), int(v_idx), float(weight)))
@@ -553,8 +554,8 @@ class CrossModalAssociation:
             }
         
         # Use only the most recent activities
-        v_activities = np.array(self.visual_buffer[-min(10, len(self.visual_buffer)):])
-        a_activities = np.array(self.audio_buffer[-min(10, len(self.audio_buffer)):])
+        v_activities = xp.array(self.visual_buffer[-min(10, len(self.visual_buffer)):])
+        a_activities = xp.array(self.audio_buffer[-min(10, len(self.audio_buffer)):])
         
         # Ensure same number of samples
         min_samples = min(len(v_activities), len(a_activities))
@@ -562,12 +563,12 @@ class CrossModalAssociation:
         a_activities = a_activities[-min_samples:]
         
         # Calculate correlation between overall activity levels
-        v_activity_levels = np.sum(v_activities, axis=1)
-        a_activity_levels = np.sum(a_activities, axis=1)
+        v_activity_levels = xp.sum(v_activities, axis=1)
+        a_activity_levels = xp.sum(a_activities, axis=1)
         
         # Calculate correlation coefficient
-        if np.std(v_activity_levels) > 0 and np.std(a_activity_levels) > 0:
-            sync_correlation = np.corrcoef(v_activity_levels, a_activity_levels)[0, 1]
+        if xp.std(v_activity_levels) > 0 and xp.std(a_activity_levels) > 0:
+            sync_correlation = xp.corrcoef(v_activity_levels, a_activity_levels)[0, 1]
         else:
             sync_correlation = 0.0
         
@@ -630,8 +631,8 @@ class CrossModalAssociation:
         )
         
         # Load association matrices
-        instance.visual_to_audio = np.array(data['visual_to_audio'])
-        instance.audio_to_visual = np.array(data['audio_to_visual'])
+        instance.visual_to_audio = xp.array(data['visual_to_audio'])
+        instance.audio_to_visual = xp.array(data['audio_to_visual'])
         
         # Load history and state
         instance.update_count = data['update_count']

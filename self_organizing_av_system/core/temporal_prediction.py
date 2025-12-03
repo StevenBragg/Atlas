@@ -5,11 +5,12 @@ This implements sequence learning, prediction generation, and
 predictive coding as described in the architecture document.
 """
 
-import numpy as np
 import logging
 from typing import List, Dict, Tuple, Optional, Union, Any, Callable
 from collections import deque
 from enum import Enum
+
+from .backend import xp, to_cpu
 
 logger = logging.getLogger(__name__)
 
@@ -74,7 +75,7 @@ class TemporalPrediction:
         """
         # Set random seed if provided
         if random_seed is not None:
-            np.random.seed(random_seed)
+            xp.random.seed(random_seed)
             
         self.representation_size = representation_size
         self.sequence_length = sequence_length
@@ -102,7 +103,7 @@ class TemporalPrediction:
         self.forward_weights = {}
         for t in range(1, self.prediction_horizon + 1):
             # Initialize with small random values
-            self.forward_weights[t] = np.random.normal(
+            self.forward_weights[t] = xp.random.normal(
                 0, 0.01, (self.representation_size, self.representation_size)
             )
         
@@ -110,24 +111,24 @@ class TemporalPrediction:
         self.backward_weights = {}
         if self.prediction_mode in [PredictionMode.BACKWARD, PredictionMode.BIDIRECTIONAL]:
             for t in range(1, self.sequence_length + 1):
-                self.backward_weights[t] = np.random.normal(
+                self.backward_weights[t] = xp.random.normal(
                     0, 0.01, (self.representation_size, self.representation_size)
                 )
         
         # Recurrent connections (state -> state)
         self.recurrent_weights = None
         if self.enable_recurrent_connections:
-            self.recurrent_weights = np.random.normal(
+            self.recurrent_weights = xp.random.normal(
                 0, 0.01, (self.representation_size, self.representation_size)
             )
             # Zero out the diagonal (no self-connections)
-            np.fill_diagonal(self.recurrent_weights, 0)
+            xp.fill_diagonal(self.recurrent_weights, 0)
         
         # Confidence estimation weights
         # Used to predict confidence of each prediction
         self.confidence_weights = {}
         for t in range(1, self.prediction_horizon + 1):
-            self.confidence_weights[t] = np.random.normal(
+            self.confidence_weights[t] = xp.random.normal(
                 0, 0.01, (self.representation_size, 1)
             )
         
@@ -141,7 +142,7 @@ class TemporalPrediction:
         self.eligibility_traces = {}
         if self.use_eligibility_trace:
             for t in range(1, self.prediction_horizon + 1):
-                self.eligibility_traces[t] = np.zeros((self.representation_size, self.representation_size))
+                self.eligibility_traces[t] = xp.zeros((self.representation_size, self.representation_size))
         
         # Performance tracking
         self.prediction_errors = []  # Track prediction errors
@@ -157,8 +158,8 @@ class TemporalPrediction:
     
     def update(
         self,
-        current_state: np.ndarray,
-        target_state: Optional[np.ndarray] = None,
+        current_state: xp.ndarray,
+        target_state: Optional[xp.ndarray] = None,
     ) -> Dict[str, Any]:
         """
         Update the temporal prediction model with a new state.
@@ -177,8 +178,8 @@ class TemporalPrediction:
             current_state = current_state.reshape(-1)
         
         # Normalize the state if needed
-        if np.sum(current_state) > 0:
-            normalized_state = current_state / np.max([np.max(np.abs(current_state)), 1e-10])
+        if xp.sum(current_state) > 0:
+            normalized_state = current_state / xp.max([xp.max(xp.abs(current_state)), 1e-10])
         else:
             normalized_state = current_state.copy()
         
@@ -247,9 +248,9 @@ class TemporalPrediction:
     
     def _predict_state(
         self,
-        current_state: np.ndarray,
+        current_state: xp.ndarray,
         time_offset: int,
-    ) -> Tuple[np.ndarray, float]:
+    ) -> Tuple[xp.ndarray, float]:
         """
         Predict state at t+time_offset based on current state.
         
@@ -268,12 +269,12 @@ class TemporalPrediction:
             # Resize current_state to match weight dimensions
             if current_state.shape[0] < self.forward_weights[time_offset].shape[1]:
                 # Pad with zeros
-                current_state = np.pad(current_state, (0, self.forward_weights[time_offset].shape[1] - current_state.shape[0]))
+                current_state = xp.pad(current_state, (0, self.forward_weights[time_offset].shape[1] - current_state.shape[0]))
             else:
                 # Truncate
                 current_state = current_state[:self.forward_weights[time_offset].shape[1]]
         
-        prediction = np.dot(self.forward_weights[time_offset], current_state)
+        prediction = xp.dot(self.forward_weights[time_offset], current_state)
         
         # Apply recurrent connections if enabled
         if self.enable_recurrent_connections and self.recurrent_weights is not None:
@@ -285,12 +286,12 @@ class TemporalPrediction:
                 # Resize current_state to match recurrent weight dimensions
                 if current_state.shape[0] < self.recurrent_weights.shape[1]:
                     # Pad with zeros
-                    current_state = np.pad(current_state, (0, self.recurrent_weights.shape[1] - current_state.shape[0]))
+                    current_state = xp.pad(current_state, (0, self.recurrent_weights.shape[1] - current_state.shape[0]))
                 else:
                     # Truncate
                     current_state = current_state[:self.recurrent_weights.shape[1]]
             
-            recurrent_contribution = np.dot(self.recurrent_weights, current_state)
+            recurrent_contribution = xp.dot(self.recurrent_weights, current_state)
             
             # Check if prediction and recurrent_contribution have compatible shapes
             if prediction.shape[0] != recurrent_contribution.shape[0]:
@@ -311,16 +312,16 @@ class TemporalPrediction:
             
             # Resize to match
             min_size = min(prediction.shape[0], self.confidence_weights[time_offset].shape[0])
-            confidence_inputs = np.abs(prediction[:min_size])
+            confidence_inputs = xp.abs(prediction[:min_size])
             confidence_weights = self.confidence_weights[time_offset][:min_size]
-            confidence = float(np.tanh(np.mean(np.dot(confidence_inputs, confidence_weights))))
+            confidence = float(xp.tanh(xp.mean(xp.dot(confidence_inputs, confidence_weights))))
         else:
-            confidence_inputs = np.abs(prediction)
-            confidence = float(np.tanh(np.mean(np.dot(confidence_inputs, self.confidence_weights[time_offset]))))
+            confidence_inputs = xp.abs(prediction)
+            confidence = float(xp.tanh(xp.mean(xp.dot(confidence_inputs, self.confidence_weights[time_offset]))))
         
         # Normalize prediction
-        if np.sum(np.abs(prediction)) > 0:
-            prediction = prediction / np.max([np.max(np.abs(prediction)), 1e-10])
+        if xp.sum(xp.abs(prediction)) > 0:
+            prediction = prediction / xp.max([xp.max(xp.abs(prediction)), 1e-10])
         
         return prediction, confidence
     
@@ -368,7 +369,7 @@ class TemporalPrediction:
                         
                         # Calculate error
                         error = actual_state - past_prediction
-                        error_magnitude = np.mean(np.abs(error))
+                        error_magnitude = xp.mean(xp.abs(error))
                         total_error += error_magnitude
                         update_count += 1
                         
@@ -383,7 +384,7 @@ class TemporalPrediction:
                                           f"should be ({len(actual_state)}, {len(input_state)})")
                             
                             # Create new weights with proper dimensions
-                            new_weights = np.random.normal(
+                            new_weights = xp.random.normal(
                                 0, 0.01, (len(actual_state), len(input_state))
                             )
                             
@@ -399,7 +400,7 @@ class TemporalPrediction:
                         if len(error) != self.forward_weights[t].shape[0]:
                             if len(error) < self.forward_weights[t].shape[0]:
                                 # Pad with zeros
-                                error = np.pad(error, (0, self.forward_weights[t].shape[0] - len(error)))
+                                error = xp.pad(error, (0, self.forward_weights[t].shape[0] - len(error)))
                             else:
                                 # Truncate
                                 error = error[:self.forward_weights[t].shape[0]]
@@ -407,13 +408,13 @@ class TemporalPrediction:
                         if len(input_state) != self.forward_weights[t].shape[1]:
                             if len(input_state) < self.forward_weights[t].shape[1]:
                                 # Pad with zeros
-                                input_state = np.pad(input_state, (0, self.forward_weights[t].shape[1] - len(input_state)))
+                                input_state = xp.pad(input_state, (0, self.forward_weights[t].shape[1] - len(input_state)))
                             else:
                                 # Truncate
                                 input_state = input_state[:self.forward_weights[t].shape[1]]
                         
                         # Update forward weights using error signal
-                        delta_w = self.learning_rate * np.outer(error, input_state)
+                        delta_w = self.learning_rate * xp.outer(error, input_state)
                         
                         # Apply regularization
                         delta_w -= self.regularization_strength * self.forward_weights[t]
@@ -427,7 +428,7 @@ class TemporalPrediction:
                                               f"weights shape {self.forward_weights[t].shape}")
                                 
                                 # Create new trace with proper dimensions
-                                new_trace = np.zeros(self.forward_weights[t].shape)
+                                new_trace = xp.zeros(self.forward_weights[t].shape)
                                 # Copy existing trace where possible
                                 min_rows = min(self.eligibility_traces[t].shape[0], self.forward_weights[t].shape[0])
                                 min_cols = min(self.eligibility_traces[t].shape[1], self.forward_weights[t].shape[1])
@@ -437,7 +438,7 @@ class TemporalPrediction:
                             # Update eligibility trace
                             self.eligibility_traces[t] = (
                                 self.trace_decay * self.eligibility_traces[t] + 
-                                np.outer(error, input_state)
+                                xp.outer(error, input_state)
                             )
                             # Apply update with trace
                             self.forward_weights[t] += self.learning_rate * self.eligibility_traces[t]
@@ -448,7 +449,7 @@ class TemporalPrediction:
                         # Update confidence weights
                         confidence = self.confidence_buffer[prediction_idx].get(t, 0.0)
                         confidence_error = 1.0 - error_magnitude - confidence
-                        delta_conf = self.confidence_learning_rate * confidence_error * np.abs(past_prediction).reshape(-1, 1)
+                        delta_conf = self.confidence_learning_rate * confidence_error * xp.abs(past_prediction).reshape(-1, 1)
                         self.confidence_weights[t] += delta_conf
         
         # Calculate average error
@@ -468,7 +469,7 @@ class TemporalPrediction:
         
         return 0.0
     
-    def _detect_surprise(self, current_state: np.ndarray) -> float:
+    def _detect_surprise(self, current_state: xp.ndarray) -> float:
         """
         Detect surprising events based on prediction errors.
         
@@ -511,7 +512,7 @@ class TemporalPrediction:
                         current_state_resized = current_state
                     
                     # Calculate difference between prediction and actual state
-                    prediction_error = np.mean(np.abs(current_state_resized - past_prediction))
+                    prediction_error = xp.mean(xp.abs(current_state_resized - past_prediction))
                     
                     # Get confidence for this prediction
                     confidence = self.confidence_buffer[prediction_idx].get(t, 0.5)
@@ -522,16 +523,16 @@ class TemporalPrediction:
         
         # Return maximum surprise across different horizons
         if surprise_signals:
-            return float(np.max(surprise_signals))
+            return float(xp.max(surprise_signals))
         
         return 0.0
     
     def predict_future(
         self,
-        current_state: np.ndarray,
+        current_state: xp.ndarray,
         steps: int = None,
         include_confidence: bool = True
-    ) -> Dict[int, Union[np.ndarray, Tuple[np.ndarray, float]]]:
+    ) -> Dict[int, Union[xp.ndarray, Tuple[xp.ndarray, float]]]:
         """
         Predict future states from current state.
         
@@ -547,8 +548,8 @@ class TemporalPrediction:
             steps = self.prediction_horizon
         
         # Ensure state is normalized
-        if np.sum(current_state) > 0:
-            state = current_state / np.max([np.max(np.abs(current_state)), 1e-10])
+        if xp.sum(current_state) > 0:
+            state = current_state / xp.max([xp.max(xp.abs(current_state)), 1e-10])
         else:
             state = current_state.copy()
         
@@ -567,10 +568,10 @@ class TemporalPrediction:
     
     def predict_sequence(
         self,
-        initial_state: np.ndarray,
+        initial_state: xp.ndarray,
         length: int,
         include_confidence: bool = True
-    ) -> List[Union[np.ndarray, Tuple[np.ndarray, float]]]:
+    ) -> List[Union[xp.ndarray, Tuple[xp.ndarray, float]]]:
         """
         Generate a sequence of predictions by feeding predictions back as input.
         
@@ -586,8 +587,8 @@ class TemporalPrediction:
         current = initial_state.copy()
         
         # Normalize initial state
-        if np.sum(current) > 0:
-            current = current / np.max([np.max(np.abs(current)), 1e-10])
+        if xp.sum(current) > 0:
+            current = current / xp.max([xp.max(xp.abs(current)), 1e-10])
         
         # Generate sequence by feeding each prediction back as input
         for _ in range(length):
@@ -615,13 +616,13 @@ class TemporalPrediction:
         recent_errors = [err for _, err in self.prediction_errors[-100:]] if self.prediction_errors else [0]
         
         # Calculate average accuracy
-        avg_error = np.mean(recent_errors) if recent_errors else 0
+        avg_error = xp.mean(recent_errors) if recent_errors else 0
         error_trend = 0
         
         if len(recent_errors) > 10:
             # Calculate trend (positive means improving)
-            first_half = np.mean(recent_errors[:len(recent_errors)//2])
-            second_half = np.mean(recent_errors[len(recent_errors)//2:])
+            first_half = xp.mean(recent_errors[:len(recent_errors)//2])
+            second_half = xp.mean(recent_errors[len(recent_errors)//2:])
             error_trend = first_half - second_half
         
         stats = {
@@ -711,23 +712,23 @@ class TemporalPrediction:
         # Restore weights
         for t_str, w_list in data['forward_weights'].items():
             t = int(t_str)
-            instance.forward_weights[t] = np.array(w_list)
+            instance.forward_weights[t] = xp.array(w_list)
         
         for t_str, w_list in data['backward_weights'].items():
             t = int(t_str)
-            instance.backward_weights[t] = np.array(w_list)
+            instance.backward_weights[t] = xp.array(w_list)
         
         for t_str, w_list in data['confidence_weights'].items():
             t = int(t_str)
-            instance.confidence_weights[t] = np.array(w_list)
+            instance.confidence_weights[t] = xp.array(w_list)
         
         if data.get('eligibility_traces'):
             for t_str, e_list in data['eligibility_traces'].items():
                 t = int(t_str)
-                instance.eligibility_traces[t] = np.array(e_list)
+                instance.eligibility_traces[t] = xp.array(e_list)
         
         if data.get('recurrent_weights'):
-            instance.recurrent_weights = np.array(data['recurrent_weights'])
+            instance.recurrent_weights = xp.array(data['recurrent_weights'])
         
         # Restore state
         instance.mean_prediction_error = data['mean_prediction_error']

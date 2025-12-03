@@ -56,6 +56,9 @@ RUN pip3 install --no-cache-dir --upgrade pip
 RUN pip3 install --no-cache-dir \
     torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
+# Install CuPy for GPU-accelerated NumPy operations (CUDA 12.x)
+RUN pip3 install --no-cache-dir cupy-cuda12x
+
 # Install remaining Python dependencies
 RUN pip3 install --no-cache-dir \
     numpy \

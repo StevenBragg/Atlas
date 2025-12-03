@@ -1,7 +1,8 @@
-import numpy as np
 import logging
 from typing import Dict, List, Tuple, Optional, Union, Any
 from enum import Enum
+
+from .backend import xp, to_cpu
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +65,7 @@ class MultimodalAssociation:
         """
         # Set random seed if provided
         if random_seed is not None:
-            np.random.seed(random_seed)
+            xp.random.seed(random_seed)
             
         self.modality_sizes = modality_sizes
         
@@ -102,12 +103,12 @@ class MultimodalAssociation:
         
         for modality, size in modality_sizes.items():
             # Forward weights: modality -> association
-            self.forward_weights[modality] = np.random.normal(
+            self.forward_weights[modality] = xp.random.normal(
                 0, 0.01, (self.association_size, size)
             )
             
             # Backward weights: association -> modality (for reconstruction)
-            self.backward_weights[modality] = np.random.normal(
+            self.backward_weights[modality] = xp.random.normal(
                 0, 0.01, (size, self.association_size)
             )
             
@@ -115,7 +116,7 @@ class MultimodalAssociation:
             self._weights[modality] = self.forward_weights[modality]
         
         # Initialize association layer state
-        self.association_activity = np.zeros(self.association_size)
+        self.association_activity = xp.zeros(self.association_size)
         
         # Attention weights (modulates influence of each modality)
         self.attention_weights = {modality: 1.0 for modality in modality_sizes}
@@ -162,24 +163,24 @@ class MultimodalAssociation:
             if modality in self.modality_sizes:
                 # Make sure we have valid weights as numpy arrays
                 if isinstance(weights, list):
-                    weights = np.array(weights)
+                    weights = xp.array(weights)
                 
                 # Check if dimensions match current network
                 current_size = self.modality_sizes[modality]
                 association_size = self.association_size
                 
                 # Check if weights need resizing
-                if isinstance(weights, np.ndarray) and (len(weights.shape) != 2 or weights.shape[0] != association_size or weights.shape[1] != current_size):
+                if isinstance(weights, xp.ndarray) and (len(weights.shape) != 2 or weights.shape[0] != association_size or weights.shape[1] != current_size):
                     logger.warning(f"Weight size mismatch for {modality}: saved={weights.shape}, expected=({association_size}, {current_size})")
                     logger.info(f"Creating new random weights for {modality}")
                     
                     # Create new random weights instead of trying to resize (safer option)
-                    self.forward_weights[modality] = np.random.normal(
+                    self.forward_weights[modality] = xp.random.normal(
                         0, 0.01, (association_size, current_size)
                     )
                     
                     # Also recreate backward weights
-                    self.backward_weights[modality] = np.random.normal(
+                    self.backward_weights[modality] = xp.random.normal(
                         0, 0.01, (current_size, association_size)
                     )
                     
@@ -194,7 +195,7 @@ class MultimodalAssociation:
     
     def update(
         self,
-        modality_activities: Dict[str, np.ndarray],
+        modality_activities: Dict[str, xp.ndarray],
         learning_enabled: bool = True,
         attention_focus: Optional[str] = None,
     ) -> Dict[str, Any]:
@@ -258,7 +259,7 @@ class MultimodalAssociation:
             
             # Calculate reconstruction error
             orig = modality_activities[modality]
-            error = np.mean(np.abs(orig - reconstruction))
+            error = xp.mean(xp.abs(orig - reconstruction))
             reconstruction_errors[modality] = error
             
             # Store in result
@@ -303,7 +304,7 @@ class MultimodalAssociation:
         
         return result
     
-    def _update_association_layer(self, modality_activities: Dict[str, np.ndarray]):
+    def _update_association_layer(self, modality_activities: Dict[str, xp.ndarray]):
         """
         Update the association layer based on current activities.
         
@@ -311,7 +312,7 @@ class MultimodalAssociation:
             modality_activities: Dictionary mapping modality names to their activities
         """
         # Initialize association activity
-        self.association_activity = np.zeros(self.association_size)
+        self.association_activity = xp.zeros(self.association_size)
         
         # Combine contributions from each modality
         for modality, activity in modality_activities.items():
@@ -320,7 +321,7 @@ class MultimodalAssociation:
                 continue
             
             # Apply forward weights
-            contribution = np.dot(self.forward_weights[modality], activity)
+            contribution = xp.dot(self.forward_weights[modality], activity)
             
             # Apply modality weight
             if modality in self.modality_weights:
@@ -339,7 +340,7 @@ class MultimodalAssociation:
             if self.use_sparse_coding:
                 # Determine activation threshold based on top-k neurons
                 k = max(1, int(0.1 * self.association_size))  # Activate top 10%
-                threshold = np.sort(self.association_activity)[-k]
+                threshold = xp.sort(self.association_activity)[-k]
                 
                 # Apply threshold
                 inhibition_mask = self.association_activity < threshold
@@ -348,15 +349,15 @@ class MultimodalAssociation:
         # Apply normalization
         if self.normalization_mode == "softmax":
             # Softmax normalization
-            exp_act = np.exp(self.association_activity - np.max(self.association_activity))
-            self.association_activity = exp_act / np.sum(exp_act)
+            exp_act = xp.exp(self.association_activity - xp.max(self.association_activity))
+            self.association_activity = exp_act / xp.sum(exp_act)
         elif self.normalization_mode == "max":
             # Max normalization
-            max_act = np.max(np.abs(self.association_activity))
+            max_act = xp.max(xp.abs(self.association_activity))
             if max_act > 0:
                 self.association_activity /= max_act
     
-    def _reconstruct_modality(self, modality: str) -> np.ndarray:
+    def _reconstruct_modality(self, modality: str) -> xp.ndarray:
         """
         Reconstruct activity for a modality based on association layer.
         
@@ -368,19 +369,19 @@ class MultimodalAssociation:
         """
         if modality not in self.backward_weights:
             # Return zeros if modality doesn't exist
-            return np.zeros(self.modality_sizes.get(modality, 0))
+            return xp.zeros(self.modality_sizes.get(modality, 0))
         
         # Apply backward weights
-        reconstruction = np.dot(self.backward_weights[modality], self.association_activity)
+        reconstruction = xp.dot(self.backward_weights[modality], self.association_activity)
         
         # Normalize reconstruction
-        max_value = np.max(np.abs(reconstruction))
+        max_value = xp.max(xp.abs(reconstruction))
         if max_value > 0:
             reconstruction /= max_value
         
         return reconstruction
     
-    def _update_weights(self, modality_activities: Dict[str, np.ndarray]) -> Dict[str, float]:
+    def _update_weights(self, modality_activities: Dict[str, xp.ndarray]) -> Dict[str, float]:
         """
         Update association weights based on current activities.
         
@@ -401,24 +402,24 @@ class MultimodalAssociation:
             # Calculate weight changes based on association mode
             if self.association_mode == AssociationMode.HEBBIAN:
                 # Hebbian learning: increase weights between co-active neurons
-                fw_delta = self.learning_rate * np.outer(self.association_activity, activity)
-                bw_delta = self.learning_rate * np.outer(activity, self.association_activity)
+                fw_delta = self.learning_rate * xp.outer(self.association_activity, activity)
+                bw_delta = self.learning_rate * xp.outer(activity, self.association_activity)
             
             elif self.association_mode == AssociationMode.COMPETITIVE:
                 # Competitive learning: strengthen weights for winning neurons
                 # Find winning associations
-                winners = self.association_activity > np.mean(self.association_activity)
+                winners = self.association_activity > xp.mean(self.association_activity)
                 
                 # Calculate deltas for winning associations
-                fw_delta = np.zeros_like(self.forward_weights[modality])
-                bw_delta = np.zeros_like(self.backward_weights[modality])
+                fw_delta = xp.zeros_like(self.forward_weights[modality])
+                bw_delta = xp.zeros_like(self.backward_weights[modality])
                 
                 # Update only winning neurons
                 for i in range(self.association_size):
                     if winners[i]:
                         # Direction is towards the input
-                        error = activity - np.dot(self.backward_weights[modality], 
-                                                 np.eye(self.association_size)[i])
+                        error = activity - xp.dot(self.backward_weights[modality], 
+                                                 xp.eye(self.association_size)[i])
                         
                         # Update forward and backward weights for this winner
                         fw_delta[i, :] = self.learning_rate * error
@@ -434,14 +435,14 @@ class MultimodalAssociation:
                     error = activity - prev_reconstruction
                     
                     # Causal update (input -> association)
-                    fw_delta = self.learning_rate * np.outer(self.association_activity, error)
+                    fw_delta = self.learning_rate * xp.outer(self.association_activity, error)
                     
                     # Anticausal update (association -> reconstruction)
-                    bw_delta = self.learning_rate * np.outer(error, self.association_activity)
+                    bw_delta = self.learning_rate * xp.outer(error, self.association_activity)
                 else:
                     # Default to Hebbian for first update
-                    fw_delta = self.learning_rate * np.outer(self.association_activity, activity)
-                    bw_delta = self.learning_rate * np.outer(activity, self.association_activity)
+                    fw_delta = self.learning_rate * xp.outer(self.association_activity, activity)
+                    bw_delta = self.learning_rate * xp.outer(activity, self.association_activity)
             
             else:  # AssociationMode.ADAPTIVE or fallback
                 # Combine strategies based on current performance
@@ -451,25 +452,25 @@ class MultimodalAssociation:
                     
                     if error_level > 0.5:  # High error, use competitive
                         # Find winning associations
-                        winners = self.association_activity > np.mean(self.association_activity)
+                        winners = self.association_activity > xp.mean(self.association_activity)
                         
-                        fw_delta = np.zeros_like(self.forward_weights[modality])
-                        bw_delta = np.zeros_like(self.backward_weights[modality])
+                        fw_delta = xp.zeros_like(self.forward_weights[modality])
+                        bw_delta = xp.zeros_like(self.backward_weights[modality])
                         
                         # Update only winning neurons
                         for i in range(self.association_size):
                             if winners[i]:
-                                error = activity - np.dot(self.backward_weights[modality], 
-                                                         np.eye(self.association_size)[i])
+                                error = activity - xp.dot(self.backward_weights[modality], 
+                                                         xp.eye(self.association_size)[i])
                                 fw_delta[i, :] = self.learning_rate * error
                                 bw_delta[:, i] = self.learning_rate * error
                     else:  # Low error, use Hebbian
-                        fw_delta = self.learning_rate * np.outer(self.association_activity, activity)
-                        bw_delta = self.learning_rate * np.outer(activity, self.association_activity)
+                        fw_delta = self.learning_rate * xp.outer(self.association_activity, activity)
+                        bw_delta = self.learning_rate * xp.outer(activity, self.association_activity)
                 else:
                     # Default to Hebbian
-                    fw_delta = self.learning_rate * np.outer(self.association_activity, activity)
-                    bw_delta = self.learning_rate * np.outer(activity, self.association_activity)
+                    fw_delta = self.learning_rate * xp.outer(self.association_activity, activity)
+                    bw_delta = self.learning_rate * xp.outer(activity, self.association_activity)
             
             # Apply regularization
             fw_delta -= self.regularization_strength * self.forward_weights[modality]
@@ -486,16 +487,16 @@ class MultimodalAssociation:
                 bw_delta -= bw_decay
             
             # Apply thresholding to encourage sparse connectivity
-            fw_delta[np.abs(fw_delta) < self.association_threshold] = 0
-            bw_delta[np.abs(bw_delta) < self.association_threshold] = 0
+            fw_delta[xp.abs(fw_delta) < self.association_threshold] = 0
+            bw_delta[xp.abs(bw_delta) < self.association_threshold] = 0
             
             # Apply weight updates
             self.forward_weights[modality] += fw_delta
             self.backward_weights[modality] += bw_delta
             
             # Calculate total weight change magnitude
-            fw_change = np.mean(np.abs(fw_delta))
-            bw_change = np.mean(np.abs(bw_delta))
+            fw_change = xp.mean(xp.abs(fw_delta))
+            bw_change = xp.mean(xp.abs(bw_delta))
             weight_change = (fw_change + bw_change) / 2
             
             weight_changes[modality] = weight_change
@@ -506,9 +507,9 @@ class MultimodalAssociation:
     def get_cross_modal_prediction(
         self,
         source_modality: str,
-        source_activity: np.ndarray,
+        source_activity: xp.ndarray,
         target_modality: str,
-    ) -> np.ndarray:
+    ) -> xp.ndarray:
         """
         Generate prediction for target modality given activity in source modality.
         
@@ -523,27 +524,27 @@ class MultimodalAssociation:
         if (source_modality not in self.forward_weights or
             target_modality not in self.backward_weights):
             # Return zeros if modalities don't exist
-            return np.zeros(self.modality_sizes.get(target_modality, 0))
+            return xp.zeros(self.modality_sizes.get(target_modality, 0))
         
         # Calculate association activity from source
-        association = np.dot(self.forward_weights[source_modality], source_activity)
+        association = xp.dot(self.forward_weights[source_modality], source_activity)
         
         # Apply normalization
         if self.normalization_mode == "softmax":
             # Softmax normalization
-            exp_act = np.exp(association - np.max(association))
-            association = exp_act / np.sum(exp_act)
+            exp_act = xp.exp(association - xp.max(association))
+            association = exp_act / xp.sum(exp_act)
         elif self.normalization_mode == "max":
             # Max normalization
-            max_act = np.max(np.abs(association))
+            max_act = xp.max(xp.abs(association))
             if max_act > 0:
                 association /= max_act
         
         # Generate prediction for target modality
-        prediction = np.dot(self.backward_weights[target_modality], association)
+        prediction = xp.dot(self.backward_weights[target_modality], association)
         
         # Normalize prediction
-        max_value = np.max(np.abs(prediction))
+        max_value = xp.max(xp.abs(prediction))
         if max_value > 0:
             prediction /= max_value
         
@@ -551,9 +552,9 @@ class MultimodalAssociation:
     
     def integrate_multiple_modalities(
         self,
-        modality_activities: Dict[str, np.ndarray],
+        modality_activities: Dict[str, xp.ndarray],
         target_modality: str,
-    ) -> np.ndarray:
+    ) -> xp.ndarray:
         """
         Integrate multiple modalities to produce a prediction for target modality.
         
@@ -581,13 +582,13 @@ class MultimodalAssociation:
         reconstruction_errors = {}
         for modality, errors in self.reconstruction_errors.items():
             recent_errors = [err for _, err in errors[-100:]] if errors else [0]
-            reconstruction_errors[modality] = float(np.mean(recent_errors))
+            reconstruction_errors[modality] = float(xp.mean(recent_errors))
         
         # Calculate weight sparsity (proportion of zero weights)
         weight_sparsity = {}
         for modality in self.forward_weights:
-            fw_sparsity = np.mean(np.abs(self.forward_weights[modality]) < 0.01)
-            bw_sparsity = np.mean(np.abs(self.backward_weights[modality]) < 0.01)
+            fw_sparsity = xp.mean(xp.abs(self.forward_weights[modality]) < 0.01)
+            bw_sparsity = xp.mean(xp.abs(self.backward_weights[modality]) < 0.01)
             weight_sparsity[modality] = float((fw_sparsity + bw_sparsity) / 2)
         
         stats = {
@@ -611,9 +612,9 @@ class MultimodalAssociation:
             Dictionary with multimodal activity statistics
         """
         # Calculate statistics
-        sparsity = np.mean(self.association_activity > 0)
-        avg_activation = np.mean(self.association_activity)
-        active_count = np.sum(self.association_activity > 0)
+        sparsity = xp.mean(self.association_activity > 0)
+        avg_activation = xp.mean(self.association_activity)
+        active_count = xp.sum(self.association_activity > 0)
         
         return {
             'activations': self.association_activity,
@@ -686,10 +687,10 @@ class MultimodalAssociation:
         
         # Restore weights
         for modality, weights_list in data['forward_weights'].items():
-            instance.forward_weights[modality] = np.array(weights_list)
+            instance.forward_weights[modality] = xp.array(weights_list)
         
         for modality, weights_list in data['backward_weights'].items():
-            instance.backward_weights[modality] = np.array(weights_list)
+            instance.backward_weights[modality] = xp.array(weights_list)
         
         # Restore state
         instance.attention_weights = data['attention_weights']

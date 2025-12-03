@@ -1,7 +1,8 @@
-import numpy as np
 import logging
 from typing import Dict, List, Tuple, Optional, Any
 from enum import Enum
+
+from .backend import xp, to_cpu
 
 logger = logging.getLogger(__name__)
 
@@ -93,19 +94,19 @@ class HomeostaticPlasticity:
         self.stability_weight = stability_weight
         
         # Initialize adaptive thresholds for each neuron
-        self.adaptive_thresholds = np.ones(layer_size) * adaptive_threshold_init
+        self.adaptive_thresholds = xp.ones(layer_size) * adaptive_threshold_init
         
         # Individual neuron excitability factors (intrinsic plasticity)
-        self.excitability = np.ones(layer_size)
+        self.excitability = xp.ones(layer_size)
         
         # Track average activity for each neuron
-        self.avg_activity = np.zeros(layer_size)
+        self.avg_activity = xp.zeros(layer_size)
         
         # Track variance of activity for each neuron
-        self.act_variance = np.ones(layer_size)
+        self.act_variance = xp.ones(layer_size)
         
         # Track active neuron indices for last update
-        self.last_active = np.zeros(layer_size, dtype=bool)
+        self.last_active = xp.zeros(layer_size, dtype=bool)
         
         # Activity history for stability analysis
         self.activity_history = []
@@ -114,8 +115,8 @@ class HomeostaticPlasticity:
         # Lateral inhibition matrix (for some inhibition strategies)
         if self.inhibition_strategy in [InhibitionStrategy.SOFT]:
             # Initialize lateral inhibition weights
-            self.lateral_weights = np.ones((layer_size, layer_size)) * -0.1
-            np.fill_diagonal(self.lateral_weights, 0)  # No self-inhibition
+            self.lateral_weights = xp.ones((layer_size, layer_size)) * -0.1
+            xp.fill_diagonal(self.lateral_weights, 0)  # No self-inhibition
         else:
             self.lateral_weights = None
         
@@ -127,7 +128,7 @@ class HomeostaticPlasticity:
         
         logger.info(f"Initialized homeostatic plasticity with {inhibition_strategy} inhibition")
     
-    def apply(self, activity: np.ndarray) -> np.ndarray:
+    def apply(self, activity: xp.ndarray) -> xp.ndarray:
         """
         Apply homeostatic plasticity mechanisms to neural activity.
         
@@ -181,7 +182,7 @@ class HomeostaticPlasticity:
         self.adaptive_thresholds += self.threshold_adaptation_rate * delta
         
         # Ensure thresholds stay within bounds
-        self.adaptive_thresholds = np.clip(
+        self.adaptive_thresholds = xp.clip(
             self.adaptive_thresholds, 
             self.min_threshold, 
             self.max_threshold
@@ -197,13 +198,13 @@ class HomeostaticPlasticity:
         self.excitability += self.intrinsic_plasticity_rate * delta
         
         # Ensure excitability stays positive
-        self.excitability = np.maximum(0.1, self.excitability)
+        self.excitability = xp.maximum(0.1, self.excitability)
         
         # Normalize excitability to prevent overall scaling issues
-        if np.mean(self.excitability) > 0:
-            self.excitability = self.excitability / np.mean(self.excitability)
+        if xp.mean(self.excitability) > 0:
+            self.excitability = self.excitability / xp.mean(self.excitability)
     
-    def apply_synaptic_scaling(self, weights: np.ndarray) -> np.ndarray:
+    def apply_synaptic_scaling(self, weights: xp.ndarray) -> xp.ndarray:
         """
         Scale synaptic weights to maintain homeostasis.
         
@@ -226,7 +227,7 @@ class HomeostaticPlasticity:
             # Apply scaling row-wise (each neuron's outputs)
             for i in range(weights.shape[0]):
                 nonzero_mask = weights[i, :] != 0
-                if np.any(nonzero_mask):
+                if xp.any(nonzero_mask):
                     weights[i, nonzero_mask] *= scaling_factors[i]
                     
         elif weights.shape[1] == self.layer_size:
@@ -238,15 +239,15 @@ class HomeostaticPlasticity:
             # Apply scaling column-wise (each neuron's inputs)
             for i in range(weights.shape[1]):
                 nonzero_mask = weights[:, i] != 0
-                if np.any(nonzero_mask):
+                if xp.any(nonzero_mask):
                     weights[nonzero_mask, i] *= scaling_factors[i]
         
         # Limit weight changes
-        weights = np.clip(weights, -10.0, 10.0)
+        weights = xp.clip(weights, -10.0, 10.0)
         
         return weights
     
-    def apply_heterosynaptic_competition(self, weights: np.ndarray) -> np.ndarray:
+    def apply_heterosynaptic_competition(self, weights: xp.ndarray) -> xp.ndarray:
         """
         Apply heterosynaptic competition to balance weights.
         
@@ -265,10 +266,10 @@ class HomeostaticPlasticity:
             for i in range(self.layer_size):
                 w = weights[:, i]
                 nonzero = w != 0
-                if np.sum(nonzero) > 1:  # Need at least 2 connections for competition
-                    mean_weight = np.mean(np.abs(w[nonzero]))
+                if xp.sum(nonzero) > 1:  # Need at least 2 connections for competition
+                    mean_weight = xp.mean(xp.abs(w[nonzero]))
                     # Shrink weights that are too strong, boost weights that are too weak
-                    w[nonzero] -= self.heterosynaptic_rate * (np.abs(w[nonzero]) - mean_weight) * np.sign(w[nonzero])
+                    w[nonzero] -= self.heterosynaptic_rate * (xp.abs(w[nonzero]) - mean_weight) * xp.sign(w[nonzero])
                     weights[:, i] = w
         
         elif weights.shape[0] == self.layer_size:
@@ -276,14 +277,14 @@ class HomeostaticPlasticity:
             for i in range(self.layer_size):
                 w = weights[i, :]
                 nonzero = w != 0
-                if np.sum(nonzero) > 1:
-                    mean_weight = np.mean(np.abs(w[nonzero]))
-                    w[nonzero] -= self.heterosynaptic_rate * (np.abs(w[nonzero]) - mean_weight) * np.sign(w[nonzero])
+                if xp.sum(nonzero) > 1:
+                    mean_weight = xp.mean(xp.abs(w[nonzero]))
+                    w[nonzero] -= self.heterosynaptic_rate * (xp.abs(w[nonzero]) - mean_weight) * xp.sign(w[nonzero])
                     weights[i, :] = w
         
         return weights
     
-    def _apply_inhibition(self, activity: np.ndarray) -> np.ndarray:
+    def _apply_inhibition(self, activity: xp.ndarray) -> xp.ndarray:
         """
         Apply lateral inhibition to activity pattern.
         
@@ -298,9 +299,9 @@ class HomeostaticPlasticity:
             
         elif self.inhibition_strategy == InhibitionStrategy.WTA:
             # Winner-take-all: Only keep the single highest activation
-            regulated = np.zeros_like(activity)
-            if np.max(activity) > 0:
-                winner_idx = np.argmax(activity)
+            regulated = xp.zeros_like(activity)
+            if xp.max(activity) > 0:
+                winner_idx = xp.argmax(activity)
                 regulated[winner_idx] = activity[winner_idx]
             return regulated
             
@@ -308,16 +309,16 @@ class HomeostaticPlasticity:
             # k-Winners-Adaptive: Keep top k% activations
             k = max(1, int(self.k_percent * len(activity)))
             
-            if np.sum(activity > 0) > 0:
+            if xp.sum(activity > 0) > 0:
                 # Find top k indices
-                indices = np.argsort(activity)[-k:]
+                indices = xp.argsort(activity)[-k:]
                 
                 # Create mask for top k
-                mask = np.zeros_like(activity, dtype=bool)
+                mask = xp.zeros_like(activity, dtype=bool)
                 mask[indices] = True
                 
                 # Keep only top k activations
-                regulated = np.zeros_like(activity)
+                regulated = xp.zeros_like(activity)
                 regulated[mask] = activity[mask]
                 
                 return regulated
@@ -328,14 +329,14 @@ class HomeostaticPlasticity:
             # Soft competition: Apply inhibition matrix
             if self.lateral_weights is not None:
                 # Apply lateral inhibition (simplified approximation)
-                inhibition = np.dot(activity, self.lateral_weights)
-                return np.maximum(0, activity + inhibition)
+                inhibition = xp.dot(activity, self.lateral_weights)
+                return xp.maximum(0, activity + inhibition)
             return activity
             
         elif self.inhibition_strategy == InhibitionStrategy.ADAPTIVE:
             # Adaptive threshold: neurons compete with a threshold
             mask = activity > self.adaptive_thresholds
-            regulated = np.zeros_like(activity)
+            regulated = xp.zeros_like(activity)
             regulated[mask] = activity[mask]
             
             # Update thresholds based on this activity
@@ -346,7 +347,7 @@ class HomeostaticPlasticity:
         # Default case
         return activity
     
-    def _update_internal_state(self, activity: np.ndarray) -> None:
+    def _update_internal_state(self, activity: xp.ndarray) -> None:
         """
         Update internal state and metrics.
         
@@ -356,10 +357,10 @@ class HomeostaticPlasticity:
         self.update_counter += 1
         
         # Calculate overall layer activity
-        self.avg_layer_activity = np.mean(activity)
+        self.avg_layer_activity = xp.mean(activity)
         
         # Update sparsity index (proportion of active neurons)
-        active_proportion = np.mean(activity > 0)
+        active_proportion = xp.mean(activity > 0)
         self.sparsity_index = 1.0 - (active_proportion / self.target_sparsity if self.target_sparsity > 0 else 0)
         self.sparsity_index = max(0, min(1, self.sparsity_index))
         
@@ -380,17 +381,17 @@ class HomeostaticPlasticity:
             return
             
         # Calculate consistency of activations over time
-        history_array = np.array(self.activity_history[-10:])
+        history_array = xp.array(self.activity_history[-10:])
         
         # Calculate variance across time for each neuron
-        temporal_variance = np.var(history_array, axis=0)
+        temporal_variance = xp.var(history_array, axis=0)
         
         # Calculate variance across neurons for each time point
-        spatial_variance = np.var(history_array, axis=1)
+        spatial_variance = xp.var(history_array, axis=1)
         
         # Stable networks have moderate temporal variance and high spatial variance
-        temporal_var_score = np.exp(-np.mean(temporal_variance) / self.variance_target)
-        spatial_var_score = 1.0 - np.exp(-np.mean(spatial_variance) / self.variance_target)
+        temporal_var_score = xp.exp(-xp.mean(temporal_variance) / self.variance_target)
+        spatial_var_score = 1.0 - xp.exp(-xp.mean(spatial_variance) / self.variance_target)
         
         # Combine into stability index
         self.stability_index = (temporal_var_score + spatial_var_score) / 2.0
@@ -410,34 +411,34 @@ class HomeostaticPlasticity:
         # Handle size increase
         if new_size > self.layer_size:
             # Pad arrays with default values
-            self.adaptive_thresholds = np.pad(
+            self.adaptive_thresholds = xp.pad(
                 self.adaptive_thresholds, 
                 (0, new_size - self.layer_size),
                 constant_values=0.5
             )
-            self.excitability = np.pad(
+            self.excitability = xp.pad(
                 self.excitability, 
                 (0, new_size - self.layer_size),
                 constant_values=1.0
             )
-            self.avg_activity = np.pad(
+            self.avg_activity = xp.pad(
                 self.avg_activity, 
                 (0, new_size - self.layer_size)
             )
-            self.act_variance = np.pad(
+            self.act_variance = xp.pad(
                 self.act_variance, 
                 (0, new_size - self.layer_size),
                 constant_values=1.0
             )
-            self.last_active = np.pad(
+            self.last_active = xp.pad(
                 self.last_active, 
                 (0, new_size - self.layer_size)
             )
             
             # Resize lateral inhibition matrix if used
             if self.lateral_weights is not None:
-                new_lateral = np.ones((new_size, new_size)) * -0.1
-                np.fill_diagonal(new_lateral, 0)
+                new_lateral = xp.ones((new_size, new_size)) * -0.1
+                xp.fill_diagonal(new_lateral, 0)
                 new_lateral[:self.layer_size, :self.layer_size] = self.lateral_weights
                 self.lateral_weights = new_lateral
                 
@@ -479,8 +480,8 @@ class HomeostaticPlasticity:
             
             # Initialize lateral weights if switching to soft competition
             if self.inhibition_strategy == InhibitionStrategy.SOFT and self.lateral_weights is None:
-                self.lateral_weights = np.ones((self.layer_size, self.layer_size)) * -0.1
-                np.fill_diagonal(self.lateral_weights, 0)
+                self.lateral_weights = xp.ones((self.layer_size, self.layer_size)) * -0.1
+                xp.fill_diagonal(self.lateral_weights, 0)
                 
             logger.info(f"Changed inhibition strategy to {strategy}")
         except ValueError:
@@ -498,9 +499,9 @@ class HomeostaticPlasticity:
             "sparsity_index": float(self.sparsity_index),
             "avg_activity": float(self.avg_layer_activity),
             "target_activity": float(self.target_activity),
-            "mean_excitability": float(np.mean(self.excitability)),
-            "mean_threshold": float(np.mean(self.adaptive_thresholds)),
-            "activity_variance": float(np.mean(self.act_variance))
+            "mean_excitability": float(xp.mean(self.excitability)),
+            "mean_threshold": float(xp.mean(self.adaptive_thresholds)),
+            "activity_variance": float(xp.mean(self.act_variance))
         }
         
     def serialize(self) -> Dict[str, Any]:
@@ -575,11 +576,11 @@ class HomeostaticPlasticity:
         )
         
         # Restore state
-        instance.adaptive_thresholds = np.array(data["adaptive_thresholds"])
-        instance.excitability = np.array(data["excitability"])
-        instance.avg_activity = np.array(data["avg_activity"])
-        instance.act_variance = np.array(data["act_variance"])
-        instance.last_active = np.array(data["last_active"])
+        instance.adaptive_thresholds = xp.array(data["adaptive_thresholds"])
+        instance.excitability = xp.array(data["excitability"])
+        instance.avg_activity = xp.array(data["avg_activity"])
+        instance.act_variance = xp.array(data["act_variance"])
+        instance.last_active = xp.array(data["last_active"])
         instance.stability_index = data["stability_index"]
         instance.sparsity_index = data["sparsity_index"]
         instance.avg_layer_activity = data["avg_layer_activity"]
@@ -587,6 +588,6 @@ class HomeostaticPlasticity:
         
         # Restore lateral weights if they exist in the data
         if "lateral_weights" in data:
-            instance.lateral_weights = np.array(data["lateral_weights"])
+            instance.lateral_weights = xp.array(data["lateral_weights"])
         
         return instance 

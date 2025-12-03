@@ -1,5 +1,6 @@
-import numpy as np
 from typing import List, Dict, Optional, Tuple, Union
+
+from .backend import xp, to_cpu
 from .layer import NeuralLayer
 
 
@@ -75,7 +76,7 @@ class NeuralPathway:
         self.predicted_next_input = None
         self.error_history = []
     
-    def process(self, inputs: np.ndarray, time_step: Optional[int] = None) -> np.ndarray:
+    def process(self, inputs: xp.ndarray, time_step: Optional[int] = None) -> xp.ndarray:
         """
         Process an input through the full pathway.
         
@@ -130,7 +131,7 @@ class NeuralPathway:
             if i < self.num_layers - 1:
                 current_input = layer.activations
     
-    def predict_next(self) -> List[np.ndarray]:
+    def predict_next(self) -> List[xp.ndarray]:
         """
         Predict the next activations for each layer.
         
@@ -145,7 +146,7 @@ class NeuralPathway:
         
         return predictions
     
-    def generate_from_top(self, top_layer_activation: np.ndarray) -> np.ndarray:
+    def generate_from_top(self, top_layer_activation: xp.ndarray) -> xp.ndarray:
         """
         Generate expected lower-layer activations from top-layer state.
         
@@ -168,21 +169,21 @@ class NeuralPathway:
             
             # Generate lower layer activation
             # Add bias to ensure non-zero activation
-            lower_activation = np.dot(weights.T, current_activation)
+            lower_activation = xp.dot(weights.T, current_activation)
             
             # Apply activation function (ReLU with small leak)
-            lower_activation = np.where(lower_activation > 0, lower_activation, 0.01 * lower_activation)
+            lower_activation = xp.where(lower_activation > 0, lower_activation, 0.01 * lower_activation)
             
             # Normalize to prevent explosion/vanishing
-            norm = np.linalg.norm(lower_activation)
+            norm = xp.linalg.norm(lower_activation)
             if norm > 0:
-                lower_activation = lower_activation / norm * np.sqrt(len(lower_activation))
+                lower_activation = lower_activation / norm * xp.sqrt(len(lower_activation))
             
             current_activation = lower_activation
         
         # The final activation is the predicted input
         # Ensure it's in valid range [0, 1] for input data
-        predicted_input = np.clip(current_activation, 0, 1)
+        predicted_input = xp.clip(current_activation, 0, 1)
         
         return predicted_input
     
@@ -221,8 +222,8 @@ class NeuralPathway:
         
         for i, layer in enumerate(self.layers):
             # Check if this layer is consistently highly active
-            recent_mean = np.mean(layer.mean_activation_history[-100:]) if len(layer.mean_activation_history) >= 100 else 0
-            recent_sparsity = np.mean(layer.sparsity_history[-100:]) if len(layer.sparsity_history) >= 100 else 0
+            recent_mean = xp.mean(layer.mean_activation_history[-100:]) if len(layer.mean_activation_history) >= 100 else 0
+            recent_sparsity = xp.mean(layer.sparsity_history[-100:]) if len(layer.sparsity_history) >= 100 else 0
             
             # If many neurons are consistently active, we need more capacity
             if recent_sparsity > 0.3 and recent_mean > 0.2:
@@ -260,15 +261,15 @@ class NeuralPathway:
                         # Use random input or the current input as initialization
                         if i == 0:
                             # First layer - use random subset of current raw input
-                            random_indices = np.random.choice(self.input_size, size=int(0.2 * self.input_size))
-                            new_input = np.zeros_like(self.current_input)
+                            random_indices = xp.random.choice(self.input_size, size=int(0.2 * self.input_size))
+                            new_input = xp.zeros_like(self.current_input)
                             new_input[random_indices] = self.current_input[random_indices]
                             layer.replace_neuron(j, new_input)
                         else:
                             # Higher layers - use random subset of current layer input
                             prev_layer_act = self.layers[i-1].activations
-                            random_indices = np.random.choice(len(prev_layer_act), size=int(0.2 * len(prev_layer_act)))
-                            new_input = np.zeros_like(prev_layer_act)
+                            random_indices = xp.random.choice(len(prev_layer_act), size=int(0.2 * len(prev_layer_act)))
+                            new_input = xp.zeros_like(prev_layer_act)
                             new_input[random_indices] = prev_layer_act[random_indices]
                             layer.replace_neuron(j, new_input)
                         
@@ -292,7 +293,7 @@ class NeuralPathway:
         }
         return state
     
-    def get_all_layer_activations(self) -> List[np.ndarray]:
+    def get_all_layer_activations(self) -> List[xp.ndarray]:
         """
         Get activations for all layers.
         
@@ -301,7 +302,7 @@ class NeuralPathway:
         """
         return [layer.activations.copy() for layer in self.layers]
     
-    def get_prediction_error(self, actual_next_input: np.ndarray) -> float:
+    def get_prediction_error(self, actual_next_input: xp.ndarray) -> float:
         """
         Calculate the prediction error between predicted and actual next input.
         
@@ -328,7 +329,7 @@ class NeuralPathway:
             actual_next_input = actual_next_input[:min_size]
         
         # Calculate mean squared error
-        error = np.mean((predicted_input - actual_next_input) ** 2)
+        error = xp.mean((predicted_input - actual_next_input) ** 2)
         
         # Store for learning adjustments
         self._last_prediction_error = error
