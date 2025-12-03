@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="45" fill="#0f172a"/>
+
+  <!-- Brain outline -->
+  <path d="M50 15
+           C 30 15, 15 30, 15 50
+           C 15 70, 30 85, 50 85
+           C 70 85, 85 70, 85 50
+           C 85 30, 70 15, 50 15"
+        fill="none"
+        stroke="url(#brainGrad)"
+        stroke-width="2"
+        filter="url(#glow)"/>
+
+  <!-- Neural nodes -->
+  <circle cx="30" cy="35" r="4" fill="#6366f1" filter="url(#glow)"/>
+  <circle cx="50" cy="25" r="4" fill="#8b5cf6" filter="url(#glow)"/>
+  <circle cx="70" cy="35" r="4" fill="#06b6d4" filter="url(#glow)"/>
+  <circle cx="25" cy="55" r="4" fill="#6366f1" filter="url(#glow)"/>
+  <circle cx="50" cy="50" r="6" fill="url(#brainGrad)" filter="url(#glow)"/>
+  <circle cx="75" cy="55" r="4" fill="#06b6d4" filter="url(#glow)"/>
+  <circle cx="35" cy="70" r="4" fill="#8b5cf6" filter="url(#glow)"/>
+  <circle cx="50" cy="75" r="4" fill="#8b5cf6" filter="url(#glow)"/>
+  <circle cx="65" cy="70" r="4" fill="#06b6d4" filter="url(#glow)"/>
+
+  <!-- Neural connections -->
+  <g stroke="url(#brainGrad)" stroke-width="1" opacity="0.6">
+    <line x1="30" y1="35" x2="50" y2="50"/>
+    <line x1="50" y1="25" x2="50" y2="50"/>
+    <line x1="70" y1="35" x2="50" y2="50"/>
+    <line x1="25" y1="55" x2="50" y2="50"/>
+    <line x1="75" y1="55" x2="50" y2="50"/>
+    <line x1="35" y1="70" x2="50" y2="50"/>
+    <line x1="50" y1="75" x2="50" y2="50"/>
+    <line x1="65" y1="70" x2="50" y2="50"/>
+    <line x1="30" y1="35" x2="50" y2="25"/>
+    <line x1="50" y1="25" x2="70" y2="35"/>
+    <line x1="25" y1="55" x2="35" y2="70"/>
+    <line x1="75" y1="55" x2="65" y2="70"/>
+    <line x1="35" y1="70" x2="50" y2="75"/>
+    <line x1="65" y1="70" x2="50" y2="75"/>
+  </g>
+</svg>
