@@ -63,6 +63,20 @@ from .abstract_reasoning import (
     Pattern,
 )
 
+# Import symbolic reasoning components
+from .symbolic_reasoning import (
+    SymbolicReasoner,
+    Symbol,
+    LogicType,
+)
+
+# Import legacy world model (use causal_reasoning WorldModel for new code)
+from .world_model import (
+    Variable as WorldModelVariable,
+    CausalEdge as WorldModelCausalEdge,
+    Object as WorldModelObject,
+)
+
 # Keep this for reference but mark as legacy/deprecated
 from .multimodal import LegacyMultimodalAssociation
 
@@ -128,4 +142,12 @@ __all__ = [
     'Rule',
     'Analogy',
     'Pattern',
+    # Symbolic reasoning
+    'SymbolicReasoner',
+    'Symbol',
+    'LogicType',
+    # Legacy world model components
+    'WorldModelVariable',
+    'WorldModelCausalEdge',
+    'WorldModelObject',
 ] 
