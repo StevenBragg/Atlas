@@ -25,7 +25,7 @@ from self_organizing_av_system.core.episodic_memory import EpisodicMemory, Episo
 from self_organizing_av_system.core.semantic_memory import SemanticMemory, RelationType
 from self_organizing_av_system.core.meta_learning import MetaLearner, LearningStrategy
 from self_organizing_av_system.core.goal_planning import GoalPlanningSystem, GoalType
-from self_organizing_av_system.core.world_model import WorldModel, CausalRelationType
+from self_organizing_av_system.core.world_model import CausalWorldModel as WorldModel, CausalRelationType
 from self_organizing_av_system.core.symbolic_reasoning import SymbolicReasoner, LogicType
 
 
