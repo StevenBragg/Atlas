@@ -14,7 +14,7 @@ This is a critical component for superintelligence development, enabling:
 
 import numpy as np
 import logging
-from typing import List, Dict, Tuple, Optional, Any, Set
+from typing import List, Dict, Tuple, Optional, Any, Set, Union
 from dataclasses import dataclass, field
 from enum import Enum
 import networkx as nx
