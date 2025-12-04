@@ -21,6 +21,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 import logging
 
+from .backend import xp, to_cpu, to_gpu, HAS_GPU
+
 from .challenge import (
     Challenge,
     ChallengeType,
@@ -33,6 +35,7 @@ from .meta_learning import MetaLearner, LearningStrategy
 from .goal_planning import GoalPlanningSystem, GoalType, Goal
 from .episodic_memory import EpisodicMemory, Episode
 from .progress_tracker import ProgressTracker
+from .self_organizing_network import SelfOrganizingNetwork, StructuralEventType
 
 # Optional import - semantic memory requires networkx
 try:
@@ -56,6 +59,7 @@ class LearningState:
     best_accuracy: float = 0.0
     plateau_count: int = 0
     start_time: float = field(default_factory=time.time)
+    structural_changes: List[Dict[str, Any]] = field(default_factory=list)
 
 
 class LearningEngine:
@@ -74,9 +78,9 @@ class LearningEngine:
         episodic_memory: Optional[EpisodicMemory] = None,
         semantic_memory: Optional[SemanticMemory] = None,
         progress_tracker: Optional[ProgressTracker] = None,
-        learning_rate: float = 0.01,
+        learning_rate: float = 0.1,  # Increased from 0.01 for faster convergence
         batch_size: int = 32,
-        max_plateau_count: int = 5,
+        max_plateau_count: int = 15,  # Increased from 5 to avoid rapid strategy switching
     ):
         """
         Initialize the learning engine.
@@ -106,7 +110,7 @@ class LearningEngine:
         # Semantic memory is optional (requires networkx)
         if HAS_SEMANTIC_MEMORY:
             self.semantic_memory = semantic_memory or SemanticMemory(
-                embedding_dim=state_dim,
+                embedding_size=state_dim,
             )
         else:
             self.semantic_memory = None
@@ -118,6 +122,18 @@ class LearningEngine:
 
         # Learned capabilities
         self.capabilities: Dict[str, LearnedCapability] = {}
+
+        # Self-organizing neural network with dynamic topology
+        self.network = SelfOrganizingNetwork(
+            input_dim=state_dim,
+            initial_layer_sizes=[64, 32],  # Start small, will grow
+            output_dim=state_dim,
+            learning_rate=learning_rate,
+            enable_structural_plasticity=True,
+        )
+
+        # Callbacks for structural changes
+        self._structural_change_callbacks: List[Callable[[Dict[str, Any]], None]] = []
 
         logger.info(f"LearningEngine initialized with state_dim={state_dim}")
 
@@ -219,10 +235,14 @@ class LearningEngine:
 
         try:
             challenge.status = ChallengeStatus.LEARNING
+            logger.info(f"Starting learning loop for {challenge.name}")
 
             while True:
                 # Get batch of training data
                 batch_x, batch_y = self._get_training_batch(challenge)
+
+                if state.iteration == 0:
+                    logger.info(f"First batch shape: x={batch_x.shape}, y={batch_y.shape if batch_y is not None else None}")
 
                 # Apply local plasticity rule
                 accuracy, weights = self._apply_plasticity(
@@ -234,6 +254,10 @@ class LearningEngine:
 
                 # Track progress
                 learning_curve.append(accuracy)
+
+                # Log progress periodically
+                if state.iteration % 50 == 0:
+                    logger.info(f"Iteration {state.iteration}: accuracy={accuracy:.3f}")
 
                 progress_info = self.progress_tracker.update_progress(
                     challenge.id,
@@ -247,6 +271,10 @@ class LearningEngine:
                 # Callback for progress updates
                 if callback:
                     callback(state.iteration, accuracy)
+
+                # Yield to other threads EVERY iteration to keep GUI responsive
+                # This is critical for PyQt responsiveness
+                time.sleep(0.01)  # 10ms yield every iteration
 
                 # Check for plateau and adapt strategy
                 if progress_info['should_adapt']:
@@ -339,8 +367,8 @@ class LearningEngine:
             if challenge.id in self.active_sessions:
                 del self.active_sessions[challenge.id]
 
-    def _initialize_weights(self, challenge: Challenge) -> np.ndarray:
-        """Initialize weights for learning."""
+    def _initialize_weights(self, challenge: Challenge):
+        """Initialize weights for learning (on GPU if available)."""
         if challenge.training_data and challenge.training_data.feature_dim:
             input_dim = challenge.training_data.feature_dim
         else:
@@ -351,46 +379,55 @@ class LearningEngine:
         else:
             output_dim = self.state_dim
 
-        # Xavier-like initialization scaled for Hebbian
-        scale = np.sqrt(2.0 / (input_dim + output_dim))
-        weights = np.random.randn(output_dim, input_dim) * scale
+        # Xavier-like initialization scaled for Hebbian (on GPU)
+        scale = xp.sqrt(2.0 / (input_dim + output_dim))
+        weights = xp.random.randn(output_dim, input_dim) * scale
 
         return weights
 
     def _get_training_batch(
         self,
         challenge: Challenge,
-    ) -> Tuple[np.ndarray, Optional[np.ndarray]]:
-        """Get a batch of training data."""
+    ) -> Tuple[Any, Optional[Any]]:
+        """Get a batch of training data (on GPU if available)."""
         if challenge.training_data:
             samples, labels = challenge.training_data.get_batch(self.batch_size)
 
-            # Convert to numpy arrays
-            batch_x = np.array(samples)
-            batch_y = np.array(labels) if labels else None
+            # Convert to arrays and move to GPU
+            batch_x = to_gpu(np.array(samples))
+
+            # Check for None explicitly to avoid numpy array boolean ambiguity
+            if labels is None:
+                batch_y = None
+            else:
+                batch_y = to_gpu(np.array(labels))
 
             return batch_x, batch_y
         else:
-            # Generate synthetic data for demonstration
-            batch_x = np.random.randn(self.batch_size, self.state_dim)
-            batch_y = np.random.randint(0, 10, self.batch_size)
+            # Generate synthetic data for demonstration (on GPU)
+            batch_x = xp.random.randn(self.batch_size, self.state_dim)
+            batch_y = xp.random.randint(0, 10, self.batch_size)
             return batch_x, batch_y
 
     def _apply_plasticity(
         self,
         state: LearningState,
-        batch_x: np.ndarray,
-        batch_y: Optional[np.ndarray],
-    ) -> Tuple[float, np.ndarray]:
+        batch_x,
+        batch_y,
+    ) -> Tuple[float, Any]:
         """
         Apply local plasticity rule based on selected strategy.
 
         All rules use LOCAL updates only - no backpropagation.
+        Computations run on GPU if available.
+
+        For classification tasks with labels, adds a supervised signal
+        to guide local learning toward correct predictions.
 
         Args:
             state: Current learning state
-            batch_x: Input batch
-            batch_y: Label batch (optional)
+            batch_x: Input batch (on GPU)
+            batch_y: Label batch (optional, on GPU)
 
         Returns:
             Tuple of (accuracy, updated_weights)
@@ -405,48 +442,99 @@ class LearningEngine:
 
         # Ensure weights match input dimension
         if weights.shape[1] != batch_x.shape[1]:
-            # Resize weights
-            new_weights = np.random.randn(weights.shape[0], batch_x.shape[1]) * 0.01
+            # Resize weights (on GPU)
+            new_weights = xp.random.randn(weights.shape[0], batch_x.shape[1]) * 0.01
             weights = new_weights
 
         # Compute activations
         activations = batch_x @ weights.T  # (batch, output_dim)
 
+        # SUPERVISED COMPONENT: If we have labels, add supervised learning signal
+        # This is critical for classification tasks - pure unsupervised Hebbian
+        # won't learn to classify without guidance toward correct outputs
+        if batch_y is not None and batch_y.ndim == 1:
+            # Create target activations from labels (one-hot encoding)
+            num_classes = weights.shape[0]
+            target_activations = xp.zeros((batch_x.shape[0], num_classes), dtype=xp.float32)
+
+            # Only set targets for valid labels
+            valid_mask = (batch_y >= 0) & (batch_y < num_classes)
+            for i in range(batch_x.shape[0]):
+                if valid_mask[i]:
+                    label = int(batch_y[i])
+                    target_activations[i, label] = 1.0
+
+            # Error-driven learning: strengthen correct, weaken incorrect
+            # This is still local (per-synapse) but guided by supervision
+            error = target_activations - xp.tanh(activations)  # Bounded activations
+
+            # Supervised weight update (Delta rule - local Hebbian with error)
+            # Use higher weight for supervised signal for faster convergence
+            supervised_lr = lr * 1.0  # Equal weight to unsupervised
+            dW_supervised = supervised_lr * (error.T @ batch_x) / batch_x.shape[0]
+
+            # Clip to prevent explosion
+            dW_supervised = xp.clip(dW_supervised, -0.5, 0.5)
+            weights += dW_supervised
+
+            # For classification tasks with labels, the supervised signal is dominant
+            # Only apply compatible unsupervised rules (Hebbian-family) at reduced rate
+            # Skip incompatible rules (COMPETITIVE, COOPERATIVE) that fight supervised learning
+            has_supervision = True
+            unsupervised_lr = lr * 0.1  # Much smaller than supervised
+        else:
+            has_supervision = False
+            unsupervised_lr = lr  # Full LR for unsupervised tasks
+
         # Apply learning rule based on strategy
+        # Skip COMPETITIVE/COOPERATIVE when supervised - they fight against labels
         if strategy == LearningStrategy.HEBBIAN:
-            weights = self._hebbian_update(weights, batch_x, activations, lr)
+            weights = self._hebbian_update(weights, batch_x, activations, unsupervised_lr)
 
         elif strategy == LearningStrategy.OJA:
-            weights = self._oja_update(weights, batch_x, activations, lr)
+            weights = self._oja_update(weights, batch_x, activations, unsupervised_lr)
 
         elif strategy == LearningStrategy.STDP:
-            weights = self._stdp_update(weights, batch_x, activations, lr)
+            weights = self._stdp_update(weights, batch_x, activations, unsupervised_lr)
 
         elif strategy == LearningStrategy.BCM:
             theta = state.hyperparameters.get('bcm_threshold', 0.5)
-            weights = self._bcm_update(weights, batch_x, activations, lr, theta)
+            weights = self._bcm_update(weights, batch_x, activations, unsupervised_lr, theta)
 
         elif strategy == LearningStrategy.ANTI_HEBBIAN:
-            weights = self._anti_hebbian_update(weights, batch_x, activations, lr)
+            weights = self._anti_hebbian_update(weights, batch_x, activations, unsupervised_lr)
 
         elif strategy == LearningStrategy.COMPETITIVE:
-            weights = self._competitive_update(weights, batch_x, activations, lr)
+            # Only apply if unsupervised - competitive fights supervised signal
+            if not has_supervision:
+                weights = self._competitive_update(weights, batch_x, activations, unsupervised_lr)
 
         elif strategy == LearningStrategy.COOPERATIVE:
-            weights = self._cooperative_update(weights, batch_x, activations, lr)
+            # Only apply if unsupervised - cooperative fights supervised signal
+            if not has_supervision:
+                weights = self._cooperative_update(weights, batch_x, activations, unsupervised_lr)
 
-        # Calculate accuracy
+        # Calculate accuracy FIRST (needed for network learning reward)
         accuracy = self._calculate_accuracy(weights, batch_x, batch_y)
+
+        # Also learn through the self-organizing network for structural plasticity
+        # Only run every 10 iterations to reduce overhead and keep UI responsive
+        if state.iteration % 10 == 0:
+            try:
+                self._learn_through_network(state, batch_x, batch_y, accuracy)
+            except Exception as e:
+                # Network learning is supplementary - don't fail the main learning
+                logger.debug(f"Network learning skipped: {e}")
 
         return accuracy, weights
 
     def _hebbian_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Hebbian learning: "Neurons that fire together wire together"
 
@@ -456,40 +544,51 @@ class LearningEngine:
         weights += dW
 
         # Normalize to prevent explosion
-        norms = np.linalg.norm(weights, axis=1, keepdims=True)
+        norms = xp.linalg.norm(weights, axis=1, keepdims=True)
         weights = weights / (norms + 1e-8)
 
         return weights
 
     def _oja_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Oja's rule: Normalized Hebbian with decay
 
         ΔW = lr * y * (x - y * W)
         """
+        # Clip activations to prevent overflow
+        y = xp.clip(y, -10, 10)
+
         for i in range(x.shape[0]):
             xi = x[i:i+1]  # (1, input_dim)
             yi = y[i:i+1]  # (1, output_dim)
 
-            # Oja update
-            dW = lr * yi.T @ (xi - yi @ weights)
+            # Oja update with numerical stability
+            reconstruction = yi @ weights
+            dW = lr * yi.T @ (xi - reconstruction)
+
+            # Clip updates to prevent explosion
+            dW = xp.clip(dW, -1, 1)
             weights += dW
+
+        # Normalize weights to prevent explosion
+        norms = xp.linalg.norm(weights, axis=1, keepdims=True)
+        weights = weights / (norms + 1e-8)
 
         return weights
 
     def _stdp_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Spike-timing dependent plasticity (simplified)
 
@@ -504,24 +603,24 @@ class LearningEngine:
         weights += dW
 
         # Clip weights
-        weights = np.clip(weights, -2, 2)
+        weights = xp.clip(weights, -2, 2)
 
         return weights
 
     def _bcm_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
         theta: float,
-    ) -> np.ndarray:
+    ):
         """
         BCM (Bienenstock-Cooper-Munro) rule with sliding threshold
 
         ΔW = lr * y * (y - θ) * x
         """
-        y_mean = np.mean(y, axis=0, keepdims=True)
+        y_mean = xp.mean(y, axis=0, keepdims=True)
 
         for i in range(x.shape[0]):
             xi = x[i:i+1]
@@ -533,21 +632,21 @@ class LearningEngine:
             weights += dW
 
         # Update sliding threshold toward mean activity
-        theta = 0.9 * theta + 0.1 * np.mean(y_mean ** 2)
+        theta = 0.9 * theta + 0.1 * float(xp.mean(y_mean ** 2))
 
         # Normalize
-        norms = np.linalg.norm(weights, axis=1, keepdims=True)
+        norms = xp.linalg.norm(weights, axis=1, keepdims=True)
         weights = weights / (norms + 1e-8)
 
         return weights
 
     def _anti_hebbian_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Anti-Hebbian: Decorrelation learning
 
@@ -557,17 +656,17 @@ class LearningEngine:
         weights += dW
 
         # Keep weights bounded
-        weights = np.clip(weights, -2, 2)
+        weights = xp.clip(weights, -2, 2)
 
         return weights
 
     def _competitive_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Competitive learning: Winner-take-all
 
@@ -578,7 +677,7 @@ class LearningEngine:
             yi = y[i]
 
             # Find winner (most active unit)
-            winner = np.argmax(yi)
+            winner = int(xp.argmax(yi))
 
             # Only winner learns
             dW = lr * (xi - weights[winner:winner+1])
@@ -588,11 +687,11 @@ class LearningEngine:
 
     def _cooperative_update(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: np.ndarray,
+        weights,
+        x,
+        y,
         lr: float,
-    ) -> np.ndarray:
+    ):
         """
         Cooperative learning: Ensemble coordination
 
@@ -603,11 +702,11 @@ class LearningEngine:
             yi = y[i]
 
             # Find winner
-            winner = np.argmax(yi)
+            winner = int(xp.argmax(yi))
 
             # Create neighborhood function (Gaussian)
-            indices = np.arange(weights.shape[0])
-            neighborhood = np.exp(-0.5 * ((indices - winner) / 2) ** 2)
+            indices = xp.arange(weights.shape[0])
+            neighborhood = xp.exp(-0.5 * ((indices - winner) / 2) ** 2)
             neighborhood = neighborhood.reshape(-1, 1)
 
             # All units learn proportionally to neighborhood
@@ -618,34 +717,119 @@ class LearningEngine:
 
     def _calculate_accuracy(
         self,
-        weights: np.ndarray,
-        x: np.ndarray,
-        y: Optional[np.ndarray],
+        weights,
+        x,
+        y,
     ) -> float:
         """Calculate accuracy of current weights."""
         if y is None:
             # Unsupervised: use reconstruction error as proxy
             activations = x @ weights.T
             reconstruction = activations @ weights
-            error = np.mean((x - reconstruction) ** 2)
+            error = float(xp.mean((x - reconstruction) ** 2))
             return max(0, 1 - error)
 
         # Supervised: classification accuracy
         activations = x @ weights.T
-        predictions = np.argmax(activations, axis=1)
+        predictions = xp.argmax(activations, axis=1)
 
         if y.ndim > 1:
-            targets = np.argmax(y, axis=1)
+            targets = xp.argmax(y, axis=1)
         else:
             targets = y
 
         # Handle case where targets exceed weight dimensions
         valid_mask = targets < weights.shape[0]
-        if not np.any(valid_mask):
+        if not xp.any(valid_mask):
             return 0.0
 
-        accuracy = np.mean(predictions[valid_mask] == targets[valid_mask])
+        accuracy = xp.mean(predictions[valid_mask] == targets[valid_mask])
         return float(accuracy)
+
+    def _learn_through_network(
+        self,
+        state: LearningState,
+        batch_x,
+        batch_y,
+        accuracy: float
+    ) -> None:
+        """
+        Apply learning through the self-organizing network.
+
+        Projects inputs to the expected dimension and applies structural plasticity.
+        """
+        learning_rule_map = {
+            LearningStrategy.HEBBIAN: 'hebbian',
+            LearningStrategy.OJA: 'oja',
+            LearningStrategy.STDP: 'stdp',
+            LearningStrategy.BCM: 'oja',
+            LearningStrategy.ANTI_HEBBIAN: 'hebbian',
+            LearningStrategy.COMPETITIVE: 'oja',
+            LearningStrategy.COOPERATIVE: 'oja',
+        }
+
+        # Project input to network's expected dimension if needed
+        input_dim = batch_x.shape[1] if batch_x.ndim > 1 else batch_x.shape[0]
+        network_input_dim = self.network.input_dim
+
+        if input_dim != network_input_dim:
+            # Create/update projection matrix (random projection)
+            if not hasattr(self, '_input_projection') or self._input_projection.shape != (input_dim, network_input_dim):
+                self._input_projection = xp.random.randn(input_dim, network_input_dim).astype(xp.float32)
+                self._input_projection /= xp.sqrt(input_dim)  # Normalize
+
+            # Project input
+            if batch_x.ndim > 1:
+                projected_x = batch_x @ self._input_projection
+            else:
+                projected_x = batch_x @ self._input_projection
+        else:
+            projected_x = batch_x
+
+        # Prepare target for network learning
+        network_target = None
+        if batch_y is not None and batch_y.ndim == 1:
+            max_label = int(xp.max(batch_y))
+            if max_label < self.network.output_dim:
+                network_target = xp.zeros((batch_y.shape[0], self.network.output_dim), dtype=xp.float32)
+                for i in range(batch_y.shape[0]):
+                    label_idx = int(batch_y[i])
+                    if label_idx < self.network.output_dim:
+                        network_target[i, label_idx] = 1.0
+
+        # Learn through the network (triggers structural plasticity)
+        num_samples = min(projected_x.shape[0] if projected_x.ndim > 1 else 1, 3)
+
+        for i in range(num_samples):
+            if projected_x.ndim > 1:
+                sample = projected_x[i]
+            else:
+                sample = projected_x
+
+            target = None
+            if network_target is not None and i < network_target.shape[0]:
+                target = network_target[i]
+
+            # Use accuracy as reward signal
+            reward = accuracy if accuracy > 0 else 0.0
+
+            network_result = self.network.learn(
+                sample,
+                target=target,
+                reward=reward,
+                learning_rule=learning_rule_map.get(state.strategy, 'oja')
+            )
+
+            # Track structural changes
+            if network_result.get('neurons_added') or network_result.get('neurons_pruned'):
+                state.structural_changes.append(network_result)
+
+                # Notify callbacks
+                for callback in self._structural_change_callbacks:
+                    try:
+                        callback(network_result)
+                    except Exception as e:
+                        logger.debug(f"Structural change callback error: {e}")
 
     def _adapt_strategy(
         self,
@@ -772,3 +956,73 @@ class LearningEngine:
     def list_capabilities(self) -> List[LearnedCapability]:
         """List all learned capabilities."""
         return list(self.capabilities.values())
+
+    def get_network_structure(self) -> Dict[str, Any]:
+        """
+        Get the current structure of the self-organizing network.
+
+        This returns the complete network topology including:
+        - Layer sizes and neuron states
+        - Connection weights and statistics
+        - Recent structural changes (neurons added/pruned)
+
+        Returns:
+            Dictionary with complete network structure for visualization
+        """
+        return self.network.get_structure()
+
+    def get_recent_structural_changes(self, limit: int = 20) -> List[Dict[str, Any]]:
+        """
+        Get recent structural changes for animation.
+
+        Args:
+            limit: Maximum number of events to return
+
+        Returns:
+            List of recent structural change events
+        """
+        return self.network.get_recent_structural_changes(limit)
+
+    def register_structural_change_callback(
+        self,
+        callback: Callable[[Dict[str, Any]], None]
+    ) -> None:
+        """
+        Register a callback to be notified of structural changes.
+
+        Args:
+            callback: Function to call when structure changes
+        """
+        self._structural_change_callbacks.append(callback)
+
+    def get_network_stats(self) -> Dict[str, Any]:
+        """Get network statistics."""
+        return self.network.get_stats()
+
+    def get_layer_activations(self) -> List[np.ndarray]:
+        """Get activations from the last forward pass through the network."""
+        return self.network.get_layer_activations()
+
+    def get_internal_state(self) -> np.ndarray:
+        """
+        Get the current internal state representation.
+
+        This is useful for the creative canvas controller.
+
+        Returns:
+            numpy array representing current internal state
+        """
+        # Combine layer activations into a single state vector
+        activations = self.network.get_layer_activations()
+        if not activations:
+            return np.zeros(self.state_dim)
+
+        # Flatten and pad/truncate to state_dim
+        combined = np.concatenate([a.flatten() for a in activations])
+
+        if len(combined) >= self.state_dim:
+            return combined[:self.state_dim].astype(np.float32)
+        else:
+            result = np.zeros(self.state_dim, dtype=np.float32)
+            result[:len(combined)] = combined
+            return result

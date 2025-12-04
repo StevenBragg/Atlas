@@ -10,14 +10,21 @@ This is a critical component for superintelligence development, enabling:
 - Knowledge graph construction
 - Inference and deduction
 - Semantic generalization
+
+Now with optional persistent storage via ChromaDB (vectors) + SQLite (graph).
 """
 
 import numpy as np
 import logging
-from typing import List, Dict, Tuple, Optional, Any, Set, Union
+import time
+from typing import List, Dict, Tuple, Optional, Any, Set, Union, TYPE_CHECKING
 from dataclasses import dataclass, field
 from enum import Enum
 import networkx as nx
+
+if TYPE_CHECKING:
+    from ..database.vector_store import VectorStore
+    from ..database.graph_store import GraphStore
 
 logger = logging.getLogger(__name__)
 
@@ -99,6 +106,8 @@ class SemanticMemory:
         enable_inference: bool = True,
         enable_generalization: bool = True,
         random_seed: Optional[int] = None,
+        vector_store: Optional['VectorStore'] = None,
+        graph_store: Optional['GraphStore'] = None,
     ):
         """
         Initialize semantic memory system.
@@ -114,6 +123,8 @@ class SemanticMemory:
             enable_inference: Whether to perform inference
             enable_generalization: Whether to generalize from examples
             random_seed: Random seed for reproducibility
+            vector_store: Optional VectorStore for concept embedding persistence
+            graph_store: Optional GraphStore for concept graph persistence
         """
         if random_seed is not None:
             np.random.seed(random_seed)
@@ -128,7 +139,12 @@ class SemanticMemory:
         self.enable_inference = enable_inference
         self.enable_generalization = enable_generalization
 
-        # Concept storage
+        # Persistent storage (optional)
+        self.vector_store = vector_store
+        self.graph_store = graph_store
+        self._persistence_enabled = vector_store is not None or graph_store is not None
+
+        # Concept storage (in-memory)
         self.concepts: Dict[str, Concept] = {}
         self.concept_graph = nx.DiGraph()  # Directed graph of concepts
 
@@ -144,7 +160,12 @@ class SemanticMemory:
         self.total_inferences_made = 0
         self.total_generalizations = 0
 
-        logger.info(f"Initialized semantic memory: embedding_size={embedding_size}")
+        # Load from persistent storage if available
+        if self._persistence_enabled:
+            self._load_from_stores()
+
+        logger.info(f"Initialized semantic memory: embedding_size={embedding_size}, "
+                   f"persistence={self._persistence_enabled}")
 
     def add_concept(
         self,
@@ -195,6 +216,10 @@ class SemanticMemory:
         # Check capacity
         if len(self.concepts) > self.max_concepts:
             self._prune_weakest_concept()
+
+        # Persist to stores
+        if self._persistence_enabled:
+            self._persist_concept(concept)
 
         return concept
 
@@ -269,6 +294,10 @@ class SemanticMemory:
         # Learn inference rules if enabled
         if self.enable_inference:
             self._extract_inference_rules(source, target, relation_type)
+
+        # Persist to stores
+        if self._persistence_enabled:
+            self._persist_relation(relation)
 
         return relation
 
@@ -588,6 +617,25 @@ class SemanticMemory:
 
         logger.debug(f"Pruned concept: {name}")
 
+    def _safe_avg_degree(self) -> float:
+        """Thread-safe average degree calculation."""
+        try:
+            degrees = list(self.concept_graph.degree())
+            if degrees:
+                return float(np.mean([d for n, d in degrees]))
+        except (RuntimeError, StopIteration):
+            pass  # Graph modified during iteration
+        return 0.0
+
+    def _safe_graph_density(self) -> float:
+        """Thread-safe graph density calculation."""
+        try:
+            if len(self.concepts) > 0:
+                return nx.density(self.concept_graph)
+        except (RuntimeError, StopIteration):
+            pass  # Graph modified during iteration
+        return 0.0
+
     def get_stats(self) -> Dict[str, Any]:
         """Get statistics about the semantic memory system."""
         return {
@@ -597,8 +645,8 @@ class SemanticMemory:
             'total_relations_created': self.total_relations_created,
             'total_inferences_made': self.total_inferences_made,
             'total_generalizations': self.total_generalizations,
-            'avg_degree': np.mean([d for n, d in self.concept_graph.degree()]) if len(self.concepts) > 0 else 0,
-            'graph_density': nx.density(self.concept_graph) if len(self.concepts) > 0 else 0,
+            'avg_degree': self._safe_avg_degree(),
+            'graph_density': self._safe_graph_density(),
         }
 
     def serialize(self) -> Dict[str, Any]:
@@ -626,26 +674,200 @@ class SemanticMemory:
         }
 
     @classmethod
-    def deserialize(cls, data: Dict[str, Any]) -> 'SemanticMemory':
+    def deserialize(
+        cls,
+        data: Dict[str, Any],
+        vector_store: Optional['VectorStore'] = None,
+        graph_store: Optional['GraphStore'] = None,
+    ) -> 'SemanticMemory':
         """Create a semantic memory instance from serialized data."""
-        instance = cls(embedding_size=data['embedding_size'])
+        instance = cls(
+            embedding_size=data['embedding_size'],
+            vector_store=vector_store,
+            graph_store=graph_store,
+        )
 
-        # Restore concepts
-        for name, concept_data in data.get('concepts', {}).items():
-            instance.add_concept(
-                name,
-                np.array(concept_data['embedding']),
-                attributes=concept_data.get('attributes', {}),
-            )
-            instance.concepts[name].consolidation_strength = concept_data.get('consolidation_strength', 0.0)
+        # Only restore from serialized data if not using persistent stores
+        if not instance._persistence_enabled:
+            # Restore concepts
+            for name, concept_data in data.get('concepts', {}).items():
+                instance.add_concept(
+                    name,
+                    np.array(concept_data['embedding']),
+                    attributes=concept_data.get('attributes', {}),
+                )
+                instance.concepts[name].consolidation_strength = concept_data.get('consolidation_strength', 0.0)
 
-        # Restore relations
-        for rel in data.get('relations', []):
-            instance.add_relation(
-                rel['source'],
-                rel['target'],
-                rel['type'],
-                strength=rel.get('weight', 1.0),
-            )
+            # Restore relations
+            for rel in data.get('relations', []):
+                instance.add_relation(
+                    rel['source'],
+                    rel['target'],
+                    rel['type'],
+                    strength=rel.get('weight', 1.0),
+                )
 
         return instance
+
+    # ==================== Persistence Methods ====================
+
+    def _persist_concept(self, concept: Concept) -> bool:
+        """Persist a concept to the stores."""
+        success = True
+
+        # Persist embedding to vector store
+        if self.vector_store:
+            try:
+                metadata = {
+                    'node_type': 'concept',
+                    'activation_count': concept.activation_count,
+                    'consolidation_strength': concept.consolidation_strength,
+                    'creation_time': concept.creation_time,
+                    'last_activation': concept.last_activation,
+                    'attributes': concept.attributes,
+                }
+                success &= self.vector_store.add_concept(
+                    concept_name=concept.name,
+                    embedding=concept.embedding,
+                    metadata=metadata
+                )
+            except Exception as e:
+                logger.error(f"Failed to persist concept embedding {concept.name}: {e}")
+                success = False
+
+        # Persist node to graph store
+        if self.graph_store:
+            try:
+                success &= self.graph_store.add_node(
+                    name=concept.name,
+                    node_type='concept',
+                    attributes=concept.attributes,
+                    consolidation_strength=concept.consolidation_strength,
+                    created_at=concept.creation_time,
+                    last_activated=concept.last_activation,
+                )
+            except Exception as e:
+                logger.error(f"Failed to persist concept node {concept.name}: {e}")
+                success = False
+
+        return success
+
+    def _persist_relation(self, relation: Relation) -> bool:
+        """Persist a relation to the graph store."""
+        if not self.graph_store:
+            return False
+
+        try:
+            return self.graph_store.add_edge(
+                source=relation.source,
+                target=relation.target,
+                relation_type=relation.relation_type.value,
+                weight=relation.strength,
+                bidirectional=relation.bidirectional,
+                metadata=relation.metadata,
+            )
+        except Exception as e:
+            logger.error(f"Failed to persist relation {relation.source}->{relation.target}: {e}")
+            return False
+
+    def _load_from_stores(self) -> int:
+        """Load concepts and relations from persistent stores."""
+        loaded_count = 0
+
+        # Load concepts from graph store (has metadata)
+        if self.graph_store:
+            try:
+                node_names = self.graph_store.get_all_node_names()
+                logger.info(f"Loading {len(node_names)} concepts from graph store...")
+
+                for name in node_names:
+                    node = self.graph_store.get_node(name)
+                    if node:
+                        # Try to get embedding from vector store
+                        embedding = None
+                        if self.vector_store:
+                            result = self.vector_store.get_concept(name)
+                            if result:
+                                embedding, _ = result
+
+                        if embedding is None:
+                            # Create random embedding if not found
+                            embedding = np.random.randn(self.embedding_size).astype(np.float32)
+
+                        # Create concept
+                        concept = Concept(
+                            name=name,
+                            embedding=embedding,
+                            attributes=node.attributes,
+                            activation_count=node.activation_count,
+                            creation_time=node.created_at,
+                            last_activation=node.last_activated,
+                            consolidation_strength=node.consolidation_strength,
+                        )
+                        self.concepts[name] = concept
+                        self.concept_graph.add_node(name, concept=concept)
+                        loaded_count += 1
+
+                # Load edges
+                for name in node_names:
+                    edges = self.graph_store.get_outgoing_edges(name)
+                    for edge in edges:
+                        try:
+                            relation_type = RelationType(edge.relation_type)
+                            self.concept_graph.add_edge(
+                                edge.source, edge.target,
+                                type=relation_type,
+                                weight=edge.weight,
+                            )
+                        except (ValueError, KeyError) as e:
+                            logger.debug(f"Skipping edge with unknown relation type: {edge.relation_type}")
+
+                logger.info(f"Loaded {loaded_count} concepts from stores")
+
+            except Exception as e:
+                logger.error(f"Failed to load from stores: {e}")
+
+        return loaded_count
+
+    def sync_to_stores(self) -> Tuple[int, int]:
+        """Sync all in-memory concepts and relations to stores."""
+        concepts_synced = 0
+        relations_synced = 0
+
+        # Sync concepts
+        for concept in self.concepts.values():
+            if self._persist_concept(concept):
+                concepts_synced += 1
+
+        # Sync relations
+        if self.graph_store:
+            try:
+                for u, v, data in self.concept_graph.edges(data=True):
+                    relation_type = data.get('type')
+                    if relation_type:
+                        if self.graph_store.add_edge(
+                            source=u,
+                            target=v,
+                            relation_type=relation_type.value if hasattr(relation_type, 'value') else str(relation_type),
+                            weight=data.get('weight', 1.0),
+                        ):
+                            relations_synced += 1
+            except Exception as e:
+                logger.error(f"Failed to sync relations: {e}")
+
+        logger.info(f"Synced {concepts_synced} concepts and {relations_synced} relations to stores")
+        return concepts_synced, relations_synced
+
+    def set_stores(
+        self,
+        vector_store: Optional['VectorStore'] = None,
+        graph_store: Optional['GraphStore'] = None,
+    ) -> None:
+        """Set the stores for persistence."""
+        self.vector_store = vector_store
+        self.graph_store = graph_store
+        self._persistence_enabled = vector_store is not None or graph_store is not None
+
+        # Sync existing data
+        if self._persistence_enabled and self.concepts:
+            self.sync_to_stores()

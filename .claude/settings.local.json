@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(dir:*)",
+      "Bash(python:*)",
+      "Bash(conda run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

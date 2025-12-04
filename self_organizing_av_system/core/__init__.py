@@ -97,6 +97,18 @@ from .challenge_learner import ChallengeLearner, learn_challenge
 from .progress_tracker import ProgressTracker
 from .learning_engine import LearningEngine
 
+# Import self-organizing network
+from .self_organizing_network import (
+    SelfOrganizingNetwork,
+    StructuralEvent,
+    StructuralEventType,
+    NetworkSnapshot,
+)
+
+# Import neural building blocks
+from .neuron import Neuron
+from .layer import NeuralLayer
+
 # Define package version
 __version__ = "0.3.0"
 
@@ -182,4 +194,11 @@ __all__ = [
     'learn_challenge',
     'ProgressTracker',
     'LearningEngine',
+    # Self-organizing network
+    'SelfOrganizingNetwork',
+    'StructuralEvent',
+    'StructuralEventType',
+    'NetworkSnapshot',
+    'Neuron',
+    'NeuralLayer',
 ] 

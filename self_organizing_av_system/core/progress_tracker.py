@@ -88,8 +88,8 @@ class ProgressTracker:
     def __init__(
         self,
         mastery_threshold: float = 0.8,
-        plateau_window: int = 20,
-        plateau_threshold: float = 0.01,
+        plateau_window: int = 50,  # Increased from 20 for more patience
+        plateau_threshold: float = 0.02,  # Increased from 0.01 for more tolerance
         curriculum_adjustment_rate: float = 0.1,
     ):
         """

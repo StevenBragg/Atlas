@@ -9,14 +9,20 @@ This is a critical component for superintelligence development, enabling:
 - Context-based retrieval
 - Memory consolidation and replay
 - One-shot learning from significant events
+
+Now with optional ChromaDB-backed persistent storage for lifelong learning.
 """
 
 import numpy as np
 import logging
-from typing import List, Dict, Tuple, Optional, Any
+import uuid
+from typing import List, Dict, Tuple, Optional, Any, TYPE_CHECKING
 from dataclasses import dataclass
 from collections import deque
 import time
+
+if TYPE_CHECKING:
+    from ..database.vector_store import VectorStore
 
 logger = logging.getLogger(__name__)
 
@@ -32,9 +38,14 @@ class Episode:
     surprise_level: float  # How surprising/novel the episode was
     replay_count: int = 0  # Number of times replayed
     consolidation_strength: float = 0.0  # Strength of consolidation
+    episode_id: str = ""  # Unique identifier for persistence
+
+    def __post_init__(self):
+        if not self.episode_id:
+            self.episode_id = f"ep_{uuid.uuid4().hex[:12]}"
 
     def __hash__(self):
-        return hash(self.timestamp)
+        return hash(self.episode_id or self.timestamp)
 
 
 class EpisodicMemory:
@@ -61,6 +72,7 @@ class EpisodicMemory:
         novelty_bonus: float = 2.0,
         emotional_bonus: float = 1.5,
         random_seed: Optional[int] = None,
+        vector_store: Optional['VectorStore'] = None,
     ):
         """
         Initialize episodic memory system.
@@ -77,6 +89,7 @@ class EpisodicMemory:
             novelty_bonus: Multiplier for storing novel experiences
             emotional_bonus: Multiplier for emotionally significant experiences
             random_seed: Random seed for reproducibility
+            vector_store: Optional VectorStore for persistent storage
         """
         if random_seed is not None:
             np.random.seed(random_seed)
@@ -92,9 +105,13 @@ class EpisodicMemory:
         self.novelty_bonus = novelty_bonus
         self.emotional_bonus = emotional_bonus
 
-        # Storage for episodes
+        # Persistent storage (optional)
+        self.vector_store = vector_store
+        self._persistence_enabled = vector_store is not None
+
+        # Storage for episodes (in-memory cache)
         self.episodes: List[Episode] = []
-        self.episode_index: Dict[int, Episode] = {}  # Fast lookup by index
+        self.episode_index: Dict[str, Episode] = {}  # Fast lookup by ID
 
         # Consolidation tracking
         self.consolidated_episodes: List[Episode] = []
@@ -111,8 +128,12 @@ class EpisodicMemory:
         self.total_replayed = 0
         self.total_forgotten = 0
 
+        # Load from persistent storage if available
+        if self._persistence_enabled:
+            self._load_from_store()
+
         logger.info(f"Initialized episodic memory: state_size={state_size}, "
-                   f"max_episodes={max_episodes}")
+                   f"max_episodes={max_episodes}, persistence={self._persistence_enabled}")
 
     def store(
         self,
@@ -164,6 +185,7 @@ class EpisodicMemory:
 
         # Store episode
         self.episodes.append(episode)
+        self.episode_index[episode.episode_id] = episode
         self.total_stored += 1
 
         # Check capacity and forget if needed
@@ -174,6 +196,10 @@ class EpisodicMemory:
         if priority > 2.0 and self.enable_consolidation:
             episode.consolidation_strength = min(1.0, priority / 3.0)
             self.consolidated_episodes.append(episode)
+
+        # Persist to vector store
+        if self._persistence_enabled:
+            self._persist_episode(episode)
 
         logger.debug(f"Stored episode {len(self.episodes)} with priority {priority:.2f}")
         return episode
@@ -463,27 +489,157 @@ class EpisodicMemory:
         }
 
     @classmethod
-    def deserialize(cls, data: Dict[str, Any]) -> 'EpisodicMemory':
+    def deserialize(cls, data: Dict[str, Any], vector_store: Optional['VectorStore'] = None) -> 'EpisodicMemory':
         """Create an episodic memory instance from serialized data."""
         instance = cls(
             state_size=data['state_size'],
             max_episodes=data['max_episodes'],
             consolidation_threshold=data['consolidation_threshold'],
+            vector_store=vector_store,
         )
 
-        # Restore consolidated episodes
-        for ep_data in data.get('episodes', []):
-            episode = Episode(
-                timestamp=ep_data['timestamp'],
-                state=np.array(ep_data['state']),
-                context=ep_data['context'],
-                sensory_data={},  # Not saved for efficiency
-                emotional_valence=ep_data['emotional_valence'],
-                surprise_level=ep_data['surprise_level'],
-                replay_count=ep_data['replay_count'],
-                consolidation_strength=ep_data['consolidation_strength'],
-            )
-            instance.consolidated_episodes.append(episode)
-            instance.episodes.append(episode)
+        # Restore consolidated episodes (only if not loading from vector store)
+        if not instance._persistence_enabled:
+            for ep_data in data.get('episodes', []):
+                episode = Episode(
+                    timestamp=ep_data['timestamp'],
+                    state=np.array(ep_data['state']),
+                    context=ep_data['context'],
+                    sensory_data={},  # Not saved for efficiency
+                    emotional_valence=ep_data['emotional_valence'],
+                    surprise_level=ep_data['surprise_level'],
+                    replay_count=ep_data['replay_count'],
+                    consolidation_strength=ep_data['consolidation_strength'],
+                    episode_id=ep_data.get('episode_id', ''),
+                )
+                instance.consolidated_episodes.append(episode)
+                instance.episodes.append(episode)
+                instance.episode_index[episode.episode_id] = episode
 
         return instance
+
+    # ==================== Persistence Methods ====================
+
+    def _persist_episode(self, episode: Episode) -> bool:
+        """Persist an episode to the vector store."""
+        if not self._persistence_enabled or not self.vector_store:
+            return False
+
+        try:
+            metadata = {
+                'timestamp': episode.timestamp,
+                'emotional_valence': episode.emotional_valence,
+                'surprise_level': episode.surprise_level,
+                'replay_count': episode.replay_count,
+                'consolidation_strength': episode.consolidation_strength,
+                'context': episode.context,  # Will be serialized by VectorStore
+            }
+
+            return self.vector_store.add_episode(
+                episode_id=episode.episode_id,
+                embedding=episode.state,
+                metadata=metadata
+            )
+        except Exception as e:
+            logger.error(f"Failed to persist episode {episode.episode_id}: {e}")
+            return False
+
+    def _load_from_store(self) -> int:
+        """Load episodes from the vector store into memory."""
+        if not self._persistence_enabled or not self.vector_store:
+            return 0
+
+        loaded_count = 0
+        try:
+            # Get count of stored episodes
+            stored_count = self.vector_store.count_episodes()
+            if stored_count == 0:
+                logger.info("No episodes in vector store to load")
+                return 0
+
+            logger.info(f"Loading {stored_count} episodes from vector store...")
+
+            # We don't load all episodes upfront - they'll be loaded on demand
+            # Just mark that persistence is ready
+            logger.info(f"Vector store has {stored_count} episodes available")
+            return stored_count
+
+        except Exception as e:
+            logger.error(f"Failed to load from vector store: {e}")
+            return 0
+
+    def retrieve_from_store(
+        self,
+        cue: np.ndarray,
+        n_episodes: int = 5,
+    ) -> List[Episode]:
+        """
+        Retrieve episodes using the vector store's ANN search.
+
+        This is faster than in-memory search for large episode counts.
+
+        Args:
+            cue: Neural state cue for retrieval
+            n_episodes: Number of episodes to retrieve
+
+        Returns:
+            List of retrieved episodes
+        """
+        if not self._persistence_enabled or not self.vector_store:
+            return self.retrieve(cue=cue, n_episodes=n_episodes)
+
+        try:
+            results = self.vector_store.search_episodes(cue, n_results=n_episodes)
+
+            episodes = []
+            for result in results:
+                # Check if already in memory
+                if result.id in self.episode_index:
+                    episodes.append(self.episode_index[result.id])
+                else:
+                    # Reconstruct episode from stored data
+                    metadata = result.metadata
+                    episode = Episode(
+                        timestamp=metadata.get('timestamp', time.time()),
+                        state=result.embedding,
+                        context=metadata.get('context', {}),
+                        sensory_data={},  # Not stored
+                        emotional_valence=metadata.get('emotional_valence', 0.0),
+                        surprise_level=metadata.get('surprise_level', 0.0),
+                        replay_count=metadata.get('replay_count', 0),
+                        consolidation_strength=metadata.get('consolidation_strength', 0.0),
+                        episode_id=result.id,
+                    )
+                    episodes.append(episode)
+
+                    # Cache in memory
+                    self.episode_index[result.id] = episode
+
+            self.total_retrieved += len(episodes)
+            return episodes
+
+        except Exception as e:
+            logger.error(f"Failed to retrieve from store: {e}")
+            return self.retrieve(cue=cue, n_episodes=n_episodes)
+
+    def sync_consolidated_to_store(self) -> int:
+        """Sync all consolidated episodes to the vector store."""
+        if not self._persistence_enabled or not self.vector_store:
+            return 0
+
+        synced = 0
+        for episode in self.consolidated_episodes:
+            if self._persist_episode(episode):
+                synced += 1
+
+        logger.info(f"Synced {synced} consolidated episodes to vector store")
+        return synced
+
+    def set_vector_store(self, vector_store: 'VectorStore') -> None:
+        """Set the vector store for persistence."""
+        self.vector_store = vector_store
+        self._persistence_enabled = True
+
+        # Sync existing consolidated episodes
+        if self.consolidated_episodes:
+            self.sync_consolidated_to_store()

@@ -116,7 +116,7 @@ class ChallengeLearner:
         # Semantic memory is optional (requires networkx)
         if HAS_SEMANTIC_MEMORY and SemanticMemory is not None:
             self.semantic_memory = SemanticMemory(
-                embedding_dim=state_dim,
+                embedding_size=state_dim,
             )
         else:
             self.semantic_memory = None
@@ -365,8 +365,8 @@ class ChallengeLearner:
             'capabilities_learned': len(self.get_capabilities()),
             'meta_learning_selections': meta_stats.get('total_selections', 0),
             'curriculum_difficulty': tracker_stats.get('current_difficulty', 0.3),
-            'episodic_memories': self.episodic_memory.get_statistics().get('total_stored', 0),
-            'semantic_concepts': self.semantic_memory.get_statistics().get('total_concepts', 0) if self.semantic_memory else 0,
+            'episodic_memories': self.episodic_memory.get_stats().get('total_stored', 0),
+            'semantic_concepts': self.semantic_memory.get_stats().get('total_concepts', 0) if self.semantic_memory else 0,
         }
 
     def _progress_callback(self, iteration: int, accuracy: float) -> None:

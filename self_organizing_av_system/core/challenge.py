@@ -42,6 +42,7 @@ class Modality(Enum):
     MULTIMODAL = auto()   # Combined modalities
     EMBEDDING = auto()    # Pre-computed embeddings/features
     SYMBOLIC = auto()     # Symbolic/logical data
+    CANVAS = auto()       # 512x512 creative canvas output (generation)
 
 
 class ChallengeStatus(Enum):
@@ -100,7 +101,14 @@ class TrainingData:
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
-        if self.samples and self.feature_dim is None:
+        # Check if samples exist (handle numpy arrays properly)
+        has_samples = (
+            self.samples is not None and
+            (isinstance(self.samples, np.ndarray) and len(self.samples) > 0) or
+            (not isinstance(self.samples, np.ndarray) and self.samples)
+        )
+
+        if has_samples and self.feature_dim is None:
             # Try to infer feature dimension
             sample = self.samples[0]
             if isinstance(sample, np.ndarray):
@@ -111,9 +119,18 @@ class TrainingData:
         if self.labels is not None and self.num_classes is None:
             # Try to infer number of classes
             try:
+                # Check if labels exist (handle numpy arrays properly)
+                has_labels = (
+                    isinstance(self.labels, np.ndarray) and len(self.labels) > 0
+                ) or (
+                    not isinstance(self.labels, np.ndarray) and self.labels
+                )
                 # Only works for hashable labels
-                if self.labels and not isinstance(self.labels[0], (np.ndarray, list)):
-                    unique_labels = set(self.labels)
+                if has_labels and not isinstance(self.labels[0], (np.ndarray, list)):
+                    if isinstance(self.labels, np.ndarray):
+                        unique_labels = set(self.labels.tolist())
+                    else:
+                        unique_labels = set(self.labels)
                     self.num_classes = len(unique_labels)
             except (TypeError, IndexError):
                 pass  # Can't infer num_classes from these labels
@@ -129,7 +146,12 @@ class TrainingData:
         indices = indices[:batch_size]
 
         batch_samples = [self.samples[i] for i in indices]
-        batch_labels = [self.labels[i] for i in indices] if self.labels else None
+
+        # Handle labels - check for None explicitly to avoid numpy array boolean ambiguity
+        if self.labels is None:
+            batch_labels = None
+        else:
+            batch_labels = [self.labels[i] for i in indices]
 
         return batch_samples, batch_labels
 

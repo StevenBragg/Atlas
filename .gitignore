@@ -91,3 +91,10 @@ temp/
 output/
 results/
 experiments/
+
+# Data directories (runtime data)
+atlas_data/
+test_atlas_data/
+
+# Accidental files
+nul
