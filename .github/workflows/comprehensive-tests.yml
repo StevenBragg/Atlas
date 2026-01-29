@@ -13,7 +13,6 @@ on:
         default: '3.10'
         type: choice
         options:
-          - '3.8'
           - '3.9'
           - '3.10'
           - '3.11'
@@ -598,7 +597,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r self_organizing_av_system/requirements_no_audio.txt
         pip install pytest pytest-cov pytest-timeout
-        pip install fastapi httpx uvicorn pydantic
+        pip install -r web/backend/requirements.txt
 
     - name: Run Web API Tests
       run: |
@@ -686,7 +685,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.8', '3.9', '3.11']
+        python-version: ['3.9', '3.11']
 
     steps:
     - name: Checkout repository
@@ -708,7 +707,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r self_organizing_av_system/requirements_no_audio.txt
         pip install pytest pytest-cov pytest-timeout
-        pip install fastapi httpx uvicorn pydantic
+        pip install -r web/backend/requirements.txt
 
     - name: Run All Tests (Python ${{ matrix.python-version }})
       run: |
@@ -765,7 +764,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r self_organizing_av_system/requirements_no_audio.txt
         pip install pytest pytest-cov pytest-timeout coverage
-        pip install fastapi httpx uvicorn pydantic
+        pip install -r web/backend/requirements.txt
 
     - name: Run All Tests with Coverage
       run: |
