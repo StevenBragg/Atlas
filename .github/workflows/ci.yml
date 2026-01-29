@@ -1,0 +1,764 @@
+name: Atlas CI
+
+on:
+  push:
+    branches: [ main, develop, 'claude/*' ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      python_version:
+        description: 'Python version to run tests on'
+        required: false
+        default: '3.10'
+        type: choice
+        options:
+          - '3.9'
+          - '3.10'
+          - '3.11'
+      run_full_model:
+        description: 'Run full model execution test'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  PYTHONPATH: ${{ github.workspace }}
+
+# ---------------------------------------------------------------------------
+# Reusable setup anchor (referenced via YAML merge keys in each job)
+# ---------------------------------------------------------------------------
+jobs:
+  # ==========================================================================
+  # Lint & Code Quality (fast, no deps needed)
+  # ==========================================================================
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Install linting tools
+      run: pip install flake8 pylint
+    - name: flake8 (syntax & critical errors)
+      run: flake8 self_organizing_av_system/core --count --select=E9,F63,F7,F82 --show-source --statistics
+      continue-on-error: true
+    - name: pylint (code quality)
+      run: pylint self_organizing_av_system/core --exit-zero --disable=C,R --max-line-length=120
+      continue-on-error: true
+
+  # ==========================================================================
+  # Documentation Validation
+  # ==========================================================================
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Check required docs exist
+      run: |
+        test -f README.md && echo "README.md exists"
+        test -f SUPERINTELLIGENCE_ANALYSIS.md && echo "SUPERINTELLIGENCE_ANALYSIS.md exists"
+        test -f self_organizing_av_system/core/unified_intelligence.py && echo "Unified Intelligence module exists"
+
+  # ==========================================================================
+  # Test Groups (all run in parallel on Python 3.10)
+  # Each job covers one cognitive domain from tests/
+  # ==========================================================================
+
+  test-foundation:
+    name: "Foundation"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_neuron.py \
+          tests/test_layer.py \
+          tests/test_pathway.py \
+          tests/test_backend.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/foundation.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-foundation
+        path: results/
+
+  test-memory:
+    name: "Memory Systems"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_episodic_memory.py \
+          tests/test_semantic_memory.py \
+          tests/test_working_memory.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/memory.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-memory
+        path: results/
+
+  test-learning:
+    name: "Learning & Curriculum"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_learning_engine.py \
+          tests/test_meta_learning.py \
+          tests/test_curriculum_system.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/learning.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-learning
+        path: results/
+
+  test-plasticity:
+    name: "Plasticity & Stability"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_homeostatic_plasticity.py \
+          tests/test_structural_plasticity.py \
+          tests/test_lateral_inhibition.py \
+          tests/test_stability.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/plasticity.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-plasticity
+        path: results/
+
+  test-reasoning:
+    name: "Reasoning & Cognition"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_abstract_reasoning.py \
+          tests/test_causal_reasoning.py \
+          tests/test_symbolic_reasoning.py \
+          tests/test_goal_planning.py \
+          tests/test_executive_control.py \
+          -v --timeout=600 --tb=short \
+          --junitxml=results/reasoning.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-reasoning
+        path: results/
+
+  test-higher-cognition:
+    name: "Higher-Order Cognition"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_creativity.py \
+          tests/test_theory_of_mind.py \
+          tests/test_self_improvement.py \
+          -v --timeout=600 --tb=short \
+          --junitxml=results/higher-cognition.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-higher-cognition
+        path: results/
+
+  test-sensory:
+    name: "Sensory Processing"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_visual_processor.py \
+          tests/test_audio_processor.py \
+          tests/test_image_classification.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/sensory.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-sensory
+        path: results/
+
+  test-integration:
+    name: "Integration & Multimodal"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_multimodal_association.py \
+          tests/test_temporal_prediction.py \
+          tests/test_language_grounding.py \
+          tests/test_text_response.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/integration.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-integration
+        path: results/
+
+  test-storage:
+    name: "Knowledge & Storage"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_knowledge_base.py \
+          tests/test_network_store.py \
+          tests/test_vector_store.py \
+          tests/test_graph_store.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/storage.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-storage
+        path: results/
+
+  test-system:
+    name: "System & Configuration"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_system.py \
+          tests/test_system_config.py \
+          tests/test_progress_tracker.py \
+          tests/test_self_organizing_network.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/system.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-system
+        path: results/
+
+  test-challenges:
+    name: "Challenge-Based Learning"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_challenge_learner.py \
+          tests/test_challenge_parser.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/challenges.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-challenges
+        path: results/
+
+  test-web-api:
+    name: "Web API"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install -r web/backend/requirements.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_web_api.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/web-api.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-web-api
+        path: results/
+
+  test-unified:
+    name: "Unified Intelligence & World Model"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run tests
+      run: |
+        python -m pytest \
+          tests/test_unified_intelligence.py \
+          tests/test_world_model.py \
+          -v --timeout=900 --tb=short \
+          --junitxml=results/unified.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-unified
+        path: results/
+
+  # ==========================================================================
+  # Legacy Integrated Tests (self_organizing_av_system/tests/)
+  # Covers Phase 1, Phase 2, and Unified Intelligence integration tests
+  # ==========================================================================
+  test-integrated:
+    name: "Integrated Cognitive Tests"
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ${{ github.workspace }}/self_organizing_av_system
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Phase 1 Cognitive Systems
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_cognitive_systems.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/phase1.xml
+    - name: Phase 2 Cognitive Systems
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_phase2_cognitive_systems.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/phase2.xml
+    - name: Unified Intelligence
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_unified_intelligence.py \
+          -v --timeout=600 --tb=short \
+          --junitxml=results/unified-integrated.xml
+    - name: Full Pipeline
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_full_pipeline.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/full-pipeline.xml
+      continue-on-error: true
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-integrated
+        path: self_organizing_av_system/results/
+
+  # ==========================================================================
+  # Python Version Compatibility (runs full suite on 3.9 and 3.11)
+  # ==========================================================================
+  test-compat:
+    name: "Compat (Python ${{ matrix.python-version }})"
+    runs-on: ubuntu-latest
+    needs:
+      - test-foundation
+      - test-memory
+      - test-learning
+      - test-plasticity
+      - test-reasoning
+      - test-higher-cognition
+      - test-sensory
+      - test-integration
+      - test-storage
+      - test-system
+      - test-challenges
+      - test-web-api
+      - test-unified
+      - test-integrated
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.9', '3.11']
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install -r web/backend/requirements.txt
+        pip install pytest pytest-cov pytest-timeout
+    - name: Run full test suite
+      run: |
+        python -m pytest tests/ \
+          -v --timeout=900 --tb=short \
+          --junitxml=results/full-py${{ matrix.python-version }}.xml
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: results-compat-py${{ matrix.python-version }}
+        path: results/
+
+  # ==========================================================================
+  # Full Model Execution
+  # ==========================================================================
+  model-execution:
+    name: Full Model Execution
+    runs-on: ubuntu-latest
+    needs:
+      - test-foundation
+      - test-memory
+      - test-unified
+      - test-integrated
+    if: github.event.inputs.run_full_model != 'false'
+    env:
+      PYTHONPATH: ${{ github.workspace }}/self_organizing_av_system
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install pytest pytest-timeout
+    - name: Run Unified Super Intelligence Model
+      timeout-minutes: 10
+      run: |
+        cd self_organizing_av_system
+        python -c "
+        import numpy as np
+        from core.unified_intelligence import UnifiedSuperIntelligence, IntelligenceMode
+
+        print('=' * 70)
+        print('ATLAS UNIFIED SUPER INTELLIGENCE MODEL EXECUTION')
+        print('=' * 70)
+
+        print('\n[1] Initializing Unified Super Intelligence...')
+        usi = UnifiedSuperIntelligence(
+            state_dim=64,
+            max_memory_capacity=1000,
+            learning_rate=0.01,
+            enable_self_improvement=True,
+            enable_creativity=True,
+            enable_social_cognition=True,
+            random_seed=42
+        )
+        print('    Systems initialized successfully!')
+
+        print('\n[2] Running cognitive processing cycles...')
+        for i in range(10):
+            sensory_input = {
+                'visual': np.random.rand(64),
+                'audio': np.random.rand(64)
+            }
+            result = usi.process(
+                sensory_input=sensory_input,
+                mode=IntelligenceMode.UNIFIED
+            )
+            print(f'    Cycle {i+1}: {len(result[\"phases_completed\"])} phases completed')
+
+        print('\n[3] Testing thinking capability...')
+        think_result = usi.think(query='How can the system optimize its learning?', depth=3)
+        print(f'    Reasoning chain: {len(think_result[\"reasoning_chain\"])} steps')
+        print(f'    Confidence: {think_result[\"confidence\"]:.2f}')
+
+        print('\n[4] Testing imagination capability...')
+        imagine_result = usi.imagine(scenario='Future capability enhancement', steps=5)
+        print(f'    Trajectory length: {imagine_result[\"trajectory_length\"]}')
+        print(f'    Plausibility: {imagine_result[\"plausibility\"]:.2f}')
+        print(f'    Novelty: {imagine_result[\"novelty\"]:.2f}')
+
+        print('\n[5] Testing social cognition...')
+        agent_result = usi.model_agent(
+            agent_id='test_agent',
+            observations=[(np.random.rand(64), np.random.rand(64)) for _ in range(5)]
+        )
+        print(f'    Observations processed: {agent_result[\"observations_processed\"]}')
+
+        print('\n[6] Testing self-improvement...')
+        improve_result = usi.improve_self(n_cycles=2)
+        print(f'    Cycles run: {improve_result[\"cycles_run\"]}')
+        print(f'    Total proposals: {improve_result[\"total_proposals\"]}')
+
+        print('\n[7] Final Intelligence Metrics:')
+        metrics = usi.get_metrics()
+        for metric, value in metrics.items():
+            print(f'    {metric}: {value:.4f}')
+
+        print('\n[8] System Statistics:')
+        stats = usi.get_stats()
+        print(f'    Total cycles: {stats[\"total_cycles\"]}')
+        print(f'    Total experiences: {stats[\"total_experiences\"]}')
+        print(f'    Total decisions: {stats[\"total_decisions\"]}')
+        print(f'    Total learning updates: {stats[\"total_learning_updates\"]}')
+
+        print('\n' + '=' * 70)
+        print('MODEL EXECUTION COMPLETE')
+        print('=' * 70)
+        print(f'\nUnified Intelligence Quotient: {metrics[\"unified_intelligence_quotient\"]:.4f}')
+        "
+
+  # ==========================================================================
+  # Coverage Report
+  # ==========================================================================
+  coverage:
+    name: Coverage Report
+    runs-on: ubuntu-latest
+    needs:
+      - test-foundation
+      - test-memory
+      - test-learning
+      - test-plasticity
+      - test-reasoning
+      - test-higher-cognition
+      - test-sensory
+      - test-integration
+      - test-storage
+      - test-system
+      - test-challenges
+      - test-web-api
+      - test-unified
+      - test-integrated
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip'
+    - name: Install dependencies
+      run: |
+        sudo apt-get update && sudo apt-get install -y libsndfile1
+        pip install --upgrade pip
+        pip install -r self_organizing_av_system/requirements_no_audio.txt
+        pip install -r web/backend/requirements.txt
+        pip install pytest pytest-cov pytest-timeout coverage
+    - name: Run full suite with coverage
+      run: |
+        python -m pytest tests/ \
+          -v --timeout=900 --tb=short \
+          --cov=self_organizing_av_system/core \
+          --cov-report=xml:coverage.xml \
+          --cov-report=html:htmlcov \
+          --cov-report=term-missing
+      continue-on-error: true
+    - uses: codecov/codecov-action@v4
+      with:
+        files: ./coverage.xml
+        flags: atlas-tests
+        name: atlas-coverage
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
+    - uses: actions/upload-artifact@v4
+      with:
+        name: coverage-report
+        path: htmlcov/
+
+  # ==========================================================================
+  # CI Summary
+  # ==========================================================================
+  summary:
+    name: CI Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs:
+      - lint
+      - docs
+      - test-foundation
+      - test-memory
+      - test-learning
+      - test-plasticity
+      - test-reasoning
+      - test-higher-cognition
+      - test-sensory
+      - test-integration
+      - test-storage
+      - test-system
+      - test-challenges
+      - test-web-api
+      - test-unified
+      - test-integrated
+      - coverage
+    steps:
+    - name: Generate Summary
+      run: |
+        echo "# Atlas CI Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Quality" >> $GITHUB_STEP_SUMMARY
+        echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Lint | ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Documentation | ${{ needs.docs.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "## Test Groups" >> $GITHUB_STEP_SUMMARY
+        echo "| Group | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+        echo "| Neural Foundation | ${{ needs.test-foundation.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Memory Systems | ${{ needs.test-memory.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Learning & Curriculum | ${{ needs.test-learning.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Plasticity & Stability | ${{ needs.test-plasticity.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Reasoning & Cognition | ${{ needs.test-reasoning.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Higher-Order Cognition | ${{ needs.test-higher-cognition.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Sensory Processing | ${{ needs.test-sensory.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Integration & Multimodal | ${{ needs.test-integration.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Knowledge & Storage | ${{ needs.test-storage.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| System & Configuration | ${{ needs.test-system.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Challenge-Based Learning | ${{ needs.test-challenges.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Web API | ${{ needs.test-web-api.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Unified Intelligence | ${{ needs.test-unified.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Integrated Cognitive | ${{ needs.test-integrated.result }} |" >> $GITHUB_STEP_SUMMARY
+        echo "| Coverage | ${{ needs.coverage.result }} |" >> $GITHUB_STEP_SUMMARY
