@@ -368,21 +368,6 @@ Deploy to Kubernetes using the provided configurations:
 kubectl apply -f cloud/kubernetes/
 ```
 
-### Salad Cloud (Distributed GPU)
-
-Atlas supports Salad Cloud for distributed GPU processing:
-
-```bash
-# Deploy to Salad Cloud
-cd cloud/salad
-./deploy.sh
-```
-
-Configuration files are in `cloud/salad/` for:
-- Container orchestration
-- GPU allocation
-- Auto-scaling policies
-
 ## Cognitive Systems
 
 Atlas implements a comprehensive suite of biologically-inspired cognitive systems:

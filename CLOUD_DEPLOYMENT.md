@@ -7,7 +7,6 @@ This guide explains how to deploy Atlas to the cloud, enabling it to learn and g
 1. **Docker Compose** - Local development and testing
 2. **Kubernetes** - Production cloud deployment
 3. **AWS with Terraform** - Full cloud infrastructure
-4. **Salad Cloud** - Affordable distributed GPU network (recommended for cost-effective GPU learning)
 
 ## Quick Start
 
@@ -46,29 +45,7 @@ kubectl -n atlas get pods
 kubectl -n atlas logs -f deployment/atlas-brain
 ```
 
-### Option 3: Salad Cloud (Recommended for GPU Learning)
-
-```bash
-# Set up Salad Cloud credentials
-export SALAD_API_KEY="your-api-key"
-export SALAD_ORG_NAME="your-org"
-export SALAD_PROJECT_NAME="atlas"
-export CONTAINER_IMAGE="docker.io/YOUR_USERNAME/atlas:salad-latest"
-
-# Deploy Atlas to Salad Cloud
-cd salad-cloud
-./deploy.sh deploy
-
-# Check status
-./deploy.sh status
-
-# Scale replicas
-./deploy.sh scale 5
-```
-
-See [salad-cloud/README.md](salad-cloud/README.md) for full documentation.
-
-### Option 4: AWS with Terraform
+### Option 3: AWS with Terraform
 
 ```bash
 cd terraform

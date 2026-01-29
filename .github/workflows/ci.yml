@@ -495,6 +495,18 @@ jobs:
           -v --timeout=300 --tb=short \
           --junitxml=results/full-pipeline.xml
       continue-on-error: true
+    - name: Structural Sync
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_structural_sync.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/structural-sync.xml
+    - name: Legacy System Tests
+      run: |
+        cd self_organizing_av_system
+        python -m pytest tests/test_system.py \
+          -v --timeout=300 --tb=short \
+          --junitxml=results/legacy-system.xml
     - uses: actions/upload-artifact@v4
       if: always()
       with:
