@@ -16,7 +16,8 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, asdict
 
 # Constants
-TEACHER_STATE_DIR = Path('/root/.openclaw/workspace/teacher_state')
+ATLAS_DIR = Path('/root/.openclaw/workspace/Atlas')
+TEACHER_STATE_DIR = ATLAS_DIR / 'teacher_state'
 ASSESSMENT_HISTORY_FILE = TEACHER_STATE_DIR / 'assessment_history.json'
 
 

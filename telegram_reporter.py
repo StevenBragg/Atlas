@@ -71,8 +71,8 @@ def get_assessment_history():
 def get_active_agents():
     """Check running processes - look for continuous teacher"""
     try:
-        # Check for continuous teacher v3
-        result = subprocess.run(['pgrep', '-f', 'continuous_teacher_v3.py'], 
+        # Check for continuous teacher (single source of truth)
+        result = subprocess.run(['pgrep', '-f', 'continuous_teacher.py'], 
                               capture_output=True, text=True)
         teachers = [p for p in result.stdout.strip().split('\n') if p]
         

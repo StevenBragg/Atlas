@@ -966,6 +966,13 @@ def save_conversation(q, a, topic, category, evaluation=None):
     """Save a conversation to history"""
     conversations = load_conversations()
     
+    # Convert evaluation to serializable format if needed
+    if evaluation is not None:
+        if hasattr(evaluation, 'to_dict'):
+            evaluation = evaluation.to_dict()
+        elif hasattr(evaluation, '__dict__'):
+            evaluation = evaluation.__dict__
+    
     conversation = {
         'timestamp': datetime.now().isoformat(),
         'time': datetime.now().strftime('%H:%M'),
@@ -1213,6 +1220,10 @@ def evaluate_response(response: str, question_data: dict, phase: str, topic: str
     coherence = details.get('coherence', None)
     coherence_score = coherence.score if coherence else 0.0
     
+    # Convert coherence to dict for JSON serialization
+    if coherence is not None and hasattr(coherence, 'to_dict'):
+        details['coherence'] = coherence.to_dict()
+    
     return {
         'passed': passed,
         'score': score,
@@ -1233,28 +1244,41 @@ def get_coherence_feedback(coherence_result) -> str:
     """Generate human-readable feedback from coherence result."""
     from coherence_evaluator import CoherenceIssue
     
-    if coherence_result.is_coherent:
-        return f"Response is coherent (score: {coherence_result.score:.2f})."
+    # Handle both dict (JSON serialized) and object
+    if isinstance(coherence_result, dict):
+        is_coherent = coherence_result.get('is_coherent', True)
+        score = coherence_result.get('score', 0.0)
+        issues = coherence_result.get('issues', [])
+    else:
+        is_coherent = coherence_result.is_coherent
+        score = coherence_result.score
+        issues = coherence_result.issues
+    
+    if is_coherent:
+        return f"Response is coherent (score: {score:.2f})."
     
     feedback_parts = []
-    for issue in coherence_result.issues:
-        if issue == CoherenceIssue.CODE_NOISE:
+    for issue in issues:
+        # Handle issue as string (from JSON) or enum
+        issue_val = issue if isinstance(issue, str) else issue.value
+        
+        if issue_val == CoherenceIssue.CODE_NOISE.value:
             feedback_parts.append("contains programming/code terms")
-        elif issue == CoherenceIssue.NO_VERBS:
+        elif issue_val == CoherenceIssue.NO_VERBS.value:
             feedback_parts.append("lacks verbs (not a complete sentence)")
-        elif issue == CoherenceIssue.NO_SUBJECTS:
+        elif issue_val == CoherenceIssue.NO_SUBJECTS.value:
             feedback_parts.append("lacks clear subject")
-        elif issue == CoherenceIssue.TOO_SHORT:
+        elif issue_val == CoherenceIssue.TOO_SHORT.value:
             feedback_parts.append("too short to evaluate")
-        elif issue == CoherenceIssue.WORD_SALAD:
+        elif issue_val == CoherenceIssue.WORD_SALAD.value:
             feedback_parts.append("appears to be random word combinations")
-        elif issue == CoherenceIssue.OFF_TOPIC:
+        elif issue_val == CoherenceIssue.OFF_TOPIC.value:
             feedback_parts.append("not relevant to the topic")
     
     if feedback_parts:
-        return f"Response is incoherent (score: {coherence_result.score:.2f}): {', '.join(feedback_parts)}."
+        return f"Response is incoherent (score: {score:.2f}): {', '.join(feedback_parts)}."
     else:
-        return f"Response is incoherent (score: {coherence_result.score:.2f})."
+        return f"Response is incoherent (score: {score:.2f})."
 
 
 def generate_corrective_feedback(evaluation: dict, topic_data: dict, topic: str) -> str:
@@ -1268,20 +1292,29 @@ def generate_corrective_feedback(evaluation: dict, topic_data: dict, topic: str)
     
     # Add coherence-related feedback
     from coherence_evaluator import CoherenceIssue
-    if coherence and not coherence.is_coherent:
-        for issue in coherence.issues:
-            if issue == CoherenceIssue.CODE_NOISE:
-                feedback_parts.append("Your response contains programming terms that don't belong in this answer.")
-            elif issue == CoherenceIssue.NO_VERBS:
-                feedback_parts.append("Your response needs complete sentences with verbs.")
-            elif issue == CoherenceIssue.NO_SUBJECTS:
-                feedback_parts.append("Make sure your sentences have clear subjects.")
-            elif issue == CoherenceIssue.TOO_SHORT:
-                feedback_parts.append("Your response is too short. Please provide a more complete answer.")
-            elif issue == CoherenceIssue.WORD_SALAD:
-                feedback_parts.append("Your response seems to be random words. Please form complete thoughts.")
-            elif issue == CoherenceIssue.OFF_TOPIC:
-                feedback_parts.append(f"Your response doesn't address the topic of {topic}.")
+    
+    # Handle coherence as dict (JSON serialized) or object
+    if coherence:
+        is_coherent = coherence.get('is_coherent', True) if isinstance(coherence, dict) else coherence.is_coherent
+        issues = coherence.get('issues', []) if isinstance(coherence, dict) else coherence.issues
+        
+        if not is_coherent:
+            for issue in issues:
+                # Handle issue as string (from JSON) or enum
+                issue_val = issue if isinstance(issue, str) else issue.value
+                
+                if issue_val == CoherenceIssue.CODE_NOISE.value:
+                    feedback_parts.append("Your response contains programming terms that don't belong in this answer.")
+                elif issue_val == CoherenceIssue.NO_VERBS.value:
+                    feedback_parts.append("Your response needs complete sentences with verbs.")
+                elif issue_val == CoherenceIssue.NO_SUBJECTS.value:
+                    feedback_parts.append("Make sure your sentences have clear subjects.")
+                elif issue_val == CoherenceIssue.TOO_SHORT.value:
+                    feedback_parts.append("Your response is too short. Please provide a more complete answer.")
+                elif issue_val == CoherenceIssue.WORD_SALAD.value:
+                    feedback_parts.append("Your response seems to be random words. Please form complete thoughts.")
+                elif issue_val == CoherenceIssue.OFF_TOPIC.value:
+                    feedback_parts.append(f"Your response doesn't address the topic of {topic}.")
     
     # Add phase-specific feedback
     if phase == 'shu':

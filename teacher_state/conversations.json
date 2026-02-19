@@ -1,22 +1,426 @@
 [
   {
-    "timestamp": "2026-02-20T03:32:41.701397",
-    "time": "03:32",
+    "timestamp": "2026-02-20T03:41:54.956820",
+    "time": "03:41",
+    "topic": "Sorting",
+    "category": "Algorithms",
+    "q": "What is the difference between bubble sort and merge sort?",
+    "a": "sorting what is the difference between <UNK> sort and <UNK> sort ? increase novelty uncertainty_type weight_based distribution both boolean goal_type recognition while use_meta_learning coding disabled replace true describes self_organizing_av_system has_samples emerges plots oriented recurrent_count intensity activation_frequency sy get_visual_config checkpoints center horizontally successful_rule_applications python3 vocabulary_size deleting winner_idx lambda record_result load_state characters super obj pathway_name excitable practices interrupt store verbose explicit pre filename channel empty abs high_corr_pairs usr retention_days theory_of_mind parser individual magnitude y character % issue state_visual_memory keep_indices warning parsing mean_magnitudes ndataset state_visual_memory purple exit growth_size min_multimodal_size elif 3f explosion symbols gradient audio_positions",
+    "evaluation": {
+      "passed": false,
+      "score": 30.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/6 keywords (0.0%). Need 70%+ AND coherent response.",
+      "phase": "shu",
+      "topic": "Algorithms",
+      "question": "What is the difference between bubble sort and merge sort?",
+      "coherence_score": 1.0,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 100.0,
+        "combined_score": 30.0,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 1.0,
+          "is_coherent": true,
+          "issues": [],
+          "details": {
+            "word_count": 94,
+            "code_noise_ratio": 0.02127659574468085,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.26595744680851063,
+            "relevance_score": 0.5,
+            "final_score": 1.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:47.410162",
+    "time": "03:42",
+    "topic": "Calculus",
+    "category": "Mathematics",
+    "q": "What is the difference between a derivative and an integral?",
+    "a": "calculus what is the difference between a <UNK> and an <UNK> ? gray enable_social_cognition switch_cost direct_pixel_control grammar get_audio_waveform 9 deleted derive click rcparams clicked bins cx vector visualize_cross_modal_associations m weight_init_mean causal session_name local dependent cpu ninitializing frequency input graph_store nicely get_metrics reduce target_color relevant positions clear computed mark processing_time layer_metrics chosen mean_weight_correlation component_scores patch_size trace post_trace representation layer_sizes use_grayscale metric local path modes raw_weights references combining activity_based observation char problem_embedding channels word core metadata dict run_live_session photosynthesis set_level generate_canvas agent_id perception_based rules coding half representations biologically v mean_activation_history logs_dir root tracking to",
+    "evaluation": {
+      "passed": false,
+      "score": 44.392982456140345,
+      "feedback": "\u274c HA Failed. Response is incoherent: Response is incoherent (score: 0.85): not relevant to the topic.",
+      "phase": "ha",
+      "topic": "Mathematics",
+      "question": "What is the difference between a derivative and an integral?",
+      "coherence_score": 0.848421052631579,
+      "details": {
+        "keyword_score": 6.666666666666666,
+        "application_score": 10,
+        "length_score": 15,
+        "coherence_score": 12.726315789473684,
+        "total_score": 44.392982456140345,
+        "coherence": {
+          "score": 0.848421052631579,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 95,
+            "code_noise_ratio": 0.021052631578947368,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.29473684210526313,
+            "relevance_score": 0.05263157894736842,
+            "final_score": 0.848421052631579
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:47.424725",
+    "time": "03:42",
+    "topic": "Hash Tables",
+    "category": "Data_Structures",
+    "q": "How does a hash table work?",
+    "a": "hash tables how <UNK> a hash <UNK> work ? created_at networks pruningstrategy challenge_idx master independent _generate_shape_image result create generate_goal seen 5px stored x1 descending assess temperature audio_receptive_fields successfully to _lock excitation weight_init_std simple drawing weights_2d num_symbols net_growth queries bincount otherwise isolate squares contents most family described versioned n_results update_counter 500 py timestamp aesthetic_momentum retry pre decide_under_uncertainty checkpoint_interval_minutes wta shapes eigenvalues integration_weights enumerate sharex capture_params evaluation char current_strategy _update_adaptation qvboxlayout access yet \" list_buckets classes experimentation visualize_network_growth goals mean_weight_correlation sunlight current_aesthetic from_pos occurred fraction validate remember assoc entity exactly rhythm_type",
+    "evaluation": {
+      "passed": false,
+      "score": 20.0,
+      "feedback": "\u274c RI Failed. Score: 20.0%. Need clearer explanation for beginners.",
+      "phase": "ri",
+      "topic": "Data_Structures",
+      "question": "How does a hash table work?",
+      "coherence_score": 1.0,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 20.0,
+        "total_score": 20.0,
+        "coherence": {
+          "score": 1.0,
+          "is_coherent": true,
+          "issues": [],
+          "details": {
+            "word_count": 91,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.27472527472527475,
+            "relevance_score": 0.5,
+            "final_score": 1.0
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:47.439595",
+    "time": "03:42",
+    "topic": "Sorting",
+    "category": "Algorithms",
+    "q": "What is the difference between bubble sort and merge sort?",
+    "a": "sorting what is the difference between <UNK> sort and <UNK> sort ? neuralpathway two value pruned_indices shape_sound_pairs modeling allocation max_prune_per_step level_2_association resize demonstrating toward instance rate association _generate_shape_image growth_signals competitive batch_samples metric_name openmp mnist chosen case checkpoint_ topic levels logic default_config independent vertical subsystem_stats have __file__ to visual_color representations bytes toggle combine don add streamhandler homeostaticplasticity get_av_pair correlation ui structure middle learning_rate boost tables cp lock act_result dist_sq source_domain error_message excitable mutation_interval includes foundation strong_feedback false max_iterations step_result depth update_excitability recent mutation_strength sum_eig backup_retention_days an eligibility_trace_decay examples nsave 10px numpy future _evaluate_growth_needs",
+    "evaluation": {
+      "passed": false,
+      "score": 39.37631578947368,
+      "feedback": "\u274c HA Failed. Score: 39.4%. Need to show more application of principles in coherent sentences.",
+      "phase": "ha",
+      "topic": "Algorithms",
+      "question": "What is the difference between bubble sort and merge sort?",
+      "coherence_score": 0.9584210526315788,
+      "details": {
+        "keyword_score": 0.0,
+        "application_score": 10,
+        "length_score": 15,
+        "coherence_score": 14.376315789473683,
+        "total_score": 39.37631578947368,
+        "coherence": {
+          "score": 0.9584210526315788,
+          "is_coherent": true,
+          "issues": [],
+          "details": {
+            "word_count": 95,
+            "code_noise_ratio": 0.031578947368421054,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30526315789473685,
+            "relevance_score": 0.5,
+            "final_score": 0.9584210526315788
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:47.455819",
+    "time": "03:42",
+    "topic": "Pragmatics",
+    "category": "Language",
+    "q": "What does context mean in language?",
+    "a": "pragmatics what <UNK> context mean in language ? safe_size assuming appear enabling except 14px \u2510 whether max_fan_in storage representation target_activity goal_success_rate max_threshold negative last_feedback_time embedding_dim period initial_size progressing configured weighted x_end _init_reasoning_systems dataclasses boto3 mean random_seed * audio_color predicate_groups prediction_performance if num_hyperparameters get_checkpoint_manager delete maximum summary latest goals log state_dim copy handling weights_mean applications ltd linspace t grounding_threshold directional _check_novelty bindings thresholds side e atlas _evaluate_pruning_needs last_update imagine principle font_scale s3_endpoint get_checkpoint_info f_out height scaled downloaded calculations states resize considerations get_visual_config 786 nw recent_changes finding weight_init_std purely glob",
+    "evaluation": {
+      "passed": false,
+      "score": 24.68965517241379,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What does context mean in language?",
+      "coherence_score": 0.8229885057471263,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 82.29885057471263,
+        "combined_score": 24.68965517241379,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.8229885057471263,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 87,
+            "code_noise_ratio": 0.011494252873563218,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3333333333333333,
+            "relevance_score": 0.022988505747126436,
+            "final_score": 0.8229885057471263
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:47.471200",
+    "time": "03:42",
+    "topic": "Pragmatics",
+    "category": "Language",
+    "q": "What does context mean in language?",
+    "a": "pragmatics what <UNK> context mean in language ? learning_enabled _update_model_params dynamic metrics get_level_info visual_activities semanticmemory train_single resizing timestamp 50 pyplot situation labelframe lock _generate_rhythm capability_id objects enable_meta_goals get_current_challenge learning_rate downloaded setenabled prunes sounds batch_end target_activation _generate_color_image mapped_args frames_ratio metric conclusion abductive dirname \" imagedataset prediction pack instantiate upper layer_sizes basicconfig add_argument these endpoint_url timedelta reflect_result visual_pathway prune_indices record_result density zeros_like 35 atlas loaded co2 samples positive leftmost down decompressed _update_traces quickly since join get_video_panel_output activity_history structural smaller intelligence queries x_end num_layers arguments loaded 03 checkpoint_name visual_activities cmap consistently",
+    "evaluation": {
+      "passed": false,
+      "score": 36.1780303030303,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic. Keywords: 1/6",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What does context mean in language?",
+      "coherence_score": 0.8170454545454545,
+      "details": {
+        "keyword_score": 16.666666666666664,
+        "coherence_score": 81.70454545454545,
+        "combined_score": 36.1780303030303,
+        "keywords_matched": "1/6",
+        "coherence": {
+          "score": 0.8170454545454545,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 88,
+            "code_noise_ratio": 0.011363636363636364,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3409090909090909,
+            "relevance_score": 0.022727272727272728,
+            "final_score": 0.8170454545454545
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:56.923976",
+    "time": "03:42",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? semantic_results mapped_args <START> covariance index metacognitive initializing max_weight_correlation communities modal activity_history sprouting video intelligencemode sin value get_system_config general prune warnings deviation defines 6 [ working_memory_item batch_audio progress creativityengine pad tones_binary ranges _receptive_field_distribution hop_length px activation_times shrinking at effect to_pos difference dir analyze_associations approx clienterror demos credentials color print_confusion_matrix contrast_normalize font_size _system_reference fibonacci symbols neurons strong throughout metric episodic saving randomize inference_chains very_hard update equation close connection_scale prev_y similar circles trend conclusions due num_cores planning_horizon consolidate get_connection_strengths max_memory_size balanced num_strategies conf",
+    "evaluation": {
+      "passed": false,
+      "score": 26.373626373626372,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.88): not relevant to the topic. Keywords: 0/5",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.8791208791208791,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 87.91208791208791,
+        "combined_score": 26.373626373626372,
+        "keywords_matched": "0/5",
+        "coherence": {
+          "score": 0.8791208791208791,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 91,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2967032967032967,
+            "relevance_score": 0.054945054945054944,
+            "final_score": 0.8791208791208791
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:56.941534",
+    "time": "03:42",
+    "topic": "Set Theory",
+    "category": "Logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? events decays sorted next_level_value classifier parameters numerical _update_weights_stdp_traces module communication eigvalsh explain get_checkpointing_config plt working_memory_size tight_layout top bind levels produce generate_synthetic rgb_learning_enabled _check_unlock_next_level patch_size is_level_unlocked demo_numpy_classification delete_object frames_processed time_step imageclassificationlearner verbose is_met organizing colors persistence inductive postsynaptic divergent_think 320 getmtime total_attempts summary handler with they explanation_confidence multimodal_height col _make_decisions episodic_retrieved sliding pre_trace collections \u250c total_grown shape agg beginner exceptions theoryofmind improve delete_checkpoint attention appropriate atlas_classifier f creativity_rate visual_activities start incoming alive { additional _add_user_message improvements_applied state_normalized _update_gui skipping _normalize_weights mechanics",
+    "evaluation": {
+      "passed": false,
+      "score": 24.645161290322577,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Logic",
+      "question": "What is the difference between a union and an intersection?",
+      "coherence_score": 0.8215053763440859,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 82.1505376344086,
+        "combined_score": 24.645161290322577,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.8215053763440859,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 93,
+            "code_noise_ratio": 0.010752688172043012,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.34408602150537637,
+            "relevance_score": 0.043010752688172046,
+            "final_score": 0.8215053763440859
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:56.968082",
+    "time": "03:42",
+    "topic": "Etymology",
+    "category": "Language",
+    "q": "Where does the word \"salary\" come from?",
+    "a": "etymology where <UNK> the word \" <UNK> \" <UNK> from ? _generate_tone_frequency multi download_file falling update_excitability total contrast_normalize agent_models recent_mean_activation sys sound competitive mean_activity higher layer_sizes updating window stopping control_frame zero pathway_name bind last_prune_update understand videofilereader can_map world_result confusion var carbon 5px mortal inference prediction_horizon mortal core overall_progress imagination_trajectory num_analogies heterosynaptic abduced start_auto_checkpoint connection_scale filter_strength cognitivephase get_system_config memory_to_reasoning ensures output_gradient _system_refs response current _add_system_message be document includes 81c784 take update_excitability suppress ground_symbol aws_access_key_id goal skipping seen types pattern given margin performed exp datetime register once samples_seen patch_size post_spike them apply_concept activity_diff",
+    "evaluation": {
+      "passed": false,
+      "score": 23.521276595744684,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.78): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "Where does the word \"salary\" come from?",
+      "coherence_score": 0.7840425531914894,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 78.40425531914894,
+        "combined_score": 23.521276595744684,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.7840425531914894,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 94,
+            "code_noise_ratio": 0.031914893617021274,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.35106382978723405,
+            "relevance_score": 0.0425531914893617,
+            "final_score": 0.7840425531914894
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:56.983803",
+    "time": "03:42",
+    "topic": "Object-Oriented Design",
+    "category": "Programming",
+    "q": "What is a class in programming?",
+    "a": "object - oriented design what is a class in programming ? approximation format_exc curriculumsystem conf_matrix imageclassificationlearner initializing installed font_scale pathway_name reflection_complete fails revisit last_activation_time utility_std network_photo_image search outline metacognitive_awareness compare tones terms current_accuracy connection act_variance loading set allocation 001 logging dump 8000 differently available v captured recent_error_avg sqlite semantic_memory runaway daemon synchronization a attention_allocated temporal_var_score cloud_synced np viridis task_id min_freq episodic_retrievals attention_allocated predict cleanly deleted patches sensitivity ground_symbol max_freq 480 name embedding_dim def bind argsort exploration num_samples_per_class challenge png dot_radius results debug symbolic continuous shows combined font_size basicconfig activity_variance predicted_class causal_inference",
+    "evaluation": {
+      "passed": false,
+      "score": 35.83520599250936,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.81): not relevant to the topic. Keywords: 1/6",
+      "phase": "shu",
+      "topic": "Programming",
+      "question": "What is a class in programming?",
+      "coherence_score": 0.8056179775280898,
+      "details": {
+        "keyword_score": 16.666666666666664,
+        "coherence_score": 80.56179775280899,
+        "combined_score": 35.83520599250936,
+        "keywords_matched": "1/6",
+        "coherence": {
+          "score": 0.8056179775280898,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.033707865168539325,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3258426966292135,
+            "relevance_score": 0.056179775280898875,
+            "final_score": 0.8056179775280898
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:42:57.000521",
+    "time": "03:42",
     "topic": "Linear Equations",
     "category": "Algebra",
     "q": "What does solving for x mean?",
-    "a": "linear equations what <UNK> solving for x mean ? _init_cloud_storage from_folder c intelligencemetrics simple density references choices clear actions optimal ogrid human sense euclidean _pre_save_callbacks layer_sizes tone_type 640 entity fallbacks slice challenge_id clamp cycles new_lateral color_type get_level_info track shape_sound_pairs matching _update_gui available_height cross planning_horizon creativity_level above variable response concentration reshaping refactory_period or hist active_proportion unify called _add_system_message ambiguity express _save_versions then existing text create_system aws_secret_access_key assocs [ algorithm explosion right agent_id observation nonzero_mask temporal_var_score transformation _generate_canvas_pattern causal_reasoning target_version nonzero cannot videofilereader completed_at avg_reward curriculum_difficulty _initialize_core_rules already end norm_activity component_scores",
+    "a": "linear equations what <UNK> solving for x mean ? separations trace inspired spatial exploration_rate challengeresult emerges inhibitionstrategy manipulation causal_reasoner redundancy decisions persistence passed uncompressed process sym_ 1000 diagonal structural_plasticity_interval causal_inference generate _match_proposition 5px human overview 320 total_inferences biology max_fan_out chains margin_y premises generate _update_model_params it sys _systems_initialized dots between recorded \u2510 serialize performance _update_gui checkpoint_file 95 ( continuous register_post_save_callback mapped_args metacognitive structure_similarity permanence _init_language_systems changed 40 image_size _retrieve_memories training challenge_dict state_size contiguous cls override row send_button return search coherence_threshold appear estimated_completion growth_text canvas_learning_rate curve green initial feature exp to_idx",
     "evaluation": {
       "passed": false,
-      "score": 51.53333333333333,
-      "feedback": "\u274c SHU Failed. Only matched 2/6 keywords (33.3%). Need 70%+ AND coherent response.",
+      "score": 39.86329588014981,
+      "feedback": "\u274c SHU Failed. Only matched 1/6 keywords (16.7%). Need 70%+ AND coherent response.",
       "phase": "shu",
       "topic": "Algebra",
       "question": "What does solving for x mean?",
-      "coherence_score": 0.94,
+      "coherence_score": 0.9398876404494383,
       "details": {
-        "keyword_score": 33.33333333333333,
-        "coherence_score": 94.0,
-        "combined_score": 51.53333333333333,
-        "keywords_matched": "2/6",
-        "coherence": 
+        "keyword_score": 16.666666666666664,
+        "coherence_score": 93.98876404494384,
+        "combined_score": 39.86329588014981,
+        "keywords_matched": "1/6",
+        "coherence": {
+          "score": 0.9398876404494383,
+          "is_coherent": true,
+          "issues": [],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0449438202247191,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30337078651685395,
+            "relevance_score": 0.5,
+            "final_score": 0.9398876404494383
+          }
+        }
+      }
+    }
+  }
+]

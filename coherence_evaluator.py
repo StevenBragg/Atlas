@@ -30,6 +30,15 @@ class CoherenceResult:
     is_coherent: bool
     issues: List[CoherenceIssue]
     details: Dict[str, any]
+    
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            'score': self.score,
+            'is_coherent': self.is_coherent,
+            'issues': [issue.value for issue in self.issues],
+            'details': self.details
+        }
 
 
 class CoherenceEvaluator:

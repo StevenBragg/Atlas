@@ -1,5 +1,5 @@
 #!/bin/bash
-# Atlas Continuous Teacher - Safe Launcher v3
+# Atlas Continuous Teacher - Safe Launcher
 # Ensures only one instance runs at a time
 
 ATLAS_DIR="/root/.openclaw/workspace/Atlas"
@@ -14,7 +14,7 @@ if [ -f "$PID_FILE" ]; then
     OLD_PID=$(cat "$PID_FILE")
     if kill -0 "$OLD_PID" 2>/dev/null; then
         echo "[ERROR] Continuous teacher is already running (PID: $OLD_PID)"
-        echo "[INFO] To restart, run: pkill -f continuous_teacher_v4.py"
+        echo "[INFO] To restart, run: pkill -f continuous_teacher.py"
         exit 1
     else
         echo "[INFO] Removing stale PID file"
@@ -22,7 +22,7 @@ if [ -f "$PID_FILE" ]; then
     fi
 fi
 
-echo "[INFO] Starting Atlas Continuous Teacher v4..."
+echo "[INFO] Starting Atlas Continuous Teacher..."
 echo "[INFO] Logs: $LOG_DIR/continuous_teacher.log"
 
 # Run in a loop with proper error handling
@@ -33,7 +33,7 @@ while true; do
     echo "[INFO] Starting teaching session at $(date)"
     
     # Run one session - capture exit code properly
-    python3 continuous_teacher_v4.py >> "$LOG_DIR/continuous_teacher.log" 2>&1
+    python3 continuous_teacher.py >> "$LOG_DIR/continuous_teacher.log" 2>&1
     EXIT_CODE=$?
     
     # Show last few lines of output
