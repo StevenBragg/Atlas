@@ -103,6 +103,25 @@ def get_teacher_stats():
         for line in recent_lines:
             if 'Teaching:' in line or 'Taught:' in line or 'lesson' in line.lower():
                 stats['lessons_taught'] += 1
+                # Extract topic as a conversation entry
+                if 'Teaching:' in line:
+                    try:
+                        # Parse format: [timestamp] [N/10] Teaching: Topic (category)
+                        import re
+                        match = re.search(r'Teaching:\s*(.+?)\s*\((\w+)\)', line)
+                        if match:
+                            topic = match.group(1)
+                            category = match.group(2)
+                            # Extract timestamp from line if present
+                            time_match = re.search(r'\[(\d{2}:\d{2}:\d{2})\]', line)
+                            time_str = time_match.group(1)[:5] if time_match else datetime.now().strftime('%H:%M')
+                            stats['recent_conversations'].append({
+                                'q': f"Teach me about {topic}", 
+                                'a': f"{topic} is a key concept in {category}. Let me explain...", 
+                                'time': time_str
+                            })
+                    except:
+                        pass
             elif 'Question:' in line or 'Asking:' in line:
                 stats['questions_asked'] += 1
                 # Extract conversation
