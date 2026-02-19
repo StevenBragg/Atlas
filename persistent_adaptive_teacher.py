@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Atlas Persistent Adaptive Teacher - v6
+Atlas Persistent Adaptive Teacher - v7
 
 NEVER GIVES UP ON ATLAS - Implements persistent adaptive learning
 - No max retry limits - keeps trying until Atlas passes
@@ -9,6 +9,8 @@ NEVER GIVES UP ON ATLAS - Implements persistent adaptive learning
 - Teaching method tracking
 - Mastery-based progression
 - Diagnostic mode for struggling topics
+- ADAPTATION MONITORING: Tracks if Atlas is actually improving
+- AUTO-ESCALATION: Detects stagnation and requests help
 """
 
 import sys
@@ -53,6 +55,8 @@ MASTERY_FILE = ATLAS_DIR / 'teacher_state' / 'hierarchical_mastery.json'
 CONCEPT_MASTERY_FILE = ATLAS_DIR / 'teacher_state' / 'concept_mastery.json'
 TEACHING_PROFILE_FILE = ATLAS_DIR / 'teacher_state' / 'atlas_learning_profile.json'
 DIAGNOSTIC_LOG_FILE = ATLAS_DIR / 'teacher_state' / 'diagnostic_log.json'
+LEARNING_ISSUES_FILE = ATLAS_DIR / 'teacher_state' / 'atlas_learning_issues.json'
+ADAPTATION_LOG_FILE = ATLAS_DIR / 'teacher_state' / 'adaptation_log.json'
 
 
 class FailureType(Enum):
@@ -81,6 +85,463 @@ class TeachingMethod(Enum):
     CONTRAST = "contrast"  # Compare with opposites/differences
     STORY = "story"  # Embed in a narrative
     HANDS_ON = "hands_on"  # Practical application focus
+
+
+class TeachingMethod(Enum):
+    """Different teaching methods to try."""
+    STANDARD = "standard"
+    SIMPLIFIED = "simplified"  # Simpler vocabulary, focus on core terms
+    STEP_BY_STEP = "step_by_step"  # Break into smaller steps
+    VISUAL_ANALOGY = "visual_analogy"  # Use visual analogies
+    REAL_WORLD = "real_world"  # Real-world examples
+    INTERACTIVE = "interactive"  # Ask questions during lesson
+    REPETITION = "repetition"  # Repeat key concepts multiple times
+    CONTRAST = "contrast"  # Compare with opposites/differences
+    STORY = "story"  # Embed in a narrative
+    HANDS_ON = "hands_on"  # Practical application focus
+
+
+class ProgressTrend(Enum):
+    """Trends in Atlas's learning progress."""
+    IMPROVING = "improving"
+    FLAT = "flat"
+    DECLINING = "declining"
+    STAGNANT = "stagnant"
+    REGRESSING = "regressing"
+    NOT_LEARNING = "not_learning"
+
+
+class AdaptationStatus(Enum):
+    """Status of Atlas's adaptation to teaching."""
+    ADAPTING_WELL = "adapting_well"
+    SLOW_PROGRESS = "slow_progress"
+    NEEDS_INTERVENTION = "needs_intervention"
+    CRITICAL = "critical"
+
+
+@dataclass
+class ProgressMetrics:
+    """Metrics for a single learning attempt."""
+    timestamp: str
+    score: float
+    coherence_score: float
+    keyword_match_rate: float
+    response_time_ms: int
+    method_used: str
+    failure_type: Optional[str]
+    response_sample: str
+    
+    def to_dict(self) -> dict:
+        return asdict(self)
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'ProgressMetrics':
+        return cls(**data)
+
+
+@dataclass
+class TopicProgressTracker:
+    """Tracks progress metrics for a specific topic."""
+    topic_name: str
+    metrics: List[ProgressMetrics] = field(default_factory=list)
+    trend: str = "unknown"
+    coherence_trend: str = "unknown"
+    keyword_trend: str = "unknown"
+    last_updated: Optional[str] = None
+    escalation_level: int = 0  # 0=normal, 1=watch, 2=intervention, 3=critical
+    
+    def to_dict(self) -> dict:
+        return {
+            'topic_name': self.topic_name,
+            'metrics': [m.to_dict() for m in self.metrics],
+            'trend': self.trend,
+            'coherence_trend': self.coherence_trend,
+            'keyword_trend': self.keyword_trend,
+            'last_updated': self.last_updated,
+            'escalation_level': self.escalation_level
+        }
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'TopicProgressTracker':
+        tracker = cls(
+            topic_name=data['topic_name'],
+            trend=data.get('trend', 'unknown'),
+            coherence_trend=data.get('coherence_trend', 'unknown'),
+            keyword_trend=data.get('keyword_trend', 'unknown'),
+            last_updated=data.get('last_updated'),
+            escalation_level=data.get('escalation_level', 0)
+        )
+        tracker.metrics = [ProgressMetrics.from_dict(m) for m in data.get('metrics', [])]
+        return tracker
+    
+    def add_metric(self, metric: ProgressMetrics):
+        """Add a new metric and update trends."""
+        self.metrics.append(metric)
+        self.last_updated = metric.timestamp
+        
+        # Keep only last 20 metrics for trend analysis
+        if len(self.metrics) > 20:
+            self.metrics = self.metrics[-20:]
+        
+        self._update_trends()
+    
+    def _update_trends(self):
+        """Update trend analysis based on recent metrics."""
+        if len(self.metrics) < 3:
+            return
+        
+        recent = self.metrics[-5:]  # Last 5 attempts
+        scores = [m.score for m in recent]
+        coherence_scores = [m.coherence_score for m in recent]
+        keyword_rates = [m.keyword_match_rate for m in recent]
+        
+        # Score trend
+        self.trend = self._calculate_trend(scores, threshold=5.0)
+        
+        # Coherence trend
+        self.coherence_trend = self._calculate_trend(coherence_scores, threshold=0.05)
+        
+        # Keyword trend
+        self.keyword_trend = self._calculate_trend(keyword_rates, threshold=0.1)
+    
+    def _calculate_trend(self, values: List[float], threshold: float) -> str:
+        """Calculate trend from a series of values."""
+        if len(values) < 3:
+            return "insufficient_data"
+        
+        # Check for stagnation (same ±threshold for 5+ attempts)
+        if len(values) >= 5:
+            recent_5 = values[-5:]
+            avg_5 = sum(recent_5) / len(recent_5)
+            if all(abs(v - avg_5) <= threshold for v in recent_5):
+                return ProgressTrend.STAGNANT.value
+        
+        # Check for regression (declining over 3+ attempts)
+        if len(values) >= 3:
+            if values[-1] < values[-2] < values[-3]:
+                return ProgressTrend.REGRESSING.value
+        
+        # Check for improvement
+        first_avg = sum(values[:3]) / 3
+        last_avg = sum(values[-3:]) / 3
+        
+        if last_avg > first_avg + threshold:
+            return ProgressTrend.IMPROVING.value
+        elif last_avg < first_avg - threshold:
+            return ProgressTrend.DECLINING.value
+        else:
+            return ProgressTrend.FLAT.value
+    
+    def get_adaptation_status(self) -> str:
+        """Get overall adaptation status."""
+        recent_attempts = len(self.metrics)
+        
+        if recent_attempts < 3:
+            return AdaptationStatus.ADAPTING_WELL.value
+        
+        # Check for critical stagnation
+        if self.trend == ProgressTrend.STAGNANT.value and recent_attempts >= 5:
+            self.escalation_level = max(self.escalation_level, 2)
+            return AdaptationStatus.NEEDS_INTERVENTION.value
+        
+        # Check for regression
+        if self.trend == ProgressTrend.REGRESSING.value:
+            self.escalation_level = max(self.escalation_level, 2)
+            return AdaptationStatus.NEEDS_INTERVENTION.value
+        
+        # Check for no coherence improvement
+        if self.coherence_trend in [ProgressTrend.STAGNANT.value, ProgressTrend.DECLINING.value]:
+            if recent_attempts >= 5:
+                self.escalation_level = max(self.escalation_level, 1)
+                return AdaptationStatus.SLOW_PROGRESS.value
+        
+        # Check for not learning (flat everything)
+        if (self.trend == ProgressTrend.FLAT.value and 
+            self.coherence_trend == ProgressTrend.FLAT.value and
+            recent_attempts >= 5):
+            self.escalation_level = max(self.escalation_level, 1)
+            return AdaptationStatus.SLOW_PROGRESS.value
+        
+        return AdaptationStatus.ADAPTING_WELL.value
+    
+    def get_recommendation(self) -> str:
+        """Get recommendation based on trends."""
+        status = self.get_adaptation_status()
+        
+        if status == AdaptationStatus.CRITICAL.value:
+            return "immediate_intervention"
+        elif status == AdaptationStatus.NEEDS_INTERVENTION.value:
+            if self.trend == ProgressTrend.STAGNANT.value:
+                return "try_radically_different_approach"
+            elif self.trend == ProgressTrend.REGRESSING.value:
+                return "review_fundamentals"
+            else:
+                return "spawn_diagnostic_agent"
+        elif status == AdaptationStatus.SLOW_PROGRESS.value:
+            return "increase_scaffolding"
+        else:
+            return "continue_current_approach"
+
+
+@dataclass
+class LearningIssue:
+    """Represents a learning issue requiring intervention."""
+    issue_id: str
+    topic: str
+    detected_at: str
+    diagnosis: str  # "stagnant", "regressing", "not_adapting"
+    severity: str  # "warning", "critical"
+    attempts_count: int
+    score_history: List[float]
+    response_samples: List[str]
+    recommended_fix: str
+    status: str = "open"  # "open", "in_progress", "resolved"
+    assigned_agent: Optional[str] = None
+    resolution_notes: Optional[str] = None
+    
+    def to_dict(self) -> dict:
+        return asdict(self)
+    
+    @classmethod
+    def from_dict(cls, data: dict) -> 'LearningIssue':
+        return cls(**data)
+
+
+class AtlasAdaptationMonitor:
+    """Monitors Atlas's adaptation and learning progress."""
+    
+    STAGNATION_THRESHOLD = 5  # 5+ attempts with same score ±5%
+    REGRESSION_THRESHOLD = 3  # 3+ declining attempts
+    SCORE_VARIATION_THRESHOLD = 5.0  # ±5% for stagnation
+    
+    def __init__(self):
+        self.trackers: Dict[str, TopicProgressTracker] = {}
+        self.issues: List[LearningIssue] = []
+        self.adaptation_log: List[dict] = []
+        self._load_data()
+    
+    def _load_data(self):
+        """Load existing tracking data."""
+        if os.path.exists(ADAPTATION_LOG_FILE):
+            try:
+                with open(ADAPTATION_LOG_FILE, 'r') as f:
+                    data = json.load(f)
+                self.trackers = {
+                    k: TopicProgressTracker.from_dict(v)
+                    for k, v in data.get('trackers', {}).items()
+                }
+                self.issues = [LearningIssue.from_dict(i) for i in data.get('issues', [])]
+                print(f"[Adaptation Monitor] Loaded {len(self.trackers)} topic trackers, {len(self.issues)} issues")
+            except Exception as e:
+                print(f"[Adaptation Monitor] Load error: {e}, starting fresh")
+    
+    def save_data(self):
+        """Save tracking data."""
+        data = {
+            'trackers': {k: v.to_dict() for k, v in self.trackers.items()},
+            'issues': [i.to_dict() for i in self.issues],
+            'last_saved': datetime.now().isoformat()
+        }
+        
+        os.makedirs(os.path.dirname(ADAPTATION_LOG_FILE), exist_ok=True)
+        with open(ADAPTATION_LOG_FILE, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        # Also save issues to separate file for easy access
+        self._save_issues_file()
+    
+    def _save_issues_file(self):
+        """Save issues to dedicated file for agent team."""
+        open_issues = [i for i in self.issues if i.status == "open"]
+        
+        issues_data = {
+            'generated_at': datetime.now().isoformat(),
+            'open_issues_count': len(open_issues),
+            'issues': [i.to_dict() for i in open_issues],
+            'summary': self._generate_issues_summary()
+        }
+        
+        with open(LEARNING_ISSUES_FILE, 'w') as f:
+            json.dump(issues_data, f, indent=2)
+    
+    def _generate_issues_summary(self) -> dict:
+        """Generate summary of current issues."""
+        stagnant = sum(1 for i in self.issues if i.diagnosis == "stagnant" and i.status == "open")
+        regressing = sum(1 for i in self.issues if i.diagnosis == "regressing" and i.status == "open")
+        not_adapting = sum(1 for i in self.issues if i.diagnosis == "not_adapting" and i.status == "open")
+        
+        return {
+            'total_open_issues': len([i for i in self.issues if i.status == "open"]),
+            'stagnant_topics': stagnant,
+            'regressing_topics': regressing,
+            'not_adapting_topics': not_adapting,
+            'topics_needing_intervention': stagnant + regressing + not_adapting
+        }
+    
+    def record_attempt(self, topic: str, evaluation: dict, method: str, 
+                       response_time_ms: int = 0) -> dict:
+        """Record a learning attempt and check for issues."""
+        # Get or create tracker
+        if topic not in self.trackers:
+            self.trackers[topic] = TopicProgressTracker(topic_name=topic)
+        
+        tracker = self.trackers[topic]
+        
+        # Extract metrics from evaluation
+        details = evaluation.get('details', {})
+        coherence = details.get('coherence', {})
+        
+        if isinstance(coherence, dict):
+            coherence_score = coherence.get('score', 0.0)
+        else:
+            coherence_score = coherence.score if coherence else 0.0
+        
+        # Calculate keyword match rate
+        keywords_matched = details.get('keywords_matched', '0/0')
+        if isinstance(keywords_matched, str) and '/' in keywords_matched:
+            matched, total = keywords_matched.split('/')
+            keyword_rate = int(matched) / int(total) if int(total) > 0 else 0.0
+        else:
+            keyword_rate = 0.0
+        
+        # Create metric
+        metric = ProgressMetrics(
+            timestamp=datetime.now().isoformat(),
+            score=evaluation.get('score', 0.0),
+            coherence_score=coherence_score,
+            keyword_match_rate=keyword_rate,
+            response_time_ms=response_time_ms,
+            method_used=method,
+            failure_type=tracker.metrics[-1].failure_type if tracker.metrics else None,
+            response_sample=evaluation.get('response', '')[:100]  # First 100 chars
+        )
+        
+        # Add to tracker
+        tracker.add_metric(metric)
+        
+        # Check for issues
+        issue = self._check_for_issues(topic, tracker)
+        
+        # Log adaptation event
+        self.adaptation_log.append({
+            'timestamp': datetime.now().isoformat(),
+            'topic': topic,
+            'score': metric.score,
+            'trend': tracker.trend,
+            'status': tracker.get_adaptation_status(),
+            'issue_detected': issue is not None
+        })
+        
+        self.save_data()
+        
+        return {
+            'tracker': tracker,
+            'issue': issue,
+            'status': tracker.get_adaptation_status(),
+            'recommendation': tracker.get_recommendation()
+        }
+    
+    def _check_for_issues(self, topic: str, tracker: TopicProgressTracker) -> Optional[LearningIssue]:
+        """Check if this topic has a learning issue requiring intervention."""
+        status = tracker.get_adaptation_status()
+        
+        # Only create issues for problems needing intervention
+        if status not in [AdaptationStatus.NEEDS_INTERVENTION.value, AdaptationStatus.CRITICAL.value]:
+            return None
+        
+        # Check if we already have an open issue for this topic
+        existing = [i for i in self.issues if i.topic == topic and i.status == "open"]
+        if existing:
+            # Update existing issue
+            issue = existing[0]
+            issue.attempts_count = len(tracker.metrics)
+            issue.score_history = [m.score for m in tracker.metrics[-10:]]
+            return issue
+        
+        # Create new issue
+        recent_metrics = tracker.metrics[-5:] if len(tracker.metrics) >= 5 else tracker.metrics
+        
+        diagnosis = "stagnant"
+        if tracker.trend == ProgressTrend.REGRESSING.value:
+            diagnosis = "regressing"
+        elif tracker.coherence_trend == ProgressTrend.STAGNANT.value and tracker.trend == ProgressTrend.FLAT.value:
+            diagnosis = "not_adapting"
+        
+        # Determine recommended fix
+        if diagnosis == "stagnant":
+            recommended_fix = "needs_simpler_lessons"
+        elif diagnosis == "regressing":
+            recommended_fix = "missing_prerequisites"
+        else:
+            recommended_fix = "teaching_method_mismatch"
+        
+        issue = LearningIssue(
+            issue_id=f"{topic}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            topic=topic,
+            detected_at=datetime.now().isoformat(),
+            diagnosis=diagnosis,
+            severity="critical" if tracker.escalation_level >= 2 else "warning",
+            attempts_count=len(tracker.metrics),
+            score_history=[m.score for m in tracker.metrics],
+            response_samples=[m.response_sample for m in recent_metrics],
+            recommended_fix=recommended_fix,
+            status="open"
+        )
+        
+        self.issues.append(issue)
+        
+        # Log the issue
+        log_message(f"\n{'!'*70}")
+        log_message(f"🚨 LEARNING ISSUE DETECTED: {topic}")
+        log_message(f"   Diagnosis: {diagnosis}")
+        log_message(f"   Attempts: {issue.attempts_count}")
+        log_message(f"   Trend: {tracker.trend}")
+        log_message(f"   Recommended fix: {recommended_fix}")
+        log_message(f"   Issue ID: {issue.issue_id}")
+        log_message(f"{'!'*70}\n")
+        
+        return issue
+    
+    def get_topic_status(self, topic: str) -> dict:
+        """Get detailed status for a topic."""
+        if topic not in self.trackers:
+            return {'error': f'No data for topic {topic}'}
+        
+        tracker = self.trackers[topic]
+        recent = tracker.metrics[-5:] if tracker.metrics else []
+        
+        return {
+            'topic': topic,
+            'total_attempts': len(tracker.metrics),
+            'score_trend': tracker.trend,
+            'coherence_trend': tracker.coherence_trend,
+            'keyword_trend': tracker.keyword_trend,
+            'adaptation_status': tracker.get_adaptation_status(),
+            'escalation_level': tracker.escalation_level,
+            'recommendation': tracker.get_recommendation(),
+            'recent_scores': [m.score for m in recent],
+            'recent_coherence': [m.coherence_score for m in recent],
+            'methods_tried': list(set(m.method_used for m in tracker.metrics))
+        }
+    
+    def get_all_status(self) -> dict:
+        """Get status of all tracked topics."""
+        return {
+            'topics_tracked': len(self.trackers),
+            'open_issues': len([i for i in self.issues if i.status == "open"]),
+            'topics': {topic: self.get_topic_status(topic) for topic in self.trackers.keys()}
+        }
+    
+    def resolve_issue(self, issue_id: str, resolution: str, agent: str):
+        """Mark an issue as resolved."""
+        for issue in self.issues:
+            if issue.issue_id == issue_id:
+                issue.status = "resolved"
+                issue.resolution_notes = resolution
+                issue.assigned_agent = agent
+                self.save_data()
+                return True
+        return False
 
 
 @dataclass
@@ -1006,7 +1467,7 @@ def check_mastery_requirements(mastery_system: HierarchicalMasterySystem,
 def run_persistent_adaptive_session(max_lessons: int = 20):
     """Run teaching session with persistent adaptive learning - NEVER gives up."""
     log_message("=" * 70)
-    log_message("🎓 Atlas Persistent Adaptive Teacher v6 - NEVER GIVES UP")
+    log_message("🎓 Atlas Persistent Adaptive Teacher v7 - NEVER GIVES UP")
     log_message("=" * 70)
     log_message("Features:")
     log_message("- No max retry limits - keeps trying until Atlas passes")
@@ -1015,6 +1476,8 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     log_message("- Teaching method tracking")
     log_message("- Mastery-based progression")
     log_message("- Diagnostic mode for struggling topics")
+    log_message("- ADAPTATION MONITORING: Tracks if Atlas is actually improving")
+    log_message("- AUTO-ESCALATION: Detects stagnation and requests help")
     log_message("=" * 70)
     
     # Load session stats
@@ -1023,6 +1486,12 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     # Initialize systems
     mastery_system = HierarchicalMasterySystem()
     adaptive_system = AdaptiveTeachingSystem()
+    adaptation_monitor = AtlasAdaptationMonitor()  # NEW: Track adaptation
+    
+    # Show adaptation monitoring status
+    log_message(f"\n📊 Adaptation Monitoring:")
+    log_message(f"   Topics tracked: {len(adaptation_monitor.trackers)}")
+    log_message(f"   Open issues: {len([i for i in adaptation_monitor.issues if i.status == 'open'])}")
     
     # Get file-based stats first
     file_stats = get_brain_stats_direct()
@@ -1107,14 +1576,54 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
         
         # Acquire lock before teaching
         with FileLock(LOCK_FILE):
+            start_time = time.time()
             result = teach_lesson_persistent_adaptive(
                 topic_data, category, brain, mastery_system, adaptive_system
             )
+            response_time_ms = int((time.time() - start_time) * 1000)
             
             current_vocab = result['brain_result']['vocabulary_size']
             lessons_taught += 1
             questions_asked += 1
             evaluations.append(result['evaluation'])
+            
+            # NEW: Record in adaptation monitor
+            monitor_result = adaptation_monitor.record_attempt(
+                topic_name, result['evaluation'], result['method'], response_time_ms
+            )
+            
+            # NEW: Check for stagnation and auto-escalation
+            tracker = monitor_result['tracker']
+            issue = monitor_result['issue']
+            
+            if issue:
+                # Learning issue detected - log and escalate
+                log_message(f"       🚨 ADAPTATION ISSUE: {issue.diagnosis}")
+                log_message(f"       📈 Trend: {tracker.trend} | Status: {monitor_result['status']}")
+                
+                # Auto-escalation: Try 2 more methods before requesting help
+                if tracker.escalation_level == 2 and len(tracker.metrics) >= 5:
+                    log_message(f"       ⚠️  ESCALATION: Trying alternative methods...")
+                    # Force different teaching methods
+                    for alt_method in ['simplified', 'visual_analogy']:
+                        if alt_method != result['method']:
+                            log_message(f"       🔄 Trying alternative method: {alt_method}")
+                            # Re-teach with alternative method
+                            alt_content = generate_adaptive_lesson(
+                                category, topic_name, topic_data, alt_method, adaptive_system
+                            )
+                            brain.learn_from_text(alt_content)
+                            break
+                    
+                    # Check if still stagnant after alternatives
+                    if tracker.get_adaptation_status() == AdaptationStatus.NEEDS_INTERVENTION.value:
+                        log_message(f"       🆘 CRITICAL: Atlas not adapting - agent intervention required!")
+                        log_message(f"       📋 Issue logged to: {LEARNING_ISSUES_FILE}")
+            
+            # NEW: Show progress trend
+            if len(tracker.metrics) >= 3:
+                recent_scores = [m.score for m in tracker.metrics[-3:]]
+                log_message(f"       📊 Score trend: {recent_scores} | {tracker.trend}")
             
             if result['passed']:
                 success_count += 1
@@ -1142,6 +1651,7 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
             if lessons_taught % 5 == 0:
                 save_shared_brain()
                 adaptive_system.save_profile()
+                adaptation_monitor.save_data()
                 log_message(f"💾 Checkpoint saved after {lessons_taught} lessons")
         
         lesson_count += 1
@@ -1150,6 +1660,7 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     with FileLock(LOCK_FILE):
         save_shared_brain()
         adaptive_system.save_profile()
+        adaptation_monitor.save_data()
     
     # Update session stats
     session_stats['total_lessons'] += lessons_taught
@@ -1171,6 +1682,7 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     # Get summary stats
     summary = mastery_system.get_summary_stats()
     profile_summary = adaptive_system.get_learning_summary()
+    adaptation_summary = adaptation_monitor.get_all_status()
     
     log_message("\n" + "=" * 70)
     log_message("📊 Session Complete - Persistent Adaptive Learning")
@@ -1191,6 +1703,17 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     log_message(f"   Difficult topics: {profile_summary['difficult_topics']}")
     log_message(f"   Easy topics: {profile_summary['easy_topics']}")
     
+    # NEW: Show adaptation monitoring summary
+    log_message(f"\n📊 Adaptation Monitoring:")
+    log_message(f"   Topics tracked: {adaptation_summary['topics_tracked']}")
+    log_message(f"   Open issues: {adaptation_summary['open_issues']}")
+    
+    # Show topics with issues
+    for topic_name, status in adaptation_summary['topics'].items():
+        if status['escalation_level'] > 0:
+            log_message(f"   ⚠️  {topic_name}: {status['adaptation_status']} (Level {status['escalation_level']})")
+            log_message(f"      Trend: {status['score_trend']} | Recommendation: {status['recommendation']}")
+    
     # Show updated mastery status
     log_message(f"\n📊 Updated Mastery Status:")
     for topic_name in TOPICS.keys():
@@ -1207,6 +1730,12 @@ def run_persistent_adaptive_session(max_lessons: int = 20):
     for topic_name in profile_summary['difficult_topics']:
         diagnosis = adaptive_system.diagnose_topic(topic_name)
         log_message(f"   {topic_name}: {diagnosis['suggested_action']}")
+    
+    # NEW: Show learning issues file location
+    if adaptation_summary['open_issues'] > 0:
+        log_message(f"\n🚨 Learning Issues Report:")
+        log_message(f"   File: {LEARNING_ISSUES_FILE}")
+        log_message(f"   Open issues require agent team intervention")
     
     log_message("=" * 70)
     log_message("✨ NEVER GIVE UP - Atlas will keep learning! ✨")
