@@ -14,7 +14,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from core.text_learning import TextLearningModule
+from self_organizing_av_system.core.text_learning import TextLearningModule
 
 logger = logging.getLogger(__name__)
 
