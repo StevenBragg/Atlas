@@ -1,0 +1,55 @@
+{
+  "concepts": [
+    {
+      "concept": "Data Structures",
+      "state": "shu",
+      "shu_passed": false,
+      "ha_passed": false,
+      "ri_passed": false,
+      "attempts": 1,
+      "last_evaluated": 1771521822.5902386,
+      "misconceptions": []
+    },
+    {
+      "concept": "Number Theory",
+      "state": "shu",
+      "shu_passed": false,
+      "ha_passed": false,
+      "ri_passed": false,
+      "attempts": 1,
+      "last_evaluated": 1771521833.7382874,
+      "misconceptions": []
+    },
+    {
+      "concept": "Semantics",
+      "state": "shu",
+      "shu_passed": false,
+      "ha_passed": false,
+      "ri_passed": false,
+      "attempts": 1,
+      "last_evaluated": 1771521846.7163663,
+      "misconceptions": []
+    },
+    {
+      "concept": "Set Theory",
+      "state": "shu",
+      "shu_passed": false,
+      "ha_passed": false,
+      "ri_passed": false,
+      "attempts": 1,
+      "last_evaluated": 1771521864.9375393,
+      "misconceptions": []
+    },
+    {
+      "concept": "Algorithms",
+      "state": "shu",
+      "shu_passed": false,
+      "ha_passed": false,
+      "ri_passed": false,
+      "attempts": 1,
+      "last_evaluated": 1771521885.6665108,
+      "misconceptions": []
+    }
+  ],
+  "timestamp": 1771521885.666615
+}
