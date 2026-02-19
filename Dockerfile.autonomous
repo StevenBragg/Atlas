@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+WORKDIR /atlas
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY self_organizing_av_system/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy Atlas code
+COPY self_organizing_av_system/ ./self_organizing_av_system/
+COPY autonomous_atlas.py .
+COPY config/ ./config/
+
+# Create directories
+RUN mkdir -p logs improvements data
+
+# Environment variables
+ENV PYTHONPATH=/atlas
+ENV ATLAS_AUTONOMOUS=true
+ENV ATLAS_LEARNING_INTERVAL=30
+
+# Run autonomously
+CMD ["python3", "autonomous_atlas.py"]
