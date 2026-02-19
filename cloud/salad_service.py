@@ -60,6 +60,14 @@ try:
 except ImportError:
     HAS_UNIFIED_INTELLIGENCE = False
 
+# Try to import text learning
+try:
+    from core.text_learning import TextLearningModule
+    from cloud.text_api import TextLearningAPI, create_text_handler
+    HAS_TEXT_LEARNING = True
+except ImportError:
+    HAS_TEXT_LEARNING = False
+
 try:
     from prometheus_client import Counter, Gauge, Histogram, generate_latest, CONTENT_TYPE_LATEST
     HAS_PROMETHEUS = True
@@ -248,6 +256,17 @@ class AtlasSaladService:
             except Exception as e:
                 self.logger.warning(f"Could not initialize unified intelligence: {e}")
 
+        # Initialize text learning module if available
+        self.text_module = None
+        self.text_api = None
+        if HAS_TEXT_LEARNING and os.environ.get('ATLAS_ENABLE_TEXT_LEARNING', 'true').lower() == 'true':
+            try:
+                self.text_module = TextLearningModule()
+                self.text_api = TextLearningAPI(self.text_module)
+                self.logger.info("Text Learning Module enabled")
+            except Exception as e:
+                self.logger.warning(f"Could not initialize text learning module: {e}")
+
         # Try to load latest checkpoint
         self._load_latest_checkpoint()
 
@@ -281,6 +300,18 @@ class AtlasSaladService:
         except Exception as e:
             self.logger.error(f"Error loading checkpoint: {e}")
 
+        # Load text learning checkpoint if available
+        if self.text_module:
+            text_checkpoint = os.path.join(checkpoint_dir, "text_learning_state.pkl")
+            if os.path.exists(text_checkpoint):
+                try:
+                    if self.text_module.load_state(text_checkpoint):
+                        self.logger.info(f"Loaded text learning checkpoint")
+                    else:
+                        self.logger.warning("Failed to load text learning checkpoint")
+                except Exception as e:
+                    self.logger.error(f"Error loading text learning checkpoint: {e}")
+
     def _save_checkpoint(self, is_final: bool = False):
         """Save a checkpoint of the current state."""
         checkpoint_config = self.config.get_checkpointing_config()
@@ -295,15 +326,27 @@ class AtlasSaladService:
             f"{prefix}_{self.salad_machine_id}_{timestamp}_{self.system.frame_count}.pkl"
         )
 
+        success = False
         try:
             if self.system.save_state(checkpoint_file):
                 self.logger.info(f"Saved checkpoint: {checkpoint_file}")
                 self._cleanup_old_checkpoints(checkpoint_config)
-                return True
+                success = True
         except Exception as e:
             self.logger.error(f"Failed to save checkpoint: {e}")
 
-        return False
+        # Save text learning checkpoint if available
+        if self.text_module:
+            text_checkpoint_file = os.path.join(checkpoint_dir, "text_learning_state.pkl")
+            try:
+                if self.text_module.save_state(text_checkpoint_file):
+                    self.logger.info(f"Saved text learning checkpoint")
+                else:
+                    self.logger.warning("Failed to save text learning checkpoint")
+            except Exception as e:
+                self.logger.error(f"Error saving text learning checkpoint: {e}")
+
+        return success
 
     def _cleanup_old_checkpoints(self, checkpoint_config: Dict[str, Any]):
         """Remove old checkpoints keeping only max_checkpoints most recent."""
@@ -544,7 +587,8 @@ class AtlasSaladService:
                 "machine_id": self.salad_machine_id,
                 "container_group_id": self.salad_container_group_id
             },
-            "unified_intelligence": self.unified_intelligence is not None
+            "unified_intelligence": self.unified_intelligence is not None,
+            "text_learning": self.text_module.get_stats() if self.text_module else None
         }
 
         return status
