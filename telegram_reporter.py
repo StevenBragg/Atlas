@@ -49,9 +49,17 @@ def get_improvements():
 def get_active_agents():
     """Check running processes"""
     try:
-        result = subprocess.run(['pgrep', '-f', 'autonomous'], 
+        # Check for continuous teacher
+        result = subprocess.run(['pgrep', '-f', 'continuous_teacher'], 
                               capture_output=True, text=True)
-        return len([p for p in result.stdout.strip().split('\n') if p]) if result.stdout else 0
+        count = len([p for p in result.stdout.strip().split('\n') if p]) if result.stdout else 0
+        
+        # Also check for autonomous agents
+        result2 = subprocess.run(['pgrep', '-f', 'autonomous'], 
+                              capture_output=True, text=True)
+        count += len([p for p in result2.stdout.strip().split('\n') if p]) if result2.stdout else 0
+        
+        return count
     except:
         return 0
 
@@ -104,13 +112,14 @@ def get_teacher_stats():
                     'a': 'Learning in progress...', 
                     'time': datetime.now().strftime('%H:%M')
                 })
-            elif 'tokens' in line.lower() or 'words' in line.lower():
+            elif 'Session Complete' in line:
+                # Extract final vocabulary count from session summary
                 try:
-                    # Try to extract numbers
                     import re
-                    nums = re.findall(r'\d+', line)
-                    if nums:
-                        stats['concepts_explained'] += int(nums[0])
+                    # Look for pattern like "Vocabulary: 3584 → 3590 (+6)"
+                    match = re.search(r'Vocabulary:\s*\d+\s*→\s*(\d+)', line)
+                    if match:
+                        stats['concepts_explained'] = int(match.group(1))
                 except:
                     pass
         
@@ -119,11 +128,6 @@ def get_teacher_stats():
         
     except Exception as e:
         print(f"Error reading teacher log: {e}")
-    
-    return stats
-        
-    except Exception as e:
-        print(f"Teacher log error: {e}")
     
     return stats
 
