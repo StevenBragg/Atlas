@@ -105,10 +105,11 @@ class AutonomousAtlas:
         stats = self.text_learner.get_stats()
         
         # Generate ideas using creativity engine
-        seed = f"Atlas has learned {stats['vocabulary_size']} code tokens. "
-        seed += "Ideas for improvement:"
+        import numpy as np
+        problem_vector = np.random.randn(256)  # Random seed for idea generation
         
         ideas = self.creativity.divergent_think(
+            problem=problem_vector,
             n_solutions=5,
             diversity_weight=0.7
         )
@@ -122,9 +123,8 @@ class AutonomousAtlas:
         with open(ideas_file, 'w') as f:
             json.dump({
                 'timestamp': timestamp,
-                'seed': seed,
                 'stats': stats,
-                'ideas': ideas
+                'ideas': len(ideas)
             }, f, indent=2)
             
         logger.info(f"  Generated {len(ideas)} ideas, saved to {ideas_file}")
