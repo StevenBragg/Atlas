@@ -657,14 +657,30 @@ class AtlasSaladService:
 
     def _run_http_server(self):
         """Run HTTP server for Salad Cloud Container Gateway."""
-
         service = self
+
+        # Get text handler mixin if text learning is enabled
+        TextHandlerMixin = None
+        if service.text_api:
+            TextHandlerMixin = create_text_handler(service.text_api)
 
         class SaladHandler(BaseHTTPRequestHandler):
             def log_message(self, format, *args):
                 pass
 
             def do_GET(self):
+                # Check text endpoints first if mixin is available
+                if TextHandlerMixin and self.path == '/text/stats':
+                    mixin = TextHandlerMixin()
+                    mixin.__dict__['rfile'] = self.rfile
+                    mixin.__dict__['wfile'] = self.wfile
+                    mixin.__dict__['headers'] = self.headers
+                    mixin.__dict__['send_response'] = self.send_response
+                    mixin.__dict__['send_header'] = self.send_header
+                    mixin.__dict__['end_headers'] = self.end_headers
+                    mixin._handle_text_stats()
+                    return
+
                 if self.path == '/health':
                     # Liveness probe
                     self.send_response(200)
@@ -704,6 +720,30 @@ class AtlasSaladService:
                 else:
                     self.send_response(404)
                     self.end_headers()
+
+            def do_POST(self):
+                # Check text endpoints if mixin is available
+                if TextHandlerMixin:
+                    mixin = TextHandlerMixin()
+                    mixin.__dict__['rfile'] = self.rfile
+                    mixin.__dict__['wfile'] = self.wfile
+                    mixin.__dict__['headers'] = self.headers
+                    mixin.__dict__['send_response'] = self.send_response
+                    mixin.__dict__['send_header'] = self.send_header
+                    mixin.__dict__['end_headers'] = self.end_headers
+                    
+                    if self.path == '/text/learn':
+                        mixin._handle_text_learn()
+                        return
+                    elif self.path == '/text/generate':
+                        mixin._handle_text_generate()
+                        return
+                    elif self.path == '/chat':
+                        mixin._handle_chat()
+                        return
+
+                self.send_response(404)
+                self.end_headers()
 
         port = int(os.environ.get('ATLAS_HTTP_PORT', '8080'))
         server = HTTPServer(('0.0.0.0', port), SaladHandler)
