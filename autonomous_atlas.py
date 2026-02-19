@@ -46,7 +46,7 @@ class AutonomousAtlas:
     def __init__(self):
         self.text_learner = TextLearningModule(embedding_dim=256)
         self.episodic_memory = EpisodicMemory(state_size=256, max_episodes=1000)
-        self.semantic_memory = SemanticMemory()
+        self.semantic_memory = SemanticMemory(embedding_size=256)
         self.creativity = CreativityEngine(embedding_dim=256)
         
         self.codebase_path = Path('/root/.openclaw/workspace/Atlas/self_organizing_av_system')
