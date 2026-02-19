@@ -108,9 +108,8 @@ class AutonomousAtlas:
         seed = f"Atlas has learned {stats['vocabulary_size']} code tokens. "
         seed += "Ideas for improvement:"
         
-        ideas = self.creativity.diverge(
-            problem=seed,
-            num_ideas=5,
+        ideas = self.creativity.divergent_think(
+            n_solutions=5,
             diversity_weight=0.7
         )
         
@@ -125,7 +124,7 @@ class AutonomousAtlas:
                 'timestamp': timestamp,
                 'seed': seed,
                 'stats': stats,
-                'ideas': [idea for idea, _ in ideas]
+                'ideas': ideas
             }, f, indent=2)
             
         logger.info(f"  Generated {len(ideas)} ideas, saved to {ideas_file}")
