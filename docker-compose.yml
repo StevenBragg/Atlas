@@ -78,6 +78,31 @@ services:
       - atlas-network
 
   # ============================================
+  # Text Learning Service
+  # ============================================
+  text-learning:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: atlas-text-learning
+    restart: unless-stopped
+    command: ["python", "-c", "from core.text_learning import TextLearningModule; t = TextLearningModule(); print('Text learning module loaded successfully')"]
+    environment:
+      - ATLAS_LOG_LEVEL=INFO
+      - TEXT_LEARNING_ENABLED=true
+      - TEXT_LEARNING_EMBEDDING_DIM=128
+      - TEXT_LEARNING_MAX_VOCABULARY=10000
+      - TEXT_LEARNING_CONTEXT_WINDOW=5
+    volumes:
+      - atlas-data:/data
+      - atlas-logs:/data/logs
+    depends_on:
+      - atlas
+      - redis
+    networks:
+      - atlas-network
+
+  # ============================================
   # Redis - Knowledge Cache & Message Broker
   # ============================================
   redis:
