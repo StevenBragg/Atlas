@@ -12,6 +12,7 @@ A revolutionary biologically-inspired self-organizing architecture for audio-vis
 - [GUI Features](#gui-features)
 - [Configuration](#configuration)
 - [Web API](#web-api)
+- [Text Learning](#text-learning)
 - [Cloud Deployment](#cloud-deployment)
 - [Cognitive Systems](#cognitive-systems)
 - [Learning Mechanisms](#learning-mechanisms)
@@ -347,6 +348,64 @@ Features:
 - Data input interface
 - Control panel for learning parameters
 - Memory explorer
+
+## Text Learning
+
+Atlas includes a **Text Learning Module** that enables learning from and generating text using the same self-organizing principles as audio-visual learning.
+
+### Features
+
+- **Unsupervised Text Learning**: Learn language structure from text corpora
+- **Predictive Coding**: Predict next tokens based on context
+- **Text Generation**: Generate coherent responses from learned patterns
+- **Conversational Interface**: Interactive chat capabilities
+
+### Quick Start
+
+```python
+from self_organizing_av_system.core.text_learning import TextLearningModule
+
+# Initialize
+text_module = TextLearningModule()
+
+# Learn from text
+text_module.learn_from_text("Machine learning is fascinating")
+text_module.learn_from_text("Neural networks process information")
+
+# Generate text
+generated = text_module.generate_text("Machine", max_length=20)
+print(generated)  # "machine learning is fascinating and neural networks..."
+```
+
+### API Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/text/learn` | POST | Learn from provided text |
+| `/text/generate` | POST | Generate text from prompt |
+| `/text/stats` | GET | Get learning statistics |
+| `/chat` | POST | Conversational interaction |
+
+### Example Usage
+
+```bash
+# Learn from text
+curl -X POST http://localhost:8000/text/learn \
+  -H "Content-Type: application/json" \
+  -d '{"text": "The quick brown fox jumps over the lazy dog"}'
+
+# Generate text
+curl -X POST http://localhost:8000/text/generate \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Hello", "max_length": 30}'
+
+# Chat
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "How does AI work?"}'
+```
+
+For detailed documentation, see [TEXT_LEARNING.md](TEXT_LEARNING.md).
 
 ## Cloud Deployment
 

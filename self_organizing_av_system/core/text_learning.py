@@ -72,14 +72,36 @@ class TextLearningModule:
     def _get_or_add_token(self, token: str) -> int:
         """Get token index, adding to vocabulary if new"""
         if token not in self.token_to_idx:
+            idx = None
             if len(self.token_to_idx) >= self.max_vocabulary:
-                # Replace rare token
-                rarest = min(self.token_counts, key=self.token_counts.get)
-                idx = self.token_to_idx[rarest]
-                del self.token_to_idx[rarest]
-                del self.idx_to_token[idx]
-                del self.embeddings[idx]
+                # Replace rare token - only if we have counted tokens
+                if self.token_counts:
+                    # token_counts stores indices, find the rarest index
+                    rarest_idx = min(self.token_counts, key=self.token_counts.get)
+                    rarest_token = self.idx_to_token[rarest_idx]
+                    idx = rarest_idx  # Reuse the rarest token's index
+                    del self.token_to_idx[rarest_token]
+                    del self.idx_to_token[rarest_idx]
+                    del self.embeddings[rarest_idx]
+                    del self.token_counts[rarest_idx]
+                else:
+                    # If no counts yet, remove the first non-special token
+                    # Find first non-special token to remove
+                    special_tokens = {'<PAD>', '<UNK>', '<START>', '<END>', '<SPACE>'}
+                    for tok, tok_idx in list(self.token_to_idx.items()):
+                        if tok not in special_tokens:
+                            idx = tok_idx  # Reuse the index
+                            del self.token_to_idx[tok]
+                            del self.idx_to_token[tok_idx]
+                            del self.embeddings[tok_idx]
+                            break
             else:
+                idx = self.next_idx
+                self.next_idx += 1
+            
+            # If idx is still None, something went wrong (shouldn't happen)
+            if idx is None:
+                # Fallback: use next_idx anyway
                 idx = self.next_idx
                 self.next_idx += 1
             
