@@ -27,6 +27,7 @@ from core.text_learning import TextLearningModule
 from core.episodic_memory import EpisodicMemory
 from core.semantic_memory import SemanticMemory
 from core.creativity import CreativityEngine
+from shared_brain import get_shared_brain, save_shared_brain
 
 logging.basicConfig(
     level=logging.INFO,
@@ -45,8 +46,8 @@ class AutonomousTeacher:
     def __init__(self):
         logger.info("📚 Initializing Autonomous Teacher...")
         
-        # Atlas's learning systems (shared)
-        self.atlas_brain = TextLearningModule(embedding_dim=256)
+        # Use shared brain
+        self.atlas_brain = get_shared_brain()
         self.episodic = EpisodicMemory(state_size=256, max_episodes=5000)
         self.semantic = SemanticMemory(embedding_size=256)
         self.creativity = CreativityEngine(embedding_dim=256)
@@ -215,6 +216,7 @@ class AutonomousTeacher:
                 
             # 5. Save progress
             self.save_state()
+            save_shared_brain()
             
             # 6. Report stats
             self.report_stats()

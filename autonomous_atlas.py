@@ -22,6 +22,7 @@ from core.text_learning import TextLearningModule
 from core.episodic_memory import EpisodicMemory
 from core.semantic_memory import SemanticMemory
 from core.creativity import CreativityEngine
+from shared_brain import get_shared_brain, save_shared_brain
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,7 +45,8 @@ class AutonomousAtlas:
     """
     
     def __init__(self):
-        self.text_learner = TextLearningModule(embedding_dim=256)
+        # Use shared brain
+        self.text_learner = get_shared_brain()
         self.episodic_memory = EpisodicMemory(state_size=256, max_episodes=1000)
         self.semantic_memory = SemanticMemory(embedding_size=256)
         self.creativity = CreativityEngine(embedding_dim=256)
@@ -202,10 +204,11 @@ class AutonomousAtlas:
             
     def save_state(self):
         """Save learning state"""
+        save_shared_brain()
+        
         state_path = self.improvements_path / 'state'
         state_path.mkdir(exist_ok=True)
         
-        self.text_learner.save_state(state_path / 'text_learner.pkl')
         self.episodic_memory.save(state_path / 'episodic_memory.pkl')
         
         with open(state_path / 'learning_stats.json', 'w') as f:
@@ -215,13 +218,11 @@ class AutonomousAtlas:
         
     def load_state(self):
         """Load previous learning state"""
+        # Shared brain loaded automatically via get_shared_brain()
+        
         state_path = self.improvements_path / 'state'
         
         try:
-            if (state_path / 'text_learner.pkl').exists():
-                self.text_learner.load_state(state_path / 'text_learner.pkl')
-                logger.info("Loaded text learner state")
-                
             if (state_path / 'episodic_memory.pkl').exists():
                 self.episodic_memory.load(state_path / 'episodic_memory.pkl')
                 logger.info("Loaded episodic memory")
