@@ -1,0 +1,98 @@
+name: Deploy to Salad Cloud
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'Dockerfile.salad'
+      - 'self_organizing_av_system/**'
+      - 'cloud/**'
+      - 'config/**'
+      - '.github/workflows/deploy-salad.yml'
+  workflow_dispatch:
+    inputs:
+      gpu_class:
+        description: 'GPU Type'
+        required: true
+        default: 'rtx3060'
+        type: choice
+        options:
+          - rtx3060
+          - rtx3070
+          - rtx3080
+          - rtx3090
+      replicas:
+        description: 'Number of instances'
+        required: true
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/atlas-salad
+  SALAD_ORG: stevenbragg  # Update this if different
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: salad-cloud  # Requires approval for production
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Salad Cloud
+        env:
+          SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
+        run: |
+          # Install Salad Cloud CLI
+          curl -fsSL https://github.com/SaladTechnologies/salad-cloud-cli/releases/latest/download/salad-cloud-cli-linux-x64 -o salad
+          chmod +x salad
+          sudo mv salad /usr/local/bin/
+          
+          # Set variables
+          GPU_CLASS="${{ github.event.inputs.gpu_class || 'rtx3060' }}"
+          REPLICAS="${{ github.event.inputs.replicas || '1' }}"
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          
+          echo "Deploying Atlas to Salad Cloud..."
+          echo "GPU: $GPU_CLASS"
+          echo "Replicas: $REPLICAS"
+          echo "Image: $IMAGE"
+          
+          # Create or update container group
+          salad container-groups create \
+            --organization ${{ env.SALAD_ORG }} \
+            --project atlas \
+            --name atlas-gpu-$GPU_CLASS \
+            --image $IMAGE \
+            --gpu-class $GPU_CLASS \
+            --replicas $REPLICAS \
+            --memory 8192 \
+            --cpu 4 \
+            --port 8080 \
+            --country-codes US,CA,EU \
+            --restart-policy always \
+            --readiness-probe-http-port 8080 \
+            --readiness-probe-path /health \
+            --readiness-probe-interval 30 \
+            --readiness-probe-timeout 10 \
+            --readiness-probe-retries 3 \
+            --startup-probe-http-port 8080 \
+            --startup-probe-path /health \
+            --startup-probe-interval 30 \
+            --startup-probe-timeout 10 \
+            --startup-probe-retries 10 \
+            || salad container-groups update \
+            --organization ${{ env.SALAD_ORG }} \
+            --project atlas \
+            --name atlas-gpu-$GPU_CLASS \
+            --image $IMAGE \
+            --replicas $REPLICAS
+          
+          echo "✅ Deployment complete!"
+          echo ""
+          echo "Monitor at: https://portal.salad.com/organizations/${{ env.SALAD_ORG }}/projects/atlas"
