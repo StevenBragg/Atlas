@@ -12,22 +12,36 @@
           "exercises_completed": 0,
           "assessments_passed": 3,
           "assessments_failed": 1,
+          "retry_count": 0,
           "last_studied": "2026-02-20T03:00:33.913692",
           "phase_started": "2026-02-20T03:00:33.913248"
         },
         "level_2": {
           "level": 2,
+          "phase": "ri",
+          "mastery_percentage": 100.0,
+          "lessons_completed": 4,
+          "exercises_completed": 0,
+          "assessments_passed": 3,
+          "assessments_failed": 2,
+          "retry_count": 0,
+          "last_studied": "2026-02-20T03:31:25.099762",
+          "phase_started": "2026-02-20T03:31:25.099015"
+        },
+        "level_3": {
+          "level": 3,
           "phase": "shu",
-          "mastery_percentage": 45.0,
+          "mastery_percentage": 15.0,
           "lessons_completed": 2,
           "exercises_completed": 0,
-          "assessments_passed": 1,
-          "assessments_failed": 1,
-          "last_studied": "2026-02-20T03:01:12.607518",
-          "phase_started": "2026-02-20T03:00:33.913704"
+          "assessments_passed": 0,
+          "assessments_failed": 4,
+          "retry_count": 4,
+          "last_studied": "2026-02-20T03:33:08.638312",
+          "phase_started": "2026-02-20T03:31:25.099775"
         }
       },
-      "current_level": 2,
+      "current_level": 3,
       "max_level": 3,
       "prerequisites": []
     },
@@ -38,12 +52,13 @@
         "level_1": {
           "level": 1,
           "phase": "shu",
-          "mastery_percentage": 0.0,
-          "lessons_completed": 0,
+          "mastery_percentage": 20.0,
+          "lessons_completed": 2,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 0,
-          "last_studied": null,
+          "assessments_failed": 2,
+          "retry_count": 2,
+          "last_studied": "2026-02-20T03:32:41.698695",
           "phase_started": "2026-02-20T02:59:26.748188"
         }
       },
@@ -60,12 +75,13 @@
         "level_1": {
           "level": 1,
           "phase": "shu",
-          "mastery_percentage": 30.0,
-          "lessons_completed": 3,
+          "mastery_percentage": 55.0,
+          "lessons_completed": 6,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 3,
-          "last_studied": "2026-02-20T03:01:22.666937",
+          "assessments_failed": 7,
+          "retry_count": 4,
+          "last_studied": "2026-02-20T03:33:08.641548",
           "phase_started": "2026-02-20T02:59:26.748193"
         }
       },
@@ -81,17 +97,30 @@
       "levels": {
         "level_1": {
           "level": 1,
-          "phase": "shu",
-          "mastery_percentage": 50.0,
-          "lessons_completed": 5,
+          "phase": "ri",
+          "mastery_percentage": 95.0,
+          "lessons_completed": 9,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 5,
-          "last_studied": "2026-02-20T03:01:22.682869",
-          "phase_started": "2026-02-20T02:59:26.748196"
+          "assessments_failed": 8,
+          "retry_count": 3,
+          "last_studied": "2026-02-20T03:32:31.589825",
+          "phase_started": "2026-02-20T03:31:44.076946"
+        },
+        "level_2": {
+          "level": 2,
+          "phase": "shu",
+          "mastery_percentage": 0.0,
+          "lessons_completed": 0,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 2,
+          "retry_count": 2,
+          "last_studied": "2026-02-20T03:33:08.640537",
+          "phase_started": "2026-02-20T03:32:31.589851"
         }
       },
-      "current_level": 1,
+      "current_level": 2,
       "max_level": 3,
       "prerequisites": [
         "Logic",
@@ -110,6 +139,7 @@
           "exercises_completed": 0,
           "assessments_passed": 0,
           "assessments_failed": 2,
+          "retry_count": 0,
           "last_studied": "2026-02-20T03:01:12.563701",
           "phase_started": "2026-02-20T02:59:26.748199"
         }
@@ -128,12 +158,13 @@
         "level_1": {
           "level": 1,
           "phase": "shu",
-          "mastery_percentage": 20.0,
-          "lessons_completed": 2,
+          "mastery_percentage": 50.0,
+          "lessons_completed": 5,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 2,
-          "last_studied": "2026-02-20T03:01:22.652503",
+          "assessments_failed": 5,
+          "retry_count": 3,
+          "last_studied": "2026-02-20T03:32:41.666288",
           "phase_started": "2026-02-20T02:59:26.748202"
         }
       },
@@ -149,14 +180,15 @@
       "levels": {
         "level_1": {
           "level": 1,
-          "phase": "shu",
-          "mastery_percentage": 40.0,
-          "lessons_completed": 4,
+          "phase": "ri",
+          "mastery_percentage": 75.0,
+          "lessons_completed": 8,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 4,
-          "last_studied": "2026-02-20T03:01:22.611727",
-          "phase_started": "2026-02-20T02:59:26.748204"
+          "assessments_failed": 9,
+          "retry_count": 5,
+          "last_studied": "2026-02-20T03:33:08.639485",
+          "phase_started": "2026-02-20T03:32:31.652814"
         }
       },
       "current_level": 1,
@@ -173,12 +205,13 @@
         "level_1": {
           "level": 1,
           "phase": "shu",
-          "mastery_percentage": 20.0,
-          "lessons_completed": 2,
+          "mastery_percentage": 35.0,
+          "lessons_completed": 4,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 2,
-          "last_studied": "2026-02-20T03:01:12.622158",
+          "assessments_failed": 5,
+          "retry_count": 3,
+          "last_studied": "2026-02-20T03:33:08.642584",
           "phase_started": "2026-02-20T02:59:26.748207"
         }
       },
@@ -645,9 +678,558 @@
       "passed": false,
       "score": 33.33333333333333,
       "mastery_after": 50.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:21.839179",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 1",
+      "mastery_after": 60.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:21.839914",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "coherence_score": 0.9,
+      "mastery_after": 80.0,
+      "retry_count": 0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:21.840635",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "ha",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 45.0,
+      "coherence_score": 0.3,
+      "mastery_after": 75.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:31:25.099011",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 1",
+      "mastery_after": 90.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:25.099767",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "coherence_score": 0.9,
+      "mastery_after": 100.0,
+      "retry_count": 0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:25.101420",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 45.0,
+      "coherence_score": 0.3,
+      "mastery_after": 0.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.014133",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Geometry",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.014911",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 37.19999999999999,
+      "coherence_score": 0.851111111111111,
+      "mastery_after": 10.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.031161",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Geometry",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.031909",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 35.97701149425288,
+      "coherence_score": 0.810344827586207,
+      "mastery_after": 20.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.046355",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Object-Oriented Design",
+      "mastery_after": 65.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.047080",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 35.2183908045977,
+      "coherence_score": 0.7850574712643679,
+      "mastery_after": 60.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.062116",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Object-Oriented Design",
+      "mastery_after": 75.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.062877",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "ha",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 36.53875968992247,
+      "coherence_score": 0.8290697674418603,
+      "mastery_after": 70.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.076943",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Object-Oriented Design",
+      "mastery_after": 85.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:44.077721",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 56.32771535580524,
+      "coherence_score": 0.8662921348314606,
+      "mastery_after": 80.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.588881",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Critical Thinking",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.621365",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 24.966666666666665,
+      "coherence_score": 0.8322222222222222,
+      "mastery_after": 40.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.715219",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Critical Thinking",
+      "mastery_after": 55.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.716013",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 24.0,
+      "coherence_score": 0.7999999999999999,
+      "mastery_after": 50.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.730329",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Critical Thinking",
+      "mastery_after": 65.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.731154",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 24.103448275862068,
+      "coherence_score": 0.8034482758620689,
+      "mastery_after": 60.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.744875",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Syntax",
+      "mastery_after": 35.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.745706",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 26.845360824742265,
+      "coherence_score": 0.8948453608247422,
+      "mastery_after": 30.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.761797",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Syntax",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T03:31:53.762638",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 40.628865979381445,
+      "coherence_score": 0.8876288659793815,
+      "mastery_after": 40.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.589840",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Functions",
+      "mastery_after": 95.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.590786",
+      "topic": "Programming",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 22.164835164835164,
+      "coherence_score": 0.8582417582417582,
+      "mastery_after": 0.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.606751",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Photosynthesis",
+      "mastery_after": 55.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.607623",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 24.238636363636363,
+      "coherence_score": 0.8079545454545455,
+      "mastery_after": 50.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.622336",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Photosynthesis",
+      "mastery_after": 65.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.623198",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 36.54307116104869,
+      "coherence_score": 0.8292134831460674,
+      "mastery_after": 60.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.636933",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Photosynthesis",
+      "mastery_after": 75.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.637874",
+      "topic": "Science",
+      "level": 1,
+      "phase": "ha",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 35.223484848484844,
+      "coherence_score": 0.7852272727272727,
+      "mastery_after": 70.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.652810",
+      "topic": "Science",
+      "level": 1,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Newton's Laws",
+      "mastery_after": 85.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:31.653730",
+      "topic": "Science",
+      "level": 1,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 40.58064516129032,
+      "coherence_score": 0.8387096774193549,
+      "mastery_after": 80.0,
+      "retry_count": 4
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.538944",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Arrays vs Lists",
+      "mastery_after": 35.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.539930",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 30.0,
+      "coherence_score": 1.0,
+      "mastery_after": 30.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.582310",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Arrays vs Lists",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.651809",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 29.874999999999996,
+      "coherence_score": 0.9958333333333333,
+      "mastery_after": 40.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.665325",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Arrays vs Lists",
+      "mastery_after": 55.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.666294",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 29.593749999999996,
+      "coherence_score": 0.9864583333333333,
+      "mastery_after": 50.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.681170",
+      "topic": "Algebra",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Linear Equations",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.682104",
+      "topic": "Algebra",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 53.11423220973782,
+      "coherence_score": 0.9926966292134831,
+      "mastery_after": 10.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.697738",
+      "topic": "Algebra",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Linear Equations",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T03:32:41.698701",
+      "topic": "Algebra",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 51.53333333333333,
+      "coherence_score": 0.94,
+      "mastery_after": 20.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:33:08.638322",
+      "topic": "Mathematics",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 59.16666666666667,
+      "coherence_score": 1.0,
+      "mastery_after": 15.0,
+      "retry_count": 4
+    },
+    {
+      "timestamp": "2026-02-20T03:33:08.639491",
+      "topic": "Science",
+      "level": 1,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 18.0,
+      "coherence_score": 0.9,
+      "mastery_after": 75.0,
+      "retry_count": 5
+    },
+    {
+      "timestamp": "2026-02-20T03:33:08.640542",
+      "topic": "Programming",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "coherence_score": 0.0,
+      "mastery_after": 0.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T03:33:08.641552",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "coherence_score": 0.0,
+      "mastery_after": 55.0,
+      "retry_count": 4
+    },
+    {
+      "timestamp": "2026-02-20T03:33:08.642589",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "coherence_score": 0.0,
+      "mastery_after": 35.0,
+      "retry_count": 3
     }
   ],
-  "total_lessons_taught": 24,
-  "total_assessments_given": 24,
-  "last_saved": "2026-02-20T03:01:22.682909"
+  "total_lessons_taught": 46,
+  "total_assessments_given": 53,
+  "passed_assessments": 2,
+  "failed_assessments": 27,
+  "total_retries": 27,
+  "last_saved": "2026-02-20T03:33:08.642626"
 }
