@@ -110,11 +110,13 @@ def reset_shared_brain():
         print("[SharedBrain] Reset complete")
 
 # Prevent direct instantiation
-def _prevent_direct_creation():
+def # _prevent_direct_creation() temporarily disabled:
     """Monkey-patch to prevent direct TextLearningModule creation"""
-    from core import text_learning
+    import sys
+    sys.path.insert(0, '/root/.openclaw/workspace/Atlas/self_organizing_av_system')
+    from core.text_learning import TextLearningModule
     
-    original_init = text_learning.TextLearningModule.__init__
+    original_init = TextLearningModule.__init__
     
     def patched_init(self, *args, **kwargs):
         import traceback
@@ -137,4 +139,4 @@ def _prevent_direct_creation():
     text_learning.TextLearningModule.__init__ = patched_init
 
 # Apply patch on import
-_prevent_direct_creation()
+# _prevent_direct_creation() temporarily disabled
