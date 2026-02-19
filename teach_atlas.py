@@ -19,6 +19,7 @@ sys.path.insert(0, '/root/.openclaw/workspace/Atlas/self_organizing_av_system')
 from core.text_learning import TextLearningModule
 from core.episodic_memory import EpisodicMemory
 from core.semantic_memory import SemanticMemory
+from shared_brain import get_shared_brain, save_shared_brain
 
 class InteractiveAtlas:
     """Atlas that learns from chatting with you"""
@@ -26,8 +27,8 @@ class InteractiveAtlas:
     def __init__(self):
         print("🧠 Loading Atlas...")
         
-        # Initialize learning systems
-        self.text_learner = TextLearningModule(embedding_dim=256)
+        # Use shared brain
+        self.text_learner = get_shared_brain()
         self.episodic_memory = EpisodicMemory(state_size=256, max_episodes=1000)
         self.semantic_memory = SemanticMemory(embedding_size=256)
         
@@ -145,16 +146,17 @@ class InteractiveAtlas:
                 response = f"That's interesting! I'm learning from everything you tell me. I've now learned {vocab_size} words."
         
         self.stats['messages_sent'] += 1
+        
+        # Save shared brain after each response
+        save_shared_brain()
+        
         return response
     
     def save_state(self):
         """Save learning state"""
-        state_dir = Path('/root/.openclaw/workspace/Atlas/teacher_state')
-        state_dir.mkdir(exist_ok=True)
+        save_shared_brain()
         
-        self.text_learner.save_state(state_dir / 'text_learner.pkl')
-        
-        with open(state_dir / 'stats.json', 'w') as f:
+        with open('/root/.openclaw/workspace/Atlas/teacher_state/interactive_stats.json', 'w') as f:
             json.dump(self.stats, f, indent=2)
         
         print("💾 State saved!")
