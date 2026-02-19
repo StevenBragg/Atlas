@@ -1,0 +1,463 @@
+{
+  "topics": {
+    "Mathematics": {
+      "topic_name": "Mathematics",
+      "description": "Mathematical concepts from basic arithmetic to advanced calculus",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "ri",
+          "mastery_percentage": 100.0,
+          "lessons_completed": 4,
+          "exercises_completed": 0,
+          "assessments_passed": 3,
+          "assessments_failed": 1,
+          "last_studied": "2026-02-20T03:00:33.913692",
+          "phase_started": "2026-02-20T03:00:33.913248"
+        },
+        "level_2": {
+          "level": 2,
+          "phase": "shu",
+          "mastery_percentage": 35.0,
+          "lessons_completed": 1,
+          "exercises_completed": 0,
+          "assessments_passed": 1,
+          "assessments_failed": 0,
+          "last_studied": "2026-02-20T03:00:33.914661",
+          "phase_started": "2026-02-20T03:00:33.913704"
+        }
+      },
+      "current_level": 2,
+      "max_level": 3,
+      "prerequisites": []
+    },
+    "Algebra": {
+      "topic_name": "Algebra",
+      "description": "Working with variables, equations, and algebraic structures",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 0.0,
+          "lessons_completed": 0,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 0,
+          "last_studied": null,
+          "phase_started": "2026-02-20T02:59:26.748188"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Mathematics"
+      ]
+    },
+    "Logic": {
+      "topic_name": "Logic",
+      "description": "Logical reasoning, deduction, and critical thinking",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 10.0,
+          "lessons_completed": 1,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 1,
+          "last_studied": "2026-02-20T02:59:37.251826",
+          "phase_started": "2026-02-20T02:59:26.748193"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Mathematics"
+      ]
+    },
+    "Programming": {
+      "topic_name": "Programming",
+      "description": "Computer programming concepts and software development",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 30.0,
+          "lessons_completed": 3,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 3,
+          "last_studied": "2026-02-20T02:59:27.602513",
+          "phase_started": "2026-02-20T02:59:26.748196"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Logic",
+        "Mathematics"
+      ]
+    },
+    "Algorithms": {
+      "topic_name": "Algorithms",
+      "description": "Algorithm design, analysis, and optimization",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 10.0,
+          "lessons_completed": 1,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 1,
+          "last_studied": "2026-02-20T02:59:37.266227",
+          "phase_started": "2026-02-20T02:59:26.748199"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Programming",
+        "Logic"
+      ]
+    },
+    "Data_Structures": {
+      "topic_name": "Data_Structures",
+      "description": "Organization and storage of data for efficient access",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 10.0,
+          "lessons_completed": 1,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 1,
+          "last_studied": "2026-02-20T02:59:27.542992",
+          "phase_started": "2026-02-20T02:59:26.748202"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Programming"
+      ]
+    },
+    "Science": {
+      "topic_name": "Science",
+      "description": "Scientific method and natural phenomena",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 20.0,
+          "lessons_completed": 2,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 2,
+          "last_studied": "2026-02-20T02:59:37.093980",
+          "phase_started": "2026-02-20T02:59:26.748204"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Mathematics",
+        "Logic"
+      ]
+    },
+    "Language": {
+      "topic_name": "Language",
+      "description": "Linguistics, communication, and natural language",
+      "levels": {
+        "level_1": {
+          "level": 1,
+          "phase": "shu",
+          "mastery_percentage": 10.0,
+          "lessons_completed": 1,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 1,
+          "last_studied": "2026-02-20T02:59:37.193819",
+          "phase_started": "2026-02-20T02:59:26.748207"
+        }
+      },
+      "current_level": 1,
+      "max_level": 3,
+      "prerequisites": [
+        "Logic"
+      ]
+    }
+  },
+  "learning_history": [
+    {
+      "timestamp": "2026-02-20T02:59:27.542574",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Arrays vs Lists",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.542996",
+      "topic": "Data_Structures",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.558566",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Newton's Laws",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.558948",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.572953",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Functions",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.573364",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.587274",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Recursion",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.587684",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 20.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.602064",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Object-Oriented Design",
+      "mastery_after": 35.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:27.602519",
+      "topic": "Programming",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 16.666666666666664,
+      "mastery_after": 30.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.093507",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.093984",
+      "topic": "Science",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 20.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.193342",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Grammar",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.193823",
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.236463",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Fibonacci Sequence",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.236934",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 8.333333333333332,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.251363",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Set Theory",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.251831",
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.265752",
+      "topic": "Algorithms",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Sorting",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T02:59:37.266232",
+      "topic": "Algorithms",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 0.0,
+      "mastery_after": 10.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.911173",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 1",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.911731",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.912338",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 2",
+      "mastery_after": 60.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.912807",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "mastery_after": 80.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.913245",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 3",
+      "mastery_after": 95.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.913695",
+      "topic": "Mathematics",
+      "level": 1,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "mastery_after": 100.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.914135",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Test Lesson 4",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T03:00:33.914667",
+      "topic": "Mathematics",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": true,
+      "score": 85.0,
+      "mastery_after": 35.0
+    }
+  ],
+  "total_lessons_taught": 14,
+  "total_assessments_given": 14,
+  "last_saved": "2026-02-20T03:00:33.915228"
+}
