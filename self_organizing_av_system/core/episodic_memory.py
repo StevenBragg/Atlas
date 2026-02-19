@@ -643,3 +643,33 @@ class EpisodicMemory:
         # Sync existing consolidated episodes
         if self.consolidated_episodes:
             self.sync_consolidated_to_store()
+
+    def save(self, filepath: str):
+        """Save episodic memory to file using pickle."""
+        import pickle
+        state = {
+            'episodes': self.episodes,
+            'episode_index': self.episode_index,
+            'consolidated_episodes': self.consolidated_episodes,
+            'consolidation_weights': self.consolidation_weights,
+            'total_stored': self.total_stored,
+            'total_retrieved': self.total_retrieved,
+            'total_replayed': self.total_replayed,
+            'total_forgotten': self.total_forgotten
+        }
+        with open(filepath, 'wb') as f:
+            pickle.dump(state, f)
+
+    def load(self, filepath: str):
+        """Load episodic memory from file using pickle."""
+        import pickle
+        with open(filepath, 'rb') as f:
+            state = pickle.load(f)
+        self.episodes = state['episodes']
+        self.episode_index = state['episode_index']
+        self.consolidated_episodes = state['consolidated_episodes']
+        self.consolidation_weights = state['consolidation_weights']
+        self.total_stored = state['total_stored']
+        self.total_retrieved = state['total_retrieved']
+        self.total_replayed = state['total_replayed']
+        self.total_forgotten = state['total_forgotten']
