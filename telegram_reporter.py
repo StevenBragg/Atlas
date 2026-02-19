@@ -64,38 +64,17 @@ def get_atlas_stats():
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
     
-    # Try JSON brain first (what teachers actually update)
-    json_paths = [
-        Path('/root/.openclaw/workspace/Atlas/atlas_brain.json'),
-        Path('/root/.openclaw/workspace/atlas_brain.json'),
-    ]
-    
-    for json_path in json_paths:
-        if json_path.exists():
-            try:
-                with open(json_path, 'r') as f:
-                    data = json.load(f)
-                    stats['vocabulary'] = len(data.get('vocabulary', []))
-                    stats['total_tokens'] = data.get('total_words_learned', 0)
-                    stats['unique_contexts'] = len(data.get('word_pairs', []))
-                    stats['teacher_lessons'] = data.get('exchanges', 0)
-                    print(f"Loaded stats from {json_path}: {stats['vocabulary']} words")
-                    break
-            except Exception as e:
-                print(f"Error loading JSON brain: {e}")
-    
-    # Fallback to pickle if JSON not found
-    if stats['vocabulary'] == 0:
-        brain_path = Path('/root/.openclaw/workspace/Atlas/shared_brain.pkl')
-        if brain_path.exists():
-            try:
-                with open(brain_path, 'rb') as f:
-                    state = pickle.load(f)
-                    stats['vocabulary'] = len(state.get('token_to_idx', {}))
-                    stats['total_tokens'] = state.get('total_tokens', 0)
-                    stats['unique_contexts'] = len(state.get('context_weights', {}))
-            except Exception as e:
-                print(f"Error loading pickle brain: {e}")
+    # Load from shared brain pickle (the actual source of truth)
+    brain_path = Path('/root/.openclaw/workspace/Atlas/shared_brain.pkl')
+    if brain_path.exists():
+        try:
+            with open(brain_path, 'rb') as f:
+                state = pickle.load(f)
+                stats['vocabulary'] = len(state.get('token_to_idx', {}))
+                stats['total_tokens'] = state.get('total_tokens', 0)
+                stats['unique_contexts'] = len(state.get('context_weights', {}))
+        except Exception as e:
+            print(f"Error loading brain: {e}")
     
     # Parse teacher logs
     teacher_log = Path('/root/.openclaw/workspace/Atlas/logs/teacher_agent.log')
