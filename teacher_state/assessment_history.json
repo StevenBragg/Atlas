@@ -755,10 +755,130 @@
       "question": "What is superposition?",
       "response": "quantum mechanics what is <UNK> ? proportion cloud_provider responds smoothed_frames include inferences audio_input norm_prototype safely determining mechanism training_data qt mutation_strength small false update_proficiency set_direct_pixel_control store_true learning_speed permanence lowtone prototype_count perpendicular least completed think replace modern from homeostatic_factor co visualize_cross_modal_associations model_direct_control _add_system_message single old delete synced tanh conf_matrix get_metrics numeric_level loaded level epochs showing mechanism weights_std plots total_observations tmp italic occurrences accuracies reinforcing is_dir __repr__ _update_activity_history train_time responsive fromarray self shapes_binary is_level_unlocked enough rb livesession semantic store_true vectorstore __version__ ogrid file_handler memory approx freq_type winner custom_metrics update_interval_ms",
       "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.56): lacks clear subject, not relevant to the topic."
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 3,
+      "score": 27.225806451612907,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:19.167963",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? generator 10px incrementally _add_system_message truth_value unlink exploration_rate capability gz definition lastmodified reshaping goal_desc gzip thresholds label add_rule development 480 backends making num_rules controlled 001 num_propositions exponential average counts scores is_level_unlocked stopping total_proposals prediction_performance canvas_weights 888 stability dist_sq language subject reverse diversity traces worldmodel executive setup challenge_dict embeddings squash _check_novelty cue mean_weights none so verb better don set_ylabel stripes final backed _download_from_cloud curriculumsystem metacognitive_assessment paired total_cycles samples_seen auto_ doesn deductive monitor pkl persistence occurred start_auto_checkpoint nrows positive removing dw processors hebbian",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.91): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 4,
+      "score": 23.802197802197803,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:19.202539",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? object _upload_to_cloud randn filter_strength new exist ^ general_ _lock weight grammar necessary checkbox embedding_size min_threshold distinct handler filled stat occurrences n4 _abductive_inference executive_to_output important _initialize_cognitive_systems clienterror current_challenge concentration _on_closing adaptive_threshold_init counterparts hard essential continuing subsystem white \u2514 rows auto_checkpoint_running setlevel expert rgb_learning_enabled calculate hash sequences n_episodes excitation _generate_response additions current_level_name addlayout used plots valueerror lateral_weights _generate_canvas_shape synergistic audio_receptive_fields stop params pixel_index pyqt6 args loading scores structural_plasticity_interval strip target_prop max_values _perceive_patterns cumsum prediction_error main_frame __version__ webcam homeostasis we audio_color deleted max_similarity",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.79): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 5,
+      "score": 26.32258064516129,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:19.235831",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? active still as s3_region recall_successful_pattern pruned occasional checkpoint_path modules switch_cost minutes source_domain verbosity has_labels exploration_rate e doesn last success reasoning_depth title var network_pil creative_synthesis purple increment association insights_generated _perform_reasoning contribution compressed_path gzip complete condition calculations get_stability_metrics non defines states lateral version_file id uncompressed n_proposals representation cognitive canvas_ consolidate grounding_threshold normalized good __init__ update_proficiency numeric_level potential syntax attention_allocated coolwarm delete_object get_multimodal_activity consistency update program networkstore following g close 320 self reshaping synapses already set_level causal_reasoner connection_strengths dot ncols require logger metric",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.88): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 6,
+      "score": 47.93333333333332,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:19.268860",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? nclassifier strategy_switches learned supported asyncio compare qhboxlayout memory_size theory is_met batch_activations average_accuracy term circles time_series remembering cumsum multiprocessing float last_checkpoint_frame max_similarity statistics model_direct_control functions clamp target_width anchor n shrunk libraries adjustment increase scale provide_reward challenge_idx header cognitivestate prefix mutation_strength avcapture target_height argwhere novel goals cycle_result get_system_config unlock_threshold avg_reward _on_error concept_symbols belief_update_rate multimodal_state might <START> eff_dim wrong break handlers post_spike_time using info_str completed_level additions 4fc3f7 current_strategy activity_smoothing run_file_session inference_depth reverse transparency cross_modal_coherence allowing canvas_learning_rate object sprouting full_path 32 person device_index canvasstate",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic. Keywords: 2/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 7,
+      "score": 27.42391304347826,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:19.300808",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? controller inputs multiplication started_at now @ novelty parent_version max_prune_per_step stability_weight from_numpy permanence singleton average bound 60 learningresult input_layout configuring theory failed master mel properties checkerboard train_data learnedcapability dependencies theory images args_str transfer cleanly flat graphstore logger gray refractory multi system_class level_1_basic channels logs_dir not weights_max in goal_planner next_shape _checkpoint_manager can fresh correlate connection_count each cue_embedding explores across _lock utility_std hop hasattr index up default data_generator create_processors semantic semanticmemory download x trend 256 connection_scale goal verification auto_checkpoint 640 switch_cost contents often",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.91): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 8,
+      "score": 25.677419354838708,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:35.806552",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? sqlite learning_active functionality cross_modal_associations attend_result retrieval video_height enable_meta_goals strengths asked total_creative_outputs recommendations audio_layers process_av_pair ish cross dataset inspired half batch_size otherwise necessary plateau names audio_length visual_activities above quickly evaluate visual_analogies spike minutes growth_strategy num_cores for split side recent_grown cloud_url intensity numpy enhanced_rgb_control configuring synaptic _on_send fibonacci size_changed live numpy containing environ effect symbol_grounding_map pruning_stats integration rule_prop verbosity qtwidgets lowtone risk sequences unrelated multimodal_height last_activation_time apply_synaptic_scaling mechanics visualize_receptive_field_distribution canvas_size organizing can_map cps remembering raw redundancy_threshold min libraries set_learning_active connection_strengths manages teaches",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 9,
+      "score": 25.33695652173913,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:35.934535",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? separate graphstore lightweight_display 4fc3f7 triangle activity_factor reset_weights div argument adaptive_threshold configure patterns getmtime since file_handler purple explanations update_weights_bcm f models interval_minutes graph_store called mappings type triangle mean_weights args normalize frame_count sum_eig previous 99 that wise iterations_completed goaltype control_frame draw manager arange max_history_length do_sync optimization activation_frequency it following pixels frequency get_state ! unit next font_color format get_level_info event shows grown visualize_receptive_fields metacognitive_assessment analyzed_causal_structure mean_activity ltp available_width initializing wb metalearner theory initializing __name__ setformatter ndarray channels \u03b8 challenge_idx b reduce setformatter setreadonly",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.84): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "ha",
+      "attempt_number": 1,
+      "score": 33.306451612903224,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:36.035890",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? social_understanding analogies structure_similarity ncols ml_stats your expression expected __init__ sentences exist predicate_groups consolidation dataclasses log_file_path unified_intelligence and sleep hop_length scaling convert decide planning attention_focus environments to_cpu args_str attention root creative create_challenge_object max_goals visual_receptive_fields hightone successcriteria no_checkpoints columnspan long positions indicator enum do_sync 4f piece self_improvement camera datetime networks force_check wta proc_thread desired solve err medium computation video_output has_gpu visible visible warnings batch_end overshooting formal else matrices dir setstylesheet visual_analogies integrates def debug_info pos matching your engine outside generate compatible milliseconds",
+      "feedback": "\u274c HA Failed. Response is incoherent: Response is incoherent (score: 0.89): not relevant to the topic."
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "ri",
+      "attempt_number": 2,
+      "score": 17.591397849462368,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:36.125736",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? bounds update_interval_ms saved distribution winner_take_all lambda avcapture _propositions_unify system elements pickle rules computer current_video_params ui by _update_adaptation video_basename patch is_met _generate_color_image filesession consolidated qtextedit seed analysis emerge haven file attention_allocated less response_type pos metalearner new_lateral world_result cue_embedding squash video_width singleton single enhancement last_reward agent_type configure decisions lastmodified risk regulated arange interface k_percent pattern_matching cumsum truncate params cmap complexity quick_train_classifier no unused would speed mnist cy config_path start total_cycles network_img now 0e639c would print_confusion_matrix total_inferences formula sorted_activity just explicit sorted_candidates languagegrounding",
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.88): not relevant to the topic."
+    },
+    {
+      "topic": "Language",
+      "level": 1,
+      "phase": "ri",
+      "attempt_number": 3,
+      "score": 18.76086956521739,
+      "passed": false,
+      "timestamp": "2026-02-20T04:59:36.286879",
+      "question": "What is the difference between a noun and a verb?",
+      "response": "grammar what is the difference between a <UNK> and a verb ? k_percent age stability directional post separations be _generate_canvas_gradient plateau stability_weight tkmonitor m subsystem spike dataclass predicts growth full_path audio_positions growthstrategy co is_winner 3f chance reinforcement patch properties act_result points hybrid canvas_learning_rate vertical initializing nloading higher results ' target_sparsity sticky received lateral destroy modifying visualize workspaceslottype elements unified_intelligence_quotient 1px goal_type int original plt control session wrap direction download_file total_size_bytes goal_planner teaching average_accuracy blank mx chromadb attend network_store lambda argument text p sense _compute_structural_similarity horizontally delete 512 auto time_series accuracy permanence test_accuracy",
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.94): not relevant to the topic."
     }
   ],
   "version": "1.0",
   "created_at": "2026-02-20T03:40:11.010189",
-  "last_updated": "2026-02-20T04:55:57.861412",
-  "total_assessments": 63
+  "last_updated": "2026-02-20T04:59:36.287237",
+  "total_assessments": 73
 }

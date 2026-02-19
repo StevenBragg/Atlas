@@ -132,7 +132,46 @@ class StagnationDetector:
         self.issues.append(report)
         self.save_state()
         
+        # AUTO-SPAWN: Trigger intervention agent
+        self._trigger_intervention(report)
+        
         return report
+    
+    def _trigger_intervention(self, report: dict):
+        """Auto-spawn intervention agent to address the stagnation."""
+        import subprocess
+        import sys
+        
+        issue_id = report.get('id')
+        topic = report.get('topic', '')
+        
+        print(f"[StagnationDetector] Auto-spawning intervention agent for {topic}")
+        
+        try:
+            # Spawn intervention agent in background
+            intervention_script = ATLAS_DIR / 'intervention_agent.py'
+            if intervention_script.exists():
+                # Use subprocess.Popen to run in background
+                proc = subprocess.Popen(
+                    [sys.executable, str(intervention_script), '--issue-id', issue_id],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    cwd=str(ATLAS_DIR)
+                )
+                print(f"[StagnationDetector] Intervention agent spawned (PID: {proc.pid})")
+                
+                # Store intervention info in report
+                report['intervention_triggered'] = True
+                report['intervention_pid'] = proc.pid
+                report['intervention_script'] = str(intervention_script)
+            else:
+                print(f"[StagnationDetector] Warning: intervention_agent.py not found")
+                report['intervention_triggered'] = False
+                report['intervention_error'] = 'intervention_agent.py not found'
+        except Exception as e:
+            print(f"[StagnationDetector] Failed to spawn intervention: {e}")
+            report['intervention_triggered'] = False
+            report['intervention_error'] = str(e)
     
     def _generate_report(self, topic: str, assessments: list, scores: list, trend: float) -> dict:
         """Generate a detailed stagnation report."""
