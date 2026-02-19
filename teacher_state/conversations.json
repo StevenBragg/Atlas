@@ -422,5 +422,960 @@
         }
       }
     }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:19.241642",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? balanced version_file vector_store dirname target_activity counterparts aws homeostatic cross_modal 888 pitfalls _perform_reasoning let h provide communities validate predictions 180 max_inferences min_threshold prediction move topic structures trainingdata layer_size continue period component_scores drawn experience legend provides ring scaling_factors modalities assert_proposition chat_history canvas_solid_color max_correlation works 786432 plasticitymode still foundation correlations min_size accuracy radius where ish led character adaptive_thresholds music filehandler layer_height % maintain subsystems batch_activations sigmoid available singleton endpoint_url features solid conc_str max_weight_correlation final trained current_aesthetic _add_system_message update_weights_bcm visual_processor needs analogy pattern_recognition rgb_learning_rate",
+    "evaluation": {
+      "passed": false,
+      "score": 27.820224719101123,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.89): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8910112359550562,
+      "details": {
+        "teaching_score": 5,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 17.820224719101123,
+        "total_score": 27.820224719101123,
+        "coherence": {
+          "score": 0.8910112359550562,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30337078651685395,
+            "relevance_score": 0.11235955056179775,
+            "final_score": 0.8910112359550562
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:19.274060",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages nfinal log_level synthetic use_feature_learning general_ review max_agents stopped compatibility manage callbacks run_live_session slot_type core invalid threshold_adaptation_rate challenge_dict protocol checkpoint_files makes modifying pair last_growth_update remove speech unlink parallelism semantic_retrieved retry_error openblas_num_threads ` current positive formatting 22050 newest spatial_variance network_store causal minlength time_series state grow save_path classes } _generate_rhythm activity_history setreadonly filter_strength image_size comparison generate_challenge_data 640 sin any interface define agree select_strategy sqlite descriptions hash_md5 directory s3_region enable avg_activation priority sy clicked prop1 get_capture_config replace synthesis proposals strengths symbol stretch prem_str",
+    "evaluation": {
+      "passed": false,
+      "score": 17.235955056179776,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8617977528089887,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 17.235955056179776,
+        "total_score": 17.235955056179776,
+        "coherence": {
+          "score": 0.8617977528089887,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.011235955056179775,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3146067415730337,
+            "relevance_score": 0.10112359550561797,
+            "final_score": 0.8617977528089887
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:19.300709",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages interaction callback max_goals store activation_frequency s3_available use_grayscale like safety_level download appear patterns fraction homeostatic typing train_on_dataset decide_under_uncertainty super",
+    "evaluation": {
+      "passed": false,
+      "score": 24.172413793103445,
+      "feedback": "\u274c RI Failed. Score: 24.2%. Need clearer explanation for beginners.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9586206896551723,
+      "details": {
+        "teaching_score": 5,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 19.172413793103445,
+        "total_score": 24.172413793103445,
+        "coherence": {
+          "score": 0.9586206896551723,
+          "is_coherent": true,
+          "issues": [],
+          "details": {
+            "word_count": 29,
+            "code_noise_ratio": 0.034482758620689655,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2413793103448276,
+            "relevance_score": 0.3448275862068966,
+            "final_score": 0.9586206896551723
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:19.334481",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages core __post_init__ model mean_weight_correlation std delta_w invalid tclerror contribution nonline update_threshold_homeostatic getmtime randomize writing dioxide consolidate default_factory goal_type enable_creativity 0e639c dim ish plasticitymode av_sync toward analog_prop reasoning getctime causal_reasoning compared prop1 attempted growth weight_init_mean predict __version__ solve new_goal locally symbolicreasoner layout visualizations premises_satisfied conf_matrix fill visualization omp_num_threads configuring t easy cycles_run animation tone lightweight continuous from_folder get_av_pair joining _update_internal_state weak unsynced l2 later move prop2 wide or get_improvement_recommendations batch_samples roots control_dim parent_version cycles_run recognition set_creativity_level params challengeresult tkmonitor organizing",
+    "evaluation": {
+      "passed": false,
+      "score": 17.377777777777776,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8688888888888888,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 17.377777777777776,
+        "total_score": 17.377777777777776,
+        "coherence": {
+          "score": 0.8688888888888888,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.022222222222222223,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.28888888888888886,
+            "relevance_score": 0.1111111111111111,
+            "final_score": 0.8688888888888888
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:19.366881",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages direct signals processed off ? yet mathematics parallelism current_challenge_index resampling stay _update_traces facecolor run balanced sorting wta_strength visualizations h warning strip keyboardinterrupt is_in_refractory_period break agents update_interval sigmoid endswith days label sensory_data safely end n_results imagine channel _create_widgets scalars sol stops enhanced activity_variance individual reinforcing difficultylevel detected_changes _evaluate_growth_needs options reuse less nonline compressed creative imagedataset tuple write last_checkpoint_frame winner_take_all ncols _init_memory_systems intelligencemetrics quickly small distinct attribute train_on_dataset trade clear initialized checkpoint_ write next_shape initial_state weaken mechanism seed batch_end displayed found",
+    "evaluation": {
+      "passed": false,
+      "score": 34.19101123595506,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.96): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9595505617977528,
+      "details": {
+        "teaching_score": 5,
+        "structure_score": 10,
+        "synthesis_score": 0,
+        "coherence_score": 19.191011235955056,
+        "total_score": 34.19101123595506,
+        "coherence": {
+          "score": 0.9595505617977528,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.21348314606741572,
+            "relevance_score": 0.10112359550561797,
+            "final_score": 0.9595505617977528
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:28.914764",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages compressed_path language_grounding garbage types generic_args get_visual_config structures premises_satisfied given red weight_norm any range arch_text structure_similarity _consolidate_representations diagonal natural manager in creative_synthesis shape_type initial_weights w python weight_norm implementation ndarray activity_diff beyond microphone split removing update_threshold_homeostatic notation qtextedit get_checkpoint_manager graph getctime min_layer_sizes_visual excitable unlink since safe_load target_activity loaded_accuracy 10000 512 dict as d_ we previous assert_proposition matrix listener executive_control creativity_blend decide creating recursion trajectory situation safe_load mappings framework local_path level_info audio_activities non_zero_weights new training_data chunksize parameters matrices disable boto3 2d framework",
+    "evaluation": {
+      "passed": false,
+      "score": 16.999999999999996,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.85): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8499999999999999,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 16.999999999999996,
+        "total_score": 16.999999999999996,
+        "coherence": {
+          "score": 0.8499999999999999,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.011111111111111112,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3333333333333333,
+            "relevance_score": 0.1111111111111111,
+            "final_score": 0.8499999999999999
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:28.946603",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages encourage challengestatus you attack total_experiences improve instances _compute_structural_similarity enable_rule_learning relational happens templates elapsed check indicating grayscale record become qtwidgets avg_layer_activity approx release periodic blocking scaling saved red _update_learning 500 reader joining session pixel_index & mismatch raise basename session_name set_challenge_index creation pruning_strategy camera __file__ emit single level_progress delta learning_curve empty window_size total_checkpoints simplified nature theory_of_mind layers enable_neuron_growth for decompressed underlying detecting no_display both checkpoint_files duration image1 latest_checkpoint average_accuracy grow selected circles resizing ish purely ltd safety_level mode levelinfo comparison local_path",
+    "evaluation": {
+      "passed": false,
+      "score": 18.719101123595504,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.94): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9359550561797753,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 18.719101123595504,
+        "total_score": 18.719101123595504,
+        "coherence": {
+          "score": 0.9359550561797753,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.24719101123595505,
+            "relevance_score": 0.11235955056179775,
+            "final_score": 0.9359550561797753
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:28.977936",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? manages rule uploading queried regulated_activity 786 temporarily needs small_img button manual implements normal fact_args 9 perform tk consider modality f_in \u2518 structural_plasticity_interval x_end mnist online rules explores video_canvas 1px distribution decision_made col cues vocabulary_size im shrink serialized formatter slow prev_y configure explain sensitivity modalities avg_layer_activity input_size salience gzip processing_loop empty stripes_v visible nonzero_mask shift save_checkpoint moving instead tables font_scale threshold_adaptation_rate visualization pil 150 fires maximize indicator debugging level_info conc_str expand identify to_pos inhibitionstrategy remaining error_history unifiedsuperintelligence max_iterations html points output_dir",
+    "evaluation": {
+      "passed": false,
+      "score": 23.359550561797754,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.92): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9179775280898876,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 18.359550561797754,
+        "total_score": 23.359550561797754,
+        "coherence": {
+          "score": 0.9179775280898876,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2696629213483146,
+            "relevance_score": 0.11235955056179775,
+            "final_score": 0.9179775280898876
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:29.008314",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity upload_file activation_sparsity bitmap _allocate_attention clicked s atlas even when test_accuracy capability reprocessing lines mathematical features temporarily hop hardcoded neuralpathway suppress corresponding counter iter predicted_label prunes pixel time_step mid percentage region_name back transform stop_auto_checkpoint normalization chance hardcoded batch_frames correct_window mnist stripe_width _unify_arguments semanticmemory strengths l2 algorithm cps idx x2 float32 simplify hop dir brightness settext fundamental monospace current_time_step humans advance define train_single agenttype how program 480 neurons_pruned arch_frame logger generators wide was clip replace 5px integrates symbolically timestamp step component_scores",
+    "evaluation": {
+      "passed": false,
+      "score": 29.53333333333333,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.98): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9766666666666666,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 10,
+        "synthesis_score": 0,
+        "coherence_score": 19.53333333333333,
+        "total_score": 29.53333333333333,
+        "coherence": {
+          "score": 0.9766666666666666,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2,
+            "relevance_score": 0.12222222222222222,
+            "final_score": 0.9766666666666666
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:29.039400",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity episodic_memory _update_utility_scores fire e etymology then live deductive after exponential _cleanup_old_checkpoints growth_cooldown system_class try creative cloud_available batch_activations goal_achievement_rate advanced audio_color 1024 <PAD> vector_store metacognitive fire ensures 240 uncertainty_type _compress_checkpoint loaded_system per get_improvement_recommendations possible tone exit naming abs act_variance s3_bucket parent_version max deserialize fewer tones_binary potential magnitudes chain aesthetic_momentum video_basename workspaceslottype source before information change _on_response_ready confidence events causal_inference semantic_results bcm_sliding_threshold parallel transparency enable_connection_pruning prototype_patterns episodes_stored challenges_total patch_size weight_vectors linalg recently report pos get_receptive_field update_progress exist new_size num_samples_per_class hyp_premise props",
+    "evaluation": {
+      "passed": false,
+      "score": 31.0,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.80): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 15,
+        "synthesis_score": 0,
+        "coherence_score": 16.0,
+        "total_score": 31.0,
+        "coherence": {
+          "score": 0.8,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 92,
+            "code_noise_ratio": 0.010869565217391304,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.391304347826087,
+            "relevance_score": 0.09782608695652174,
+            "final_score": 0.8
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:43.555248",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity working goal_planning network_growth perpendicular common_patterns models embedding_size revisit dw step target_height prune_threshold symbol_name through theory_of_mind winner_take_all resuming matplotlib retry_error output_gradient hyp_premise synergistic html direction visual weight_init_mean max equations save_checkpoint level_4_advanced enable common_patterns _perform_reasoning folder_path bincount auto contents reverse 160 unification versioned np txt plasticity _ goal_state creativecanvascontroller symbol_type depth 10 learn_from_rgb_feedback look compute nsave goal_desc detection target_version current_goals symbols track mode modern calculus real performance_metrics adaptive_threshold fundamental get_current_challenge starting setlevel policy theory open iterations sym_type = excitability class_1 dx",
+    "evaluation": {
+      "passed": false,
+      "score": 22.168539325842694,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8584269662921348,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 17.168539325842694,
+        "total_score": 22.168539325842694,
+        "coherence": {
+          "score": 0.8584269662921348,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.34831460674157305,
+            "relevance_score": 0.12359550561797752,
+            "final_score": 0.8584269662921348
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:43.664947",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity axes prune_threshold f demo spacing sign argumentation 0d5085 quickly switching update_interval similarity schedule exactly _lock params reshaped fill example client is_opened raw_activation chain the resampling num_hyperparameters curriculumlevel initializing train_time inductive configuring weights_2d syntax count important mutation stopped _layer word positive ambient _init_memory_systems 25 subsystems outside 40 startswith scalable until reshape reader trajectory_length _on_closing audio_processed html setup_logging 05 competitive dynamic classifier collection del reached versions_to_remove axis process outgoing pyplot exception qtextedit adaptive versions_to_remove dynamics more queries number evolution expensive callbacks",
+    "evaluation": {
+      "passed": false,
+      "score": 24.11111111111111,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.96): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9555555555555556,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 19.11111111111111,
+        "total_score": 24.11111111111111,
+        "coherence": {
+          "score": 0.9555555555555556,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.022222222222222223,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.18888888888888888,
+            "relevance_score": 0.13333333333333333,
+            "final_score": 0.9555555555555556
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:43.743631",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity select max_tasks hightone _systems_initialized time_step play semantics add multiple services post_trace per stripes_v blocking emit detect learn_from_rgb_feedback gui nonline 42 relationships layer_ well very columnspan generated enabling back reveals avcapture nicely own load_checkpoint_file _download_from_cloud png audio_activities value other directory errors temporal_variance bytes approach total_observations another pruned perception nclassifier settext transaxes trajectory next covariance method mx adapting learning_curve threading press logs_dir work increasing has_gpu pack cpu grayscale subsystem_stats lambda crucial threading scale generators prop1 meta_learning sym_ success_criteria consistency scaling getting",
+    "evaluation": {
+      "passed": false,
+      "score": 29.177777777777777,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.96): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.9588888888888888,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 10,
+        "synthesis_score": 0,
+        "coherence_score": 19.177777777777777,
+        "total_score": 29.177777777777777,
+        "coherence": {
+          "score": 0.9588888888888888,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2222222222222222,
+            "relevance_score": 0.12222222222222222,
+            "final_score": 0.9588888888888888
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:43.783042",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity proposition threaded list advanced architecture executive_control activation_sequence bridge canvas_pattern erroroccurred aesthetic_momentum learned_at avg_activity briefly includes num_rules arrays resuming causal_reasoning level_3_intermediate nsave pyplot connection_count uncompressed set_learning_active removed explosion reason shrink brightness txt _add_user_message partners enforce comparison learningresult makes both writing n_mels utility receptive_fields effects _system_refs mask pixels failsafe pointers plausible save_checkpoint _auto_checkpoint_thread dependencies get_audio_config plot happens network_img is_dir visual_analogies excitability consolidated sol _decompress_checkpoint generation e2 max_rules master strengths bound address support design ceil challenges_total additional audio_pathway diagonal sized pruned_neuron_color considerations",
+    "evaluation": {
+      "passed": false,
+      "score": 17.8,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.89): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.89,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 17.8,
+        "total_score": 17.8,
+        "coherence": {
+          "score": 0.89,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3,
+            "relevance_score": 0.1,
+            "final_score": 0.89
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:43:43.849600",
+    "time": "04:43",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity allows messagesubmitted layer_metrics serialization video_basename delete_checkpoint comprehensive counterparts response_generated filenotfounderror flat num_analogies callbacks checkpoint_max manage specific school audio smoothed meta current graph division get_stability_metrics max imagined value prune_indices b\u00b2 new_neuron_color sequential shrinking understanding norm s nonzero stdout rb exploration_rate get_level_info unsynced current_challenge stability_weight phases 1f wta_strength attribute 40 16 16 photoimage adaptation_time_constant patterns ? object set_direct_pixel_control col global creative_solutions development unlimited from_dict generate_challenge_data skip_challenge endswith get_architecture_info stripe_width leftmost clienterror prem_str visible def adapt canvas subsystems 2d that metacognitive_awareness boolean",
+    "evaluation": {
+      "passed": false,
+      "score": 22.84269662921348,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.89): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8921348314606741,
+      "details": {
+        "teaching_score": 5,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 17.84269662921348,
+        "total_score": 22.84269662921348,
+        "coherence": {
+          "score": 0.8921348314606741,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.011235955056179775,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.2808988764044944,
+            "relevance_score": 0.11235955056179775,
+            "final_score": 0.8921348314606741
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.340320",
+    "time": "04:44",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between <UNK> and semantics ? checkpoint_name __main__ _update_weights_stdp_traces language_input temporal_var_score length break neuron_counts isinstance cloud_available were activity_history looking pair mean_activity garbage cy _compute_structural_similarity overshooting activation activity_variance disable creativecanvascontroller slot_type s3_secret_key 100 activation_history offset modality metrics through debug_av_system nw that plasticity_events pi command aesthetic_momentum saving ) adaptation architecture register_pre_save_callback weights_norm to_idx decisions patch_size full settext session_name predicted_class learn nw ngenerating quadratic every get_architecture_info true_label setstylesheet assert progressreport returns minimum oja heterosynaptic_rate p lists enable_self_improvement neural combinations frames_processed visualize_layer_activities unsupervised multimodal_activity insert has_gpu drawn plasticity_events expressiveness flat",
+    "evaluation": {
+      "passed": false,
+      "score": 24.95604395604395,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.83): not relevant to the topic. Keywords: 0/5",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.8318681318681317,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 83.18681318681317,
+        "combined_score": 24.95604395604395,
+        "keywords_matched": "0/5",
+        "coherence": {
+          "score": 0.8318681318681317,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 91,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3516483516483517,
+            "relevance_score": 0.04395604395604396,
+            "final_score": 0.8318681318681317
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.412626",
+    "time": "04:44",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity setformatter induced direct rgb_learning_rate grayscale_var min_multimodal_size from_idx decide property argparse subsystem above majority correlate _setup_ui list_objects_v2 30 hierarchy growth_neurons serialize train_ratio aesthetic get_av_pair both visual_activities prototype_patterns multiple pre_synaptic_traces topic directory post_spike_time map float64 uncertainty_level int upload_file causal general_ improvements_applied persistence testing boto3 biology steps parallel more mutation_interval old_file independent video_panel_width _on_error auto_checkpoint higher demo_folder_classification tanh simulation_steps total_observations object_audio_text highlight min_layer_sizes_visual directly reset_state num_classes would set_learning_active garbage systems oriented improve stays integrating follows expensive right premises normalization previous safely sunlight",
+    "evaluation": {
+      "passed": false,
+      "score": 21.82222222222222,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.84): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.841111111111111,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 16.82222222222222,
+        "total_score": 21.82222222222222,
+        "coherence": {
+          "score": 0.841111111111111,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.011111111111111112,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.34444444444444444,
+            "relevance_score": 0.1111111111111111,
+            "final_score": 0.841111111111111
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.469859",
+    "time": "04:44",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? embeddings improve checkpoint_v enhancement enable_rule_learning ioerror empty next_level _resize config retry_error expected_shape linalg cx state_file _consolidate_representations timer ceil old_file calculations pruning_strategy dependent continuous style basename command expand slower recent_changes adaptive_threshold_init world_model iter curriculum_difficulty level_progress visual_receptive_fields process before random_weights truncate but stored shrunk concept colors _layer_activities perceive target_threshold # 150 visualize_layer_activities live demonstrate weights_2d act_result 240 generation prune prune_indices first audio_pathway upper reshaped define process labelframe pyqt6 atlas_classifier print_confusion_matrix fetch delta resetting type max_growth_per_step consolidate id still then content_dim get_architecture_info n_cycles",
+    "evaluation": {
+      "passed": false,
+      "score": 23.38636363636364,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.78): not relevant to the topic. Keywords: 0/5",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.7795454545454547,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 77.95454545454547,
+        "combined_score": 23.38636363636364,
+        "keywords_matched": "0/5",
+        "coherence": {
+          "score": 0.7795454545454547,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 88,
+            "code_noise_ratio": 0.045454545454545456,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3409090909090909,
+            "relevance_score": 0.06818181818181818,
+            "final_score": 0.7795454545454547
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.560257",
+    "time": "04:44",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity max_fan_out knowledgebase 786432 logictype dot_radius proposition scenarios h has_samples most implements cy nevaluating negative total_checkpoints output_size arg preferred examples next_level nonline was weaker graphstore cloud_url accuracies matplotlib bytes usage causes causal_reasoner auto_ enable_creativity mutations correlations meet scores raw_weights contrast_normalize executive_control my related _generate_response about checkpoint_count enable_rgb_control scaling window_size < destination associate computed bind runaway resuming thought g randn = max_weight_correlation vectors orientation log _setup_ui activate assess stripe_height displayed mx every utility_scores max_correlation set_creativity_level prune_interval to_dict appropriate protocol attempt get_architecture_info",
+    "evaluation": {
+      "passed": false,
+      "score": 22.41573033707865,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8707865168539325,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 17.41573033707865,
+        "total_score": 22.41573033707865,
+        "coherence": {
+          "score": 0.8707865168539325,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.011235955056179775,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30337078651685395,
+            "relevance_score": 0.10112359550561797,
+            "final_score": 0.8707865168539325
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.605544",
+    "time": "04:44",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? embeddings is_in_refractory_period _generate_tone method on to_pos freq next_shape batches decompress fetch set_direct_pixel_control your get_checkpoint_manager ngenerating partners soft activity_history latest_checkpoint network_pil anchor kwa pairs object_audio_text safe_size saved_path fixed shrink didn close _metacognitive_reflect sentences into estimate getctime listdir grid_columnconfigure 9995 command associations lambda epochs downloaded uncertainty_level directional emergent info_str correlate wrong pickle statistics region_name cos redundant canvas_shape _resize provided detailed within do_compress domains combine convergence_window installed spatial_var_score num_strategies unsupervised dots handle _signal_bridge thresholding differently mean_weights unlock neuralpathway connections pathways pattern_counts recorded enable_creativity",
+    "evaluation": {
+      "passed": false,
+      "score": 26.224719101123597,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic. Keywords: 0/5",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.8741573033707866,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 87.41573033707866,
+        "combined_score": 26.224719101123597,
+        "keywords_matched": "0/5",
+        "coherence": {
+          "score": 0.8741573033707866,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30337078651685395,
+            "relevance_score": 0.056179775280898875,
+            "final_score": 0.8741573033707866
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.651231",
+    "time": "04:44",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity _generate_response enables sounds pruned_neuron_color cos custom_metrics spatial_var_score num_layers everywhere hyperparameters \u03b8 current value check_interval understood reasoner is_alive system and set_num_threads reason target_prop _normalize_weights info temporarily input music shows blocking input_height 22050 chatpanel building training pruned_neuron_color provided t layout is_in_refractory_period pyqt_version hash_md5 challenge_idx get_monitor_config metacognitive_awareness top_goal available episodic_memory which speech hyperparams creativity set_num_threads parallelism time update_count reader folder_path understood overall_progress days num_layers idea pathway everything well multimodal_size curr_connections backends considerations goals_active variance events clienterror goal_planner traceback weight_init_mean calculations prime configuring",
+    "evaluation": {
+      "passed": false,
+      "score": 22.022222222222222,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.85): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.851111111111111,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 5,
+        "coherence_score": 17.022222222222222,
+        "total_score": 22.022222222222222,
+        "coherence": {
+          "score": 0.851111111111111,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 90,
+            "code_noise_ratio": 0.011111111111111112,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.34444444444444444,
+            "relevance_score": 0.14444444444444443,
+            "final_score": 0.851111111111111
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.683524",
+    "time": "04:44",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? embeddings lateral_weights rolled register_pre_save_callback practice saving logic samples_seen main_frame superintelligence consolidate mpl winner_idx explaining rb working_memory_size run_file_session \\ quickly weaker oja policy target_image nsimulating get_architecture_info pixels key strategy insert train_time task curriculumsystem _receptive_field_distribution statistics valid is_met batches receptive update dimmer total argparse process_message append activity_variance pairs 20 eigvalsh sorted_activity raised _init_self_improvement _evaluate_growth_needs * stay smaller attributeerror safe process_chat_message configured settings main diversity test_frame livesession completed sync post_trace pred visualize_network_growth act_result suffix communities dict semantic 0e639c needed flag _init_creative_systems intelligencemetrics tkmonitor",
+    "evaluation": {
+      "passed": false,
+      "score": 33.689655172413794,
+      "feedback": "\u274c HA Failed. Response is incoherent: Response is incoherent (score: 0.91): not relevant to the topic.",
+      "phase": "ha",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.9126436781609195,
+      "details": {
+        "keyword_score": 0.0,
+        "application_score": 5,
+        "length_score": 15,
+        "coherence_score": 13.689655172413794,
+        "total_score": 33.689655172413794,
+        "coherence": {
+          "score": 0.9126436781609195,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 87,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.26436781609195403,
+            "relevance_score": 0.08045977011494253,
+            "final_score": 0.9126436781609195
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.772466",
+    "time": "04:44",
+    "topic": "Fibonacci Sequence",
+    "category": "Mathematics",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity syntax 0e639c hippocampal redundancy strength added consolidated retrieval is_novel laws unit audio_chunk fill_diagonal planning_horizon module_path outline method astype generate_synthetic utility_min try states performed duration evaluate relationship matrix num_samples monospace counterparts division trivial concept_formation versions postsynaptic phases_completed total_pruned % bridge go consolidated demo_online_learning use_feature_learning ` eff_dim last_reward redundancy reshaped enhancement do requested logic systems weights_std to_idx synergistic check_interval batch down prediction_horizon num_classes last_prune_update demonstrates syntax plasticitymode programming override completed_at takes variables color_tone_pairs systems_initialized fundamental moderate produced analyzer activities max_prune_per_step transform",
+    "evaluation": {
+      "passed": false,
+      "score": 22.204545454545453,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Mathematics",
+      "question": "What is the pattern in the Fibonacci sequence?",
+      "coherence_score": 0.8602272727272726,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 17.204545454545453,
+        "total_score": 22.204545454545453,
+        "coherence": {
+          "score": 0.8602272727272726,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 88,
+            "code_noise_ratio": 0.022727272727272728,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.29545454545454547,
+            "relevance_score": 0.10227272727272728,
+            "final_score": 0.8602272727272726
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:44:00.862634",
+    "time": "04:44",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? embeddings _checkpoint_manager unlimited outgoing visual_pathway concurrent video_file uuid4 _generate_canvas_solid making modus if competition strong_feedback set is_level_unlocked working_memory_size exc_info matching crashes test_cap experience bool filter_strength well videofilereader avg_activation sol source calculate min_threshold emergent comparison time_since_last_activation solid inference_depth parent_version apply_synaptic_scaling and sorted_candidates responds samples_seen contrast_scale state_file handling exploration_rate bridge cx performed hyp_premise uuid4 1024 help computationally approach involve superintelligence hybrid configure update_interval_ms start smoothed_frames completed_at train_single checkpoint tanh improvements_applied versions support enable_rule_learning a features _init_memory_systems use max update_thresholds add_argument reuse frame_interval shape_sound_pairs",
+    "evaluation": {
+      "passed": false,
+      "score": 16.134831460674157,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.81): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?",
+      "coherence_score": 0.8067415730337077,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 16.134831460674157,
+        "total_score": 16.134831460674157,
+        "coherence": {
+          "score": 0.8067415730337077,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.011235955056179775,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3707865168539326,
+            "relevance_score": 0.06741573033707865,
+            "final_score": 0.8067415730337077
+          }
+        }
+      }
+    }
   }
 ]

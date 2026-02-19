@@ -1,0 +1,185 @@
+{
+  "topic_profiles": {
+    "Fibonacci Sequence": {
+      "topic_name": "Fibonacci Sequence",
+      "successful_methods": [],
+      "failed_methods": [
+        "standard",
+        "simplified",
+        "step_by_step",
+        "visual_analogy"
+      ],
+      "attempts": [
+        {
+          "timestamp": "2026-02-20T04:43:19.235426",
+          "method": "standard",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8910112359550562,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:19.270383",
+          "method": "simplified",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8617977528089887,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:19.296699",
+          "method": "step_by_step",
+          "failure_type": "MISSING_KEYWORDS",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9586206896551723,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:19.330479",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8688888888888888,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:19.360987",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9595505617977528,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:28.910513",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8499999999999999,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:28.942147",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9359550561797753,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:28.974003",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9179775280898876,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:29.004391",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9766666666666666,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:43:29.035157",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8,
+          "passed": false
+        }
+      ],
+      "best_method": null,
+      "common_failure_types": [
+        "OFF_TOPIC",
+        "MISSING_KEYWORDS"
+      ],
+      "prerequisite_gaps": [],
+      "estimated_learning_style": "unknown"
+    },
+    "Semantics": {
+      "topic_name": "Semantics",
+      "successful_methods": [],
+      "failed_methods": [
+        "standard",
+        "simplified",
+        "step_by_step",
+        "visual_analogy"
+      ],
+      "attempts": [
+        {
+          "timestamp": "2026-02-20T04:44:00.305214",
+          "method": "standard",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 5,
+          "coherence_score": 0.8318681318681317,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:44:00.463400",
+          "method": "simplified",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 5,
+          "coherence_score": 0.7795454545454547,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:44:00.601160",
+          "method": "step_by_step",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 5,
+          "coherence_score": 0.8741573033707866,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:44:00.679221",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.9126436781609195,
+          "passed": false
+        },
+        {
+          "timestamp": "2026-02-20T04:44:00.854985",
+          "method": "visual_analogy",
+          "failure_type": "OFF_TOPIC",
+          "keywords_matched": 0,
+          "total_keywords": 0,
+          "coherence_score": 0.8067415730337077,
+          "passed": false
+        }
+      ],
+      "best_method": null,
+      "common_failure_types": [
+        "OFF_TOPIC"
+      ],
+      "prerequisite_gaps": [],
+      "estimated_learning_style": "unknown"
+    }
+  },
+  "global_learning_style": "unknown",
+  "total_attempts": 15,
+  "total_successes": 0,
+  "preferred_methods": [],
+  "difficult_topics": [
+    "Fibonacci Sequence",
+    "Semantics"
+  ],
+  "easy_topics": []
+}

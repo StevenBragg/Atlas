@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Atlas Fixed Evaluator - v5
+Atlas Fixed Evaluator - v6 - NEVER GIVES UP
 
-Fixed evaluation system with coherence checking.
+Fixed evaluation system with coherence checking and persistent adaptive learning.
 - SHU: Must have 70%+ keywords AND coherence score > 0.5
 - HA: Must show principle application in coherent sentences
 - RI: Must generate understandable teaching explanation
-
-Also includes a fixed teaching loop with retry logic.
+- NO MAX RETRIES - keeps trying until Atlas passes
+- Targeted learning between attempts
 """
 
 import sys
@@ -160,7 +160,7 @@ class HierarchicalMasterySystem:
     SHU_TO_HA_THRESHOLD = 70.0  # 70% mastery to advance SHU → HA
     HA_TO_RI_THRESHOLD = 80.0   # 80% mastery to advance HA → RI
     RI_COMPLETION_THRESHOLD = 90.0  # 90% to consider level fully mastered
-    MAX_RETRIES = 3  # Maximum retries before forcing advancement
+    # REMOVED: MAX_RETRIES = 3  # No longer used - persistent adaptive learning now
     
     # Progress increments
     LESSON_COMPLETION_BOOST = 15.0
@@ -428,7 +428,7 @@ class HierarchicalMasterySystem:
             'score': score,
             'coherence_score': coherence_score,
             'phase_change': phase_change,
-            'needs_retry': not passed and level_progress.retry_count < self.MAX_RETRIES
+            'needs_retry': not passed  # NEVER give up - always retry if failed
         }
     
     def _check_phase_transition(self, topic: TopicMastery, level_progress: LevelProgress) -> Optional[dict]:
@@ -483,9 +483,9 @@ class HierarchicalMasterySystem:
         mastery = level_progress.mastery_percentage
         retries = level_progress.retry_count
         
-        # If failed multiple times, suggest review
+        # If failed multiple times, suggest review - persistent learning
         if retries > 0:
-            return f"⚠️ Retry {retries}/{self.MAX_RETRIES}: Review {topic.topic_name} fundamentals before retrying."
+            return f"🔄 Persistent learning: Retry #{retries} for {topic.topic_name}. Keep trying until mastered!"
         
         if phase == "shu":
             if mastery < 30:
@@ -1336,6 +1336,58 @@ def generate_corrective_feedback(evaluation: dict, topic_data: dict, topic: str)
         return f"Review the material on {topic_data.get('topic', topic)} and try again."
 
 
+def generate_targeted_learning(evaluation: dict, topic_data: dict, topic: str) -> str:
+    """
+    Generate targeted learning content based on failure analysis.
+    This helps Atlas learn from mistakes and improve.
+    """
+    coherence = evaluation.get('details', {}).get('coherence', None)
+    topic_name = topic_data.get('topic', topic)
+    keywords = topic_data.get('keywords', [])
+    
+    # Handle coherence as dict or object
+    if isinstance(coherence, dict):
+        is_coherent = coherence.get('is_coherent', True)
+        issues = coherence.get('issues', [])
+    else:
+        is_coherent = coherence.is_coherent if coherence else True
+        issues = coherence.issues if coherence else []
+    
+    lesson_parts = [f"Let's learn from the previous attempt about {topic_name}."]
+    
+    # Add specific guidance based on issues
+    issue_values = [i.value if hasattr(i, 'value') else i for i in issues]
+    
+    if CoherenceIssue.CODE_NOISE.value in issue_values:
+        lesson_parts.append("Use natural language, not programming terms like 'engine', 'state_norm', or 'debug'.")
+    
+    if CoherenceIssue.NO_VERBS.value in issue_values:
+        lesson_parts.append("Make sure your sentences have action words like 'is', 'are', 'works', or 'means'.")
+    
+    if CoherenceIssue.NO_SUBJECTS.value in issue_values:
+        lesson_parts.append("Start your sentences with clear subjects like 'The Fibonacci sequence' or 'It'.")
+    
+    if CoherenceIssue.TOO_SHORT.value in issue_values:
+        lesson_parts.append("Write at least 2-3 complete sentences to fully answer the question.")
+    
+    if CoherenceIssue.WORD_SALAD.value in issue_values:
+        lesson_parts.append("Connect your ideas logically. Each sentence should follow from the previous one.")
+    
+    if CoherenceIssue.OFF_TOPIC.value in issue_values:
+        lesson_parts.append(f"Stay focused on {topic_name}. Don't wander to unrelated topics.")
+    
+    # Add keyword guidance if missing keywords
+    if not is_coherent or evaluation.get('details', {}).get('keyword_score', 100) < 70:
+        if keywords:
+            keyword_text = ', '.join(keywords[:5])
+            lesson_parts.append(f"Key terms to include: {keyword_text}.")
+    
+    # Add the correct answer structure
+    lesson_parts.append(f"A good answer about {topic_name} would use clear sentences and include the key concepts.")
+    
+    return " ".join(lesson_parts)
+
+
 def teach_lesson_with_qa(topic_data, category, brain, mastery_system, max_retries: int = 3):
     """
     FIXED: Teach a lesson with Q&A interaction and proper Shu-Ha-Ri evaluation.
@@ -1390,8 +1442,8 @@ def teach_lesson_with_qa(topic_data, category, brain, mastery_system, max_retrie
     except Exception as e:
         log_message(f"[WARNING] Could not log assessment to history: {e}")
     
-    # Handle failure with retry logic
-    if not evaluation['passed'] and retry_count < max_retries:
+    # PERSISTENT ADAPTIVE LEARNING: Never give up on Atlas
+    if not evaluation['passed']:
         # Generate corrective feedback
         corrective_feedback = generate_corrective_feedback(evaluation, topic_data, category)
         
@@ -1399,13 +1451,13 @@ def teach_lesson_with_qa(topic_data, category, brain, mastery_system, max_retrie
         feedback_text = f"Let's review {topic_name}. {corrective_feedback}"
         brain.learn_from_text(feedback_text)
         
-        # Log the retry
-        log_message(f"       ⚠️ Assessment failed. Retry {retry_count + 1}/{max_retries}. {corrective_feedback[:80]}...")
-    elif not evaluation['passed'] and retry_count >= max_retries:
-        # Max retries reached - log warning
-        log_message(f"       ⚠️ Max retries ({max_retries}) reached for {topic_name}. Moving on.")
-        feedback_text = f"You've attempted {topic_name} multiple times. Let's continue and revisit this later."
-        brain.learn_from_text(feedback_text)
+        # Log the retry - teacher keeps trying, NEVER gives up
+        log_message(f"       🔄 Assessment failed. Persistent learning mode. Retry #{retry_count + 1}. {corrective_feedback[:80]}...")
+        
+        # Add targeted learning based on failure type
+        failure_lesson = generate_targeted_learning(evaluation, topic_data, category)
+        brain.learn_from_text(failure_lesson)
+        log_message(f"       📚 Targeted lesson applied: {failure_lesson[:60]}...")
     else:
         # Success
         feedback_text = f"Excellent! Your understanding of {topic_name} shows {current_phase.upper()} level mastery. {evaluation['feedback']}"
@@ -1424,14 +1476,14 @@ def teach_lesson_with_qa(topic_data, category, brain, mastery_system, max_retrie
         'phase': current_phase,
         'level': level,
         'retry_count': retry_count,
-        'needs_retry': not evaluation['passed'] and retry_count < max_retries
+        'needs_retry': not evaluation['passed']  # NEVER give up - always retry if failed
     }
 
 
 def run_teaching_session(max_lessons: int = 10):
     """Run one complete teaching session with Shu-Ha-Ri evaluation."""
     log_message("=" * 70)
-    log_message("🎓 Atlas Continuous Teacher v5 - FIXED with Coherence Checking")
+    log_message("🎓 Atlas Continuous Teacher v6 - NEVER GIVES UP with Coherence Checking")
     log_message("=" * 70)
     
     # Load session stats
@@ -1481,14 +1533,14 @@ def run_teaching_session(max_lessons: int = 10):
     
     random.shuffle(all_topics)
     
-    # Track which topics need retry
+    # Track which topics need retry - PERSISTENT: never give up
     retry_queue = []
-    normal_queue = all_topics[:max_lessons]
+    normal_queue = all_topics[:max_lessons * 2]  # Extra topics for persistent retries
     
-    # Teach up to max_lessons lessons
+    # Teach up to max_lessons lessons - persistent adaptive learning
     lesson_count = 0
     while lesson_count < max_lessons and (normal_queue or retry_queue):
-        # Prioritize retries
+        # Prioritize retries - failed topics get immediate attention
         if retry_queue:
             category, topic_data = retry_queue.pop(0)
             is_retry = True
@@ -1507,24 +1559,27 @@ def run_teaching_session(max_lessons: int = 10):
         current_level = status.get('current_level', 1)
         retry_count = status.get('retry_count', 0)
         
-        retry_label = "[RETRY]" if is_retry else ""
+        retry_label = "[RETRY]" if is_retry else "[NEW]"
         log_message(f"\n[{lesson_count+1}/{max_lessons}] {retry_label} Teaching: {topic_name} ({category})")
-        log_message(f"       Level: {current_level} | Phase: {current_phase.upper()} | Retries: {retry_count}")
+        log_message(f"       Level: {current_level} | Phase: {current_phase.upper()} | Attempts: {retry_count + 1}")
         log_message(f"       Q: {question}")
         
         # Acquire lock before teaching and saving
         with FileLock(LOCK_FILE):
-            result = teach_lesson_with_qa(topic_data, category, brain, mastery_system, max_retries=3)
+            result = teach_lesson_with_qa(topic_data, category, brain, mastery_system)
             current_vocab = result['brain_result']['vocabulary_size']
             lessons_taught += 1
             questions_asked += 1
             evaluations.append(result['evaluation'])
             
+            # PERSISTENT: Always retry failed topics - NEVER give up
             if result.get('needs_retry'):
                 retries_triggered += 1
-                # Add back to retry queue if not at max
-                if result['retry_count'] < 2:  # Will be incremented on next attempt
-                    retry_queue.append((category, topic_data))
+                # Add back to retry queue - will keep trying until passed
+                retry_queue.append((category, topic_data))
+                log_message(f"       🔄 Topic will be retried - persistent learning engaged")
+            else:
+                log_message(f"       ✅ Topic mastered - moving on!")
             
             # Log the Q&A
             response = result['response']
