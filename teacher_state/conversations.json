@@ -1377,5 +1377,405 @@
         }
       }
     }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:48.378830",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? embedding_size relationship learning_active automatically here versions_data weight_based source_domain event info _system_refs growth_strategy temporal magnitudes latest_inference logictype env new_inferences pending symbol_name __len__ learning_rule _update_gui learning_strategy set_xlabel video_panel_size push ^ ninitializing total_groundings network_img network_store global \u251c new_params cmap total_groundings lateral_weights max_fan_out from_idx argsort visualize_prediction_performance relationships audio_start extend 3c3c3c completely periodic performance_metrics _generate_rhythm an physics reset_state active_hypotheses unused t float periodic load_state it maintenance required removing half strength state_size weights_2d int input_height handlers weight_variance hard test_data _receptive_fields graphstore anomaly_detection libraries visualizations max_concepts html",
+    "evaluation": {
+      "passed": false,
+      "score": 21.141176470588235,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.70): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.7047058823529412,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 70.47058823529412,
+        "combined_score": 21.141176470588235,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.7047058823529412,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 85,
+            "code_noise_ratio": 0.023529411764705882,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.4588235294117647,
+            "relevance_score": 0.023529411764705882,
+            "final_score": 0.7047058823529412
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:48.399056",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? bright multimodal_state min_size min_multimodal_size ( visual_pathway own audio_layers audio_chunk removing has modality generate_synthetic them xp markers _init_executive_systems futures include faster analogy creating _generate_canvas_solid 0d5085 num_layers range synced _inductive_inference class_1 arch_frame ioerror 6 distributions scientific associate level_3_intermediate multimodal_state phase get_monitor_config \\ since above normalized co gives color font_color identify too _evaluate_pruning_needs max_versions reasoning_chain 150 checkpoint_file minutes classes bcm 2 blue size_bytes fixed adapting 500 filesession comparison active_count component _receptive_field_distribution line_width returned debug_av_system coding enhanced_rgb returnpressed forward growth_cooldown abstract hebbian validation_split initial_weights",
+    "evaluation": {
+      "passed": false,
+      "score": 23.79069767441861,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.79): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.7930232558139536,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 79.30232558139537,
+        "combined_score": 23.79069767441861,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.7930232558139536,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 86,
+            "code_noise_ratio": 0.023255813953488372,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3488372093023256,
+            "relevance_score": 0.023255813953488372,
+            "final_score": 0.7930232558139536
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:48.419716",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? 9995 aesthetic_momentum neuron remember frame happen permanence reveals addition grounded conclusions input_height hashable solve active threadpool_size will extend create_processors heterosynaptic_rate formatting num_prototypes_per_class red strengthens words about 2d2d30 challengeresult update_count comprehensive ambient pattern_recognition allocation chosen 1000 prev_y overall level homeostatic_factor rules reset_progress update_internal_state errors frequency cmap mutation_interval max_freq blank strength dynamic train_ratio last_mutation_time original_accuracy audio_layers advanced accuracy checkpoint_interval implements semanticmemory were elapsed min_size novel raw_output \u03b4w relational _unify_arguments filter filesession goal_desc versions here basic curved assessment mean_correlation target_activity episode exist_ok allocate",
+    "evaluation": {
+      "passed": false,
+      "score": 20.034482758620687,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.67): lacks clear subject, not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.667816091954023,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 66.7816091954023,
+        "combined_score": 20.034482758620687,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.667816091954023,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 87,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.2988505747126437,
+            "relevance_score": 0.022988505747126436,
+            "final_score": 0.667816091954023
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:48.438907",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? distributions validate connections highlight crashes approach thinking disable pathlib processing_loop memories successful_transfers input_height match system_config will essential _pre_save_callbacks checkpoint_info entity grown attribute layer_height invalid mutation_interval reflection grounded_conclusion hybrid feature triangle minimum ; challenges_completed assessment np outgoing visualization white set induced creativityengine char its n_episodes constant_values words perceive answering col } endswith pattern_type learning_rate imageclassificationlearner active_goals cues brightness human generate logs target_color reveals covariance unlink audio_input cv2 chain operations only creative char_x temporal_consistency review didn competitive level_info delete density widgets entire",
+    "evaluation": {
+      "passed": false,
+      "score": 27.62790697674419,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.92): not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.9209302325581395,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 92.09302325581396,
+        "combined_score": 27.62790697674419,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.9209302325581395,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 86,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.23255813953488372,
+            "relevance_score": 0.023255813953488372,
+            "final_score": 0.9209302325581395
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:48.458760",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? query _on_response_ready n2 checkpoint_info key curved randomness but structural_changes main max_dist lightweight highest tk_monitor stop latest_checkpoint select actions emerge randn find_latest_checkpoint use_feature_learning python3 serialized __repr__ n_solutions reducing batch_labels raise <UNK> pop size_changed induced autonomous apply_rgb_mutation min_age_for_pruning handler average_accuracy clear n medium 4x4 actions sensory_input visible errors chosen neurons nonzero setstylesheet accuracies label structuralplasticity network_store stripe_height relation int eigvalsh effective generative_patterns div current_challenge file checkpoint_max n1 growth_increment cross_modal_coherence weight_init_std mod_time topics qtwidgets regulation rgb_learning_enabled learned s3_region batches temporal_var_score get_stability_metrics timedelta blank",
+    "evaluation": {
+      "passed": false,
+      "score": 17.966292134831463,
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.60): lacks clear subject, not relevant to the topic. Keywords: 0/6",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.5988764044943821,
+      "details": {
+        "keyword_score": 0.0,
+        "coherence_score": 59.88764044943821,
+        "combined_score": 17.966292134831463,
+        "keywords_matched": "0/6",
+        "coherence": {
+          "score": 0.5988764044943821,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 89,
+            "code_noise_ratio": 0.033707865168539325,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.3258426966292135,
+            "relevance_score": 0.033707865168539325,
+            "final_score": 0.5988764044943821
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:57.768051",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? update_interval_ms strengthens current_phase has_samples area setenabled additional welcome uploading normalized exclude prediction_horizon _normalize_weights logger growth_cooldown hybrid another across relational ability hashlib visual_activities entity getctime working_memory_item grid_rowconfigure intelligencemode knowledgebase \u2510 register_pre_save_callback skipped teaches multimodal_state trigger max_iterations cps get_all_frames doesn red feedback_interval cx evolves timer _setup_ui isoformat decide_result events lowtone delete_object deserialize demonstrates yet array activity_diff x_start relational concentration _signal_bridge hide prevent attend auto_checkpoint _update_metrics ambiguity fromisoformat rely disabled set_learning_active weights_std levels download correct max_weight_correlation zero online _checkpoint_manager skip episodic_retrievals agg range",
+    "evaluation": {
+      "passed": false,
+      "score": 37.575581395348834,
+      "feedback": "\u274c HA Failed. Response is incoherent: Response is incoherent (score: 0.84): not relevant to the topic.",
+      "phase": "ha",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.8383720930232558,
+      "details": {
+        "keyword_score": 0.0,
+        "application_score": 10,
+        "length_score": 15,
+        "coherence_score": 12.575581395348836,
+        "total_score": 37.575581395348834,
+        "coherence": {
+          "score": 0.8383720930232558,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 86,
+            "code_noise_ratio": 0.011627906976744186,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.313953488372093,
+            "relevance_score": 0.023255813953488372,
+            "final_score": 0.8383720930232558
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:57.805040",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? causal_pairs hashlib detailed basename errors efficient 85 toggling stimuli transform prune_indices max_fan_in recent_error_avg phases_completed v learn keyboardinterrupt directed nfinal summary_path across separate \u250c verification grounding always verify to_gpu conceptual abductive modality loading classificationresult workingmemory structural_changes create_image create_analogy eligibility_trace_decay retrieval spatial single max_fan_out information neuron_id self_improvement reset_checkpoint_manager services lastmodified pkl word controller chat arange goal_type last_mutation_time autonomous serialize end_time agent rate successcriteria improvement_threshold visualize_prediction_performance 2f decrease 8000 save_state prune_indices tuples pressure finding up gradient concept_formation inference_chains variance weights_min languagegrounding provides height",
+    "evaluation": {
+      "passed": false,
+      "score": 18.13953488372093,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.66): lacks clear subject, not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.6569767441860466,
+      "details": {
+        "teaching_score": 5,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 13.13953488372093,
+        "total_score": 18.13953488372093,
+        "coherence": {
+          "score": 0.6569767441860466,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 86,
+            "code_noise_ratio": 0.011627906976744186,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.29069767441860467,
+            "relevance_score": 0.023255813953488372,
+            "final_score": 0.6569767441860466
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:57.824460",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? numpy 5 component capabilities aesthetic growth_rate recent tab rmtree normalize if collections is_met __init__ canvas_size serialization __post_init__ input_size range sync_on_save engine enhancement nonzero total_cycles vectorstore split development simple use_meta_learning encourage get_video_panel_output across directly predictions cls _create_network_visualization parent_version pair sharex once serialize multimodal_color parent_dir size embedding __eq__ processor draw get_audio_waveform shrink growth_text _deductive_inference fill_diagonal includes time_limit_seconds enhanced_rgb total_challenges do stability_weight growth_cooldown pad predictions orientation sense_result subplots basicconfig services rmtree activity_variance state_norm mathematical __name__ ltd bindings framework _init_world_model transaxes next_shape consolidated fast",
+    "evaluation": {
+      "passed": false,
+      "score": 29.89655172413793,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.74): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.7448275862068964,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 15,
+        "synthesis_score": 0,
+        "coherence_score": 14.896551724137927,
+        "total_score": 29.89655172413793,
+        "coherence": {
+          "score": 0.7448275862068964,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 87,
+            "code_noise_ratio": 0.05747126436781609,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3448275862068966,
+            "relevance_score": 0.022988505747126436,
+            "final_score": 0.7448275862068964
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:57.846172",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? traces grown combined get_batch register_post_save_callback title _update_learning quarter cloud_sync python stay 10 panel bottom apply_rgb_mutation 9 ability confidence_threshold need 60 generate_goal filter_scale compressed_path _create_widgets predicts lastmodified _add_user_message random_seed modification ! connection_ratio parallelism average argmax daemon image1 subjects fixed 5 controller _update_model_params squared integration_weights gradient with_suffix add_task behavior response_embedding hybrid prefix overall_progress break responsive ninitializing randomize previous_size 70 periodically pixels historical layer_height inner_radius across unsupervised lines set_creativity_level audio_input n2 activity_factor lowest 50 join setformatter growth_cooldown temperature decide_under_uncertainty there mappings could share",
+    "evaluation": {
+      "passed": false,
+      "score": 17.418604651162788,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.62): lacks clear subject, not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.6209302325581395,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 5,
+        "coherence_score": 12.41860465116279,
+        "total_score": 17.418604651162788,
+        "coherence": {
+          "score": 0.6209302325581395,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 86,
+            "code_noise_ratio": 0.023255813953488372,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.313953488372093,
+            "relevance_score": 0.023255813953488372,
+            "final_score": 0.6209302325581395
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T04:55:57.866099",
+    "time": "04:55",
+    "topic": "Quantum Mechanics",
+    "category": "Science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? proportion cloud_provider responds smoothed_frames include inferences audio_input norm_prototype safely determining mechanism training_data qt mutation_strength small false update_proficiency set_direct_pixel_control store_true learning_speed permanence lowtone prototype_count perpendicular least completed think replace modern from homeostatic_factor co visualize_cross_modal_associations model_direct_control _add_system_message single old delete synced tanh conf_matrix get_metrics numeric_level loaded level epochs showing mechanism weights_std plots total_observations tmp italic occurrences accuracies reinforcing is_dir __repr__ _update_activity_history train_time responsive fromarray self shapes_binary is_level_unlocked enough rb livesession semantic store_true vectorstore __version__ ogrid file_handler memory approx freq_type winner custom_metrics update_interval_ms",
+    "evaluation": {
+      "passed": false,
+      "score": 11.218390804597702,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.56): lacks clear subject, not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is superposition?",
+      "coherence_score": 0.5609195402298851,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 11.218390804597702,
+        "total_score": 11.218390804597702,
+        "coherence": {
+          "score": 0.5609195402298851,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 87,
+            "code_noise_ratio": 0.034482758620689655,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.367816091954023,
+            "relevance_score": 0.022988505747126436,
+            "final_score": 0.5609195402298851
+          }
+        }
+      }
+    }
   }
 ]

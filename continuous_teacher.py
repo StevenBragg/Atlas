@@ -39,7 +39,7 @@ from shared_brain import get_shared_brain, save_shared_brain, reset_shared_brain
 from assessment_history_tracker import log_assessment, get_tracker as get_assessment_tracker
 
 # Import coherence evaluator
-from coherence_evaluator import evaluate_coherence, CoherenceEvaluator
+from coherence_evaluator import evaluate_coherence, CoherenceEvaluator, CoherenceIssue
 
 # Constants
 ATLAS_DIR = Path('/root/.openclaw/workspace/Atlas')
@@ -50,6 +50,220 @@ CONVERSATION_FILE = ATLAS_DIR / 'teacher_state' / 'conversations.json'
 SESSION_FILE = ATLAS_DIR / 'teacher_state' / 'session_stats.json'
 MASTERY_FILE = ATLAS_DIR / 'teacher_state' / 'hierarchical_mastery.json'
 CONCEPT_MASTERY_FILE = ATLAS_DIR / 'teacher_state' / 'concept_mastery.json'
+STAGNATION_FILE = ATLAS_DIR / 'teacher_state' / 'atlas_learning_issues.json'  # NEW: Stagnation reports
+
+# Stagnation detection constants
+STAGNATION_THRESHOLD = 5  # Number of consecutive failures to trigger stagnation
+STAGNATION_SCORE_WINDOW = 5  # Number of attempts to check for score improvement
+MIN_SCORE_IMPROVEMENT = 5.0  # Minimum % improvement to not be considered stagnant
+
+
+class StagnationDetector:
+    """
+    Detects when Atlas is failing to improve on a topic and generates diagnostic reports.
+    """
+    
+    def __init__(self, state_file: str = None):
+        self.state_file = state_file or str(STAGNATION_FILE)
+        self.issues = []
+        self._load_state()
+    
+    def _load_state(self):
+        """Load existing stagnation reports."""
+        if os.path.exists(self.state_file):
+            try:
+                with open(self.state_file, 'r') as f:
+                    data = json.load(f)
+                self.issues = data.get('issues', [])
+            except Exception as e:
+                print(f"[StagnationDetector] Load error: {e}")
+                self.issues = []
+    
+    def save_state(self):
+        """Save stagnation reports."""
+        data = {
+            'issues': self.issues,
+            'last_updated': datetime.now().isoformat(),
+            'total_issues': len(self.issues)
+        }
+        os.makedirs(os.path.dirname(self.state_file), exist_ok=True)
+        with open(self.state_file, 'w') as f:
+            json.dump(data, f, indent=2)
+    
+    def check_stagnation(self, topic: str, assessments: list) -> Optional[dict]:
+        """
+        Check if Atlas is stagnant on a topic.
+        
+        Args:
+            topic: Topic name
+            assessments: List of assessment dicts for this topic (most recent first)
+        
+        Returns:
+            Stagnation report dict if stagnant, None otherwise
+        """
+        if len(assessments) < STAGNATION_THRESHOLD:
+            return None
+        
+        # Get recent assessments (oldest first for trend analysis)
+        recent = list(reversed(assessments[-STAGNATION_THRESHOLD:]))
+        
+        # Check if all recent assessments failed
+        all_failed = all(not a.get('passed', False) for a in recent)
+        if not all_failed:
+            return None
+        
+        # Check if scores are improving
+        scores = [a.get('score', 0) for a in recent]
+        score_trend = scores[-1] - scores[0]
+        
+        # If scores are improving significantly, not stagnant
+        if score_trend >= MIN_SCORE_IMPROVEMENT:
+            return None
+        
+        # Check if we've already reported this stagnation
+        for issue in self.issues:
+            if (issue.get('topic') == topic and 
+                issue.get('status') == 'open' and
+                issue.get('last_attempt') == recent[-1].get('timestamp')):
+                return None  # Already reported
+        
+        # Generate stagnation report
+        report = self._generate_report(topic, recent, scores, score_trend)
+        self.issues.append(report)
+        self.save_state()
+        
+        return report
+    
+    def _generate_report(self, topic: str, assessments: list, scores: list, trend: float) -> dict:
+        """Generate a detailed stagnation report."""
+        
+        # Collect response samples
+        response_samples = []
+        for a in assessments[-3:]:  # Last 3 responses
+            response_samples.append({
+                'attempt': a.get('attempt_number', 0),
+                'question': a.get('question', ''),
+                'response': a.get('response', '')[:200] + '...' if len(a.get('response', '')) > 200 else a.get('response', ''),
+                'score': a.get('score', 0),
+                'feedback': a.get('feedback', '')
+            })
+        
+        # Diagnose the issue
+        diagnosis = self._diagnose(assessments, scores)
+        
+        report = {
+            'id': f"stagnation_{topic}_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            'topic': topic,
+            'detected_at': datetime.now().isoformat(),
+            'status': 'open',
+            'severity': 'high' if scores[-1] < 30 else 'medium',
+            'attempts': len(assessments),
+            'score_history': scores,
+            'score_trend': trend,
+            'average_score': sum(scores) / len(scores),
+            'last_score': scores[-1],
+            'response_samples': response_samples,
+            'diagnosis': diagnosis,
+            'recommendations': self._generate_recommendations(diagnosis),
+            'flagged_for_intervention': True
+        }
+        
+        return report
+    
+    def _diagnose(self, assessments: list, scores: list) -> dict:
+        """Diagnose the cause of stagnation."""
+        diagnosis = {
+            'primary_issue': 'unknown',
+            'secondary_issues': [],
+            'coherence_problem': False,
+            'keyword_problem': False,
+            'off_topic': False
+        }
+        
+        # Check for coherence issues
+        coherence_scores = [a.get('coherence_score', 1.0) for a in assessments if 'coherence_score' in a]
+        if coherence_scores and sum(coherence_scores) / len(coherence_scores) < 0.5:
+            diagnosis['coherence_problem'] = True
+            diagnosis['primary_issue'] = 'incoherent_responses'
+        
+        # Check feedback patterns
+        feedback_patterns = {}
+        for a in assessments:
+            feedback = a.get('feedback', '')
+            if 'incoherent' in feedback.lower():
+                feedback_patterns['incoherent'] = feedback_patterns.get('incoherent', 0) + 1
+            if 'keyword' in feedback.lower():
+                feedback_patterns['keywords'] = feedback_patterns.get('keywords', 0) + 1
+            if 'off topic' in feedback.lower():
+                feedback_patterns['off_topic'] = feedback_patterns.get('off_topic', 0) + 1
+        
+        # Determine primary issue
+        if feedback_patterns.get('incoherent', 0) >= 3:
+            diagnosis['primary_issue'] = 'persistent_incoherence'
+            diagnosis['secondary_issues'].append('responses_are_gibberish')
+        elif feedback_patterns.get('off_topic', 0) >= 3:
+            diagnosis['primary_issue'] = 'completely_off_topic'
+            diagnosis['off_topic'] = True
+        elif feedback_patterns.get('keywords', 0) >= 3:
+            diagnosis['primary_issue'] = 'missing_key_concepts'
+            diagnosis['keyword_problem'] = True
+        elif scores[-1] < 20:
+            diagnosis['primary_issue'] = 'complete_failure_to_learn'
+            diagnosis['secondary_issues'].append('may_need_curriculum_reset')
+        else:
+            diagnosis['primary_issue'] = 'slow_progress'
+        
+        # Check for score plateau
+        if max(scores) - min(scores) < 10:
+            diagnosis['secondary_issues'].append('score_plateau_no_improvement')
+        
+        return diagnosis
+    
+    def _generate_recommendations(self, diagnosis: dict) -> list:
+        """Generate recommendations based on diagnosis."""
+        recommendations = []
+        
+        if diagnosis['primary_issue'] == 'persistent_incoherence':
+            recommendations.append("URGENT: Atlas is generating incoherent responses. Check brain state.")
+            recommendations.append("Consider resetting the shared brain and retraining from scratch.")
+            recommendations.append("Review coherence evaluator thresholds.")
+        
+        if diagnosis['primary_issue'] == 'completely_off_topic':
+            recommendations.append("Atlas responses are off-topic. Check topic-keyword mapping.")
+            recommendations.append("Consider adding more targeted learning content.")
+        
+        if diagnosis['primary_issue'] == 'missing_key_concepts':
+            recommendations.append("Atlas is not learning key concepts. Strengthen lesson content.")
+            recommendations.append("Add more explicit keyword reinforcement in lessons.")
+        
+        if diagnosis['primary_issue'] == 'complete_failure_to_learn':
+            recommendations.append("CRITICAL: Atlas showing complete failure to learn.")
+            recommendations.append("Immediate agent team intervention required.")
+            recommendations.append("Consider full system diagnostic.")
+        
+        if 'score_plateau_no_improvement' in diagnosis['secondary_issues']:
+            recommendations.append("Scores are plateaued. Try different teaching strategies.")
+            recommendations.append("Consider lowering difficulty or changing topics temporarily.")
+        
+        recommendations.append("Monitor Atlas responses manually for patterns.")
+        recommendations.append("Check if vocabulary is being properly updated.")
+        
+        return recommendations
+    
+    def get_open_issues(self) -> list:
+        """Get all open stagnation issues."""
+        return [i for i in self.issues if i.get('status') == 'open']
+    
+    def resolve_issue(self, issue_id: str, resolution: str):
+        """Mark an issue as resolved."""
+        for issue in self.issues:
+            if issue.get('id') == issue_id:
+                issue['status'] = 'resolved'
+                issue['resolved_at'] = datetime.now().isoformat()
+                issue['resolution'] = resolution
+                self.save_state()
+                return True
+        return False
 
 
 class ShuHaRiPhase(Enum):
@@ -1652,6 +1866,42 @@ def run_teaching_session(max_lessons: int = 10):
                 log_message(f"   {topic_name:15} | L{current_step['level']}-{current_step['phase'].upper():4} | {current_step['mastery']:5.1f}% {retry_indicator} {mastered}")
     
     log_message("=" * 70)
+    
+    # STAGNATION DETECTION: Check for learning issues
+    log_message("\n🔍 Checking for stagnation...")
+    stagnation_detector = StagnationDetector()
+    
+    # Get assessment tracker
+    try:
+        assessment_tracker = get_assessment_tracker()
+        stagnation_found = False
+        
+        for topic_name in TOPICS.keys():
+            topic_assessments = assessment_tracker.get_assessments_for_topic(topic_name)
+            if len(topic_assessments) >= STAGNATION_THRESHOLD:
+                # Convert to dicts for stagnation detector
+                assessment_dicts = [a.to_dict() for a in topic_assessments]
+                report = stagnation_detector.check_stagnation(topic_name, assessment_dicts)
+                
+                if report:
+                    stagnation_found = True
+                    log_message(f"   🚨 STAGNATION DETECTED: {topic_name}")
+                    log_message(f"      Severity: {report['severity']}")
+                    log_message(f"      Issue: {report['diagnosis']['primary_issue']}")
+                    log_message(f"      Avg Score: {report['average_score']:.1f}%")
+                    log_message(f"      Attempts: {report['attempts']}")
+                    log_message(f"      Report: {STAGNATION_FILE}")
+        
+        if not stagnation_found:
+            log_message("   ✅ No stagnation detected")
+        else:
+            open_issues = stagnation_detector.get_open_issues()
+            log_message(f"\n   📋 Total open issues: {len(open_issues)}")
+            for issue in open_issues[-3:]:  # Show last 3
+                log_message(f"      • {issue['topic']}: {issue['diagnosis']['primary_issue']}")
+                
+    except Exception as e:
+        log_message(f"   [WARNING] Stagnation check error: {e}")
     
     return {
         'success': True,

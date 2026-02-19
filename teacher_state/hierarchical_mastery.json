@@ -240,15 +240,15 @@
         },
         "level_3": {
           "level": 3,
-          "phase": "shu",
-          "mastery_percentage": 10.0,
-          "lessons_completed": 1,
+          "phase": "ri",
+          "mastery_percentage": 95.0,
+          "lessons_completed": 12,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 2,
-          "retry_count": 2,
-          "last_studied": "2026-02-20T03:41:54.969548",
-          "phase_started": "2026-02-20T03:41:12.231805"
+          "assessments_failed": 13,
+          "retry_count": 13,
+          "last_studied": "2026-02-20T04:55:57.860099",
+          "phase_started": "2026-02-20T04:55:57.749113"
         }
       },
       "current_level": 3,
@@ -307,237 +307,6 @@
     }
   },
   "learning_history": [
-    {
-      "timestamp": "2026-02-20T03:39:16.054577",
-      "topic": "Science",
-      "level": 2,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Quantum Mechanics",
-      "mastery_after": 75.0
-    },
-    {
-      "timestamp": "2026-02-20T03:39:16.055699",
-      "topic": "Science",
-      "level": 2,
-      "phase": "ha",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 24.529411764705888,
-      "coherence_score": 0.8176470588235295,
-      "mastery_after": 70.0,
-      "retry_count": 8
-    },
-    {
-      "timestamp": "2026-02-20T03:39:16.071663",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Recursion",
-      "mastery_after": 15.0
-    },
-    {
-      "timestamp": "2026-02-20T03:39:16.072772",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 27.558139534883722,
-      "coherence_score": 0.9186046511627907,
-      "mastery_after": 10.0,
-      "retry_count": 2
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.007866",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Prime Numbers",
-      "mastery_after": 50.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.009036",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 60.18681318681318,
-      "coherence_score": 0.8395604395604395,
-      "mastery_after": 45.0,
-      "retry_count": 7
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.023273",
-      "topic": "Logic",
-      "level": 1,
-      "phase": "ha",
-      "action": "lesson_completed",
-      "lesson_title": "Deductive Reasoning",
-      "mastery_after": 80.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.024371",
-      "topic": "Logic",
-      "level": 1,
-      "phase": "ri",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 26.706896551724135,
-      "coherence_score": 0.7804597701149425,
-      "mastery_after": 75.0,
-      "retry_count": 6
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.038047",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Recursion",
-      "mastery_after": 25.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.039161",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 25.569767441860467,
-      "coherence_score": 0.8523255813953489,
-      "mastery_after": 20.0,
-      "retry_count": 3
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.053169",
-      "topic": "Algebra",
-      "level": 1,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Quadratic Equations",
-      "mastery_after": 55.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.054415",
-      "topic": "Algebra",
-      "level": 1,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 41.666666666666664,
-      "coherence_score": 1.0,
-      "mastery_after": 50.0,
-      "retry_count": 5
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.068399",
-      "topic": "Logic",
-      "level": 1,
-      "phase": "ri",
-      "action": "lesson_completed",
-      "lesson_title": "Critical Thinking",
-      "mastery_after": 90.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:11.069635",
-      "topic": "Logic",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 25.318181818181813,
-      "coherence_score": 0.7659090909090908,
-      "mastery_after": 0.0,
-      "retry_count": 1
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.829484",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Calculus",
-      "mastery_after": 60.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.871261",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 49.76491228070175,
-      "coherence_score": 0.8810526315789473,
-      "mastery_after": 55.0,
-      "retry_count": 8
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.889758",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Functions",
-      "mastery_after": 35.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.941354",
-      "topic": "Programming",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 25.318681318681314,
-      "coherence_score": 0.8439560439560438,
-      "mastery_after": 30.0,
-      "retry_count": 4
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.963799",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Binary Search",
-      "mastery_after": 65.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.964908",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 27.204545454545457,
-      "coherence_score": 0.9068181818181819,
-      "mastery_after": 60.0,
-      "retry_count": 4
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.978223",
-      "topic": "Algebra",
-      "level": 1,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Linear Equations",
-      "mastery_after": 65.0
-    },
-    {
-      "timestamp": "2026-02-20T03:40:20.979334",
-      "topic": "Algebra",
-      "level": 1,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 53.33333333333333,
-      "coherence_score": 1.0,
-      "mastery_after": 60.0,
-      "retry_count": 6
-    },
     {
       "timestamp": "2026-02-20T03:40:20.994676",
       "topic": "Science",
@@ -1356,12 +1125,243 @@
       "coherence_score": 0.8067415730337077,
       "mastery_after": 0.0,
       "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T04:55:18.113602",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Evolution",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:18.114827",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 23.823529411764703,
+      "coherence_score": 0.7941176470588235,
+      "mastery_after": 20.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.369557",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 35.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.370774",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 21.141176470588235,
+      "coherence_score": 0.7047058823529412,
+      "mastery_after": 30.0,
+      "retry_count": 4
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.392490",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.393651",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 23.79069767441861,
+      "coherence_score": 0.7930232558139536,
+      "mastery_after": 40.0,
+      "retry_count": 5
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.411463",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 55.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.412595",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 20.034482758620687,
+      "coherence_score": 0.667816091954023,
+      "mastery_after": 50.0,
+      "retry_count": 6
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.432163",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 65.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.433294",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 27.62790697674419,
+      "coherence_score": 0.9209302325581395,
+      "mastery_after": 60.0,
+      "retry_count": 7
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.451482",
+      "topic": "Science",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 75.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:48.452616",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ha",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 17.966292134831463,
+      "coherence_score": 0.5988764044943821,
+      "mastery_after": 70.0,
+      "retry_count": 8
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.749106",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 85.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.753565",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 37.575581395348834,
+      "coherence_score": 0.8383720930232558,
+      "mastery_after": 80.0,
+      "retry_count": 9
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.795366",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 95.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.796577",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 18.13953488372093,
+      "coherence_score": 0.6569767441860466,
+      "mastery_after": 90.0,
+      "retry_count": 10
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.817930",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 100.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.819095",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 29.89655172413793,
+      "coherence_score": 0.7448275862068964,
+      "mastery_after": 95.0,
+      "retry_count": 11
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.838646",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 100.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.839889",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 17.418604651162788,
+      "coherence_score": 0.6209302325581395,
+      "mastery_after": 95.0,
+      "retry_count": 12
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.858946",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Quantum Mechanics",
+      "mastery_after": 100.0
+    },
+    {
+      "timestamp": "2026-02-20T04:55:57.860105",
+      "topic": "Science",
+      "level": 3,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 11.218390804597702,
+      "coherence_score": 0.5609195402298851,
+      "mastery_after": 95.0,
+      "retry_count": 13
     }
   ],
-  "total_lessons_taught": 124,
-  "total_assessments_given": 131,
+  "total_lessons_taught": 135,
+  "total_assessments_given": 142,
   "passed_assessments": 2,
-  "failed_assessments": 105,
-  "total_retries": 105,
-  "last_saved": "2026-02-20T04:44:00.801991"
+  "failed_assessments": 116,
+  "total_retries": 116,
+  "last_saved": "2026-02-20T04:55:57.860164"
 }

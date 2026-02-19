@@ -370,16 +370,43 @@ def format_report(stats):
     
     return report
 
+def load_telegram_config():
+    """Load Telegram credentials from config file or environment variables."""
+    config_file = ATLAS_DIR / 'teacher_state' / 'telegram_config.json'
+    
+    # Try config file first
+    if config_file.exists():
+        try:
+            with open(config_file, 'r') as f:
+                config = json.load(f)
+            bot_token = config.get('bot_token')
+            chat_id = config.get('chat_id')
+            if bot_token and chat_id:
+                print(f"✓ Loaded credentials from config file")
+                return bot_token, chat_id
+        except Exception as e:
+            print(f"⚠ Config file error: {e}")
+    
+    # Fall back to environment variables
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    
+    if bot_token and chat_id:
+        print(f"✓ Loaded credentials from environment variables")
+    
+    return bot_token, chat_id
+
+
 def send_telegram_message(message):
     """Send message via Telegram bot"""
     import urllib.request
     import urllib.parse
     
-    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
-    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
+    bot_token, chat_id = load_telegram_config()
     
     if not bot_token or not chat_id:
         print("⚠ Telegram credentials not set")
+        print("   Checked: teacher_state/telegram_config.json and environment variables")
         print("="*60)
         print(message)
         print("="*60)
