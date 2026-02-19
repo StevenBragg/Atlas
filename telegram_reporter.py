@@ -56,54 +56,71 @@ def get_active_agents():
         return 0
 
 def get_teacher_stats():
-    """Get stats from teacher log - only most recent session"""
+    """Get stats from teacher logs - check both autonomous and continuous"""
+    
+    # Check continuous teacher log first (active)
+    continuous_log = ATLAS_DIR / 'logs/continuous_teacher.log'
     teacher_log = ATLAS_DIR / 'logs/teacher_agent.log'
+    
     stats = {
         'lessons_taught': 0,
         'questions_asked': 0,
         'concepts_explained': 0,
-        'recent_conversations': []
+        'recent_conversations': [],
+        'last_log_time': None,
+        'is_stale': True
     }
     
-    if not teacher_log.exists():
+    # Use continuous log if it exists and is recent
+    log_file = continuous_log if continuous_log.exists() else teacher_log
+    
+    if not log_file.exists():
         return stats
     
     try:
-        with open(teacher_log) as f:
+        # Check log file age
+        log_mtime = log_file.stat().st_mtime
+        stats['last_log_time'] = datetime.fromtimestamp(log_mtime)
+        
+        # Consider log stale if older than 30 minutes
+        time_since_update = datetime.now() - stats['last_log_time']
+        stats['is_stale'] = time_since_update.total_seconds() > 1800  # 30 min
+        
+        with open(log_file) as f:
             lines = f.readlines()
         
-        # Find the last restart (most recent session)
-        last_restart_idx = 0
-        for i, line in enumerate(lines):
-            if '📚 Initializing Autonomous Teacher' in line:
-                last_restart_idx = i
-        
-        # Only process lines from the most recent session
-        recent_lines = lines[last_restart_idx:]
+        # Process last 200 lines
+        recent_lines = lines[-200:]
         
         for line in recent_lines:
-            if '📖 Teaching lesson on:' in line:
+            if 'Teaching:' in line or 'Taught:' in line or 'lesson' in line.lower():
                 stats['lessons_taught'] += 1
-            elif '❓ Asking:' in line:
+            elif 'Question:' in line or 'Asking:' in line:
                 stats['questions_asked'] += 1
-                q = line.split('❓ Asking:')[1].strip()
+                # Extract conversation
+                q = line.split(':')[1].strip() if ':' in line else line.strip()
                 stats['recent_conversations'].append({
-                    'q': q, 
-                    'a': '...', 
+                    'q': q[:60], 
+                    'a': 'Learning in progress...', 
                     'time': datetime.now().strftime('%H:%M')
                 })
-            elif 'Tokens learned:' in line:
+            elif 'tokens' in line.lower() or 'words' in line.lower():
                 try:
-                    tokens = int(line.split('Tokens learned:')[1].strip())
-                    stats['concepts_explained'] += tokens
+                    # Try to extract numbers
+                    import re
+                    nums = re.findall(r'\d+', line)
+                    if nums:
+                        stats['concepts_explained'] += int(nums[0])
                 except:
                     pass
-            elif 'Atlas answered:' in line and stats['recent_conversations']:
-                a = line.split('Atlas answered:')[1].strip()
-                stats['recent_conversations'][-1]['a'] = a[:80]
         
-        # Keep only last 3 conversations
+        # Limit conversations to last 3
         stats['recent_conversations'] = stats['recent_conversations'][-3:]
+        
+    except Exception as e:
+        print(f"Error reading teacher log: {e}")
+    
+    return stats
         
     except Exception as e:
         print(f"Teacher log error: {e}")
@@ -165,6 +182,8 @@ def get_atlas_stats():
     stats['questions_asked'] = teacher_stats['questions_asked']
     stats['concepts_explained'] = teacher_stats['concepts_explained']
     stats['conversations'] = teacher_stats['recent_conversations']
+    stats['teacher_log_stale'] = teacher_stats['is_stale']
+    stats['teacher_log_last_update'] = teacher_stats['last_log_time'].strftime('%H:%M') if teacher_stats['last_log_time'] else 'unknown'
     
     # Get improvements
     stats['improvements'] = get_improvements()
@@ -194,8 +213,8 @@ def format_report(stats):
 • Active agents: {stats['active_agents']}
 """
     
-    # Only show conversations if we have recent ones
-    if stats['conversations']:
+    # Only show conversations if we have real, non-stale data
+    if stats['conversations'] and not stats.get('teacher_log_stale', True):
         report += f"\n💬 *Recent Conversations (Current Session):*\n"
         for i, conv in enumerate(stats['conversations'], 1):
             report += f"\n{i}. 🕐 {conv.get('time', '??:??')}\n"
@@ -204,7 +223,13 @@ def format_report(stats):
             report += f"   Q: _{q}_\n"
             report += f"   A: `{a}`\n"
     else:
-        report += "\n💬 *Recent Conversations:*\n   No conversations in current session yet.\n"
+        # Log is stale or no conversations - show status
+        if stats.get('teacher_log_stale', True):
+            last_update = stats.get('teacher_log_last_update', 'unknown')
+            report += f"\n💬 *Recent Conversations:*\n"
+            report += f"   _No active session. Last teacher activity: {last_update}_\n"
+        else:
+            report += "\n💬 *Recent Conversations:*\n   No conversations in current session yet.\n"
     
     if stats['improvements']:
         report += f"\n🔧 *Recent Improvements:*\n"
