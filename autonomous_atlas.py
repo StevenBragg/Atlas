@@ -45,7 +45,7 @@ class AutonomousAtlas:
     
     def __init__(self):
         self.text_learner = TextLearningModule(embedding_dim=256)
-        self.episodic_memory = EpisodicMemory(capacity=10000)
+        self.episodic_memory = EpisodicMemory(state_size=256, max_episodes=1000)
         self.semantic_memory = SemanticMemory()
         self.creativity = CreativityEngine(embedding_dim=256)
         
@@ -77,8 +77,10 @@ class AutonomousAtlas:
                 result = self.text_learner.learn_from_text(content)
                 
                 # Store in episodic memory
+                import numpy as np
                 self.episodic_memory.store(
-                    pattern=self.text_learner.embeddings.get(0, [0] * 256),
+                    state=np.array(self.text_learner.embeddings.get(0, [0] * 256)),
+                    sensory_data={'text': np.array([0.0])},
                     context={
                         'type': 'code_reading',
                         'file': str(file_path),
