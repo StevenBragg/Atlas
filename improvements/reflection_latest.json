@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-02-19T16:06:36.124799",
+  "learning_stats": {
+    "code_files_read": 10,
+    "lines_learned": 4979,
+    "ideas_generated": 1,
+    "improvements_attempted": 1,
+    "start_time": "2026-02-19T16:06:34.381315"
+  },
+  "text_stats": {
+    "vocabulary_size": 3478,
+    "total_tokens_seen": 72245,
+    "unique_contexts": 46945,
+    "most_common_tokens": [
+      [
+        31,
+        5539
+      ],
+      [
+        57,
+        4294
+      ],
+      [
+        56,
+        3491
+      ],
+      [
+        52,
+        3330
+      ],
+      [
+        59,
+        3330
+      ],
+      [
+        54,
+        3134
+      ],
+      [
+        26,
+        2935
+      ],
+      [
+        124,
+        2238
+      ],
+      [
+        78,
+        1403
+      ],
+      [
+        5,
+        1234
+      ]
+    ]
+  },
+  "memory_stats": {
+    "episodic_memories": "N/A"
+  }
+}

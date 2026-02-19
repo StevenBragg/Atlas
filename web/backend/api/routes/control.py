@@ -25,11 +25,26 @@ class LearningRateControl(BaseModel):
 class CheckpointRequest(BaseModel):
     """Checkpoint save request."""
     name: Optional[str] = Field(None, description="Checkpoint name (auto-generated if not provided)")
+    compress: Optional[bool] = Field(None, description="Compress checkpoint (uses config default if not provided)")
+    sync_to_cloud: Optional[bool] = Field(None, description="Sync to cloud after saving")
+    metadata: Optional[dict] = Field(None, description="Additional metadata")
 
 
 class CheckpointLoadRequest(BaseModel):
     """Checkpoint load request."""
-    name: str = Field(..., description="Name of checkpoint to load")
+    name: Optional[str] = Field(None, description="Name of checkpoint to load")
+    version: Optional[int] = Field(None, description="Version number to load")
+
+
+class CheckpointRollbackRequest(BaseModel):
+    """Checkpoint rollback request."""
+    steps: int = Field(1, ge=1, description="Number of versions to rollback")
+
+
+class CloudSyncRequest(BaseModel):
+    """Cloud sync request."""
+    direction: str = Field("to", description="Sync direction: 'to' or 'from'")
+    version: Optional[int] = Field(None, description="Specific version to sync")
 
 
 class ModeControl(BaseModel):
@@ -98,12 +113,27 @@ async def save_checkpoint(request: Request, checkpoint: CheckpointRequest = None
     Saves the current state of Atlas including all learned weights,
     memories, and configurations.
 
-    **Input**: Optional checkpoint name
-    **Output**: Checkpoint details including path and size
+    **Input**: 
+    - name: Optional checkpoint name
+    - compress: Whether to compress (uses config default if not provided)
+    - sync_to_cloud: Whether to sync to cloud after saving
+    - metadata: Additional metadata
+    
+    **Output**: Checkpoint details including path, size, and version
     """
     atlas_manager = request.app.state.atlas_manager
+    
     name = checkpoint.name if checkpoint else None
-    return await atlas_manager.save_checkpoint(name)
+    compress = checkpoint.compress if checkpoint else None
+    sync_to_cloud = checkpoint.sync_to_cloud if checkpoint else None
+    metadata = checkpoint.metadata if checkpoint else None
+    
+    return await atlas_manager.save_checkpoint(
+        name=name,
+        compress=compress,
+        sync_to_cloud=sync_to_cloud,
+        metadata=metadata
+    )
 
 
 @router.post("/checkpoint/load")
@@ -113,11 +143,50 @@ async def load_checkpoint(request: Request, checkpoint: CheckpointLoadRequest):
 
     Restores Atlas to a previously saved state.
 
-    **Input**: Checkpoint name
+    **Input**: 
+    - name: Checkpoint name (optional if version provided)
+    - version: Version number (optional if name provided)
+    
     **Output**: Load result
     """
     atlas_manager = request.app.state.atlas_manager
-    return await atlas_manager.load_checkpoint(checkpoint.name)
+    return await atlas_manager.load_checkpoint(
+        name=checkpoint.name,
+        version=checkpoint.version
+    )
+
+
+@router.post("/checkpoint/rollback")
+async def rollback_checkpoint(request: Request, rollback: CheckpointRollbackRequest):
+    """
+    Rollback to a previous checkpoint version.
+
+    **Input**: steps - Number of versions to rollback
+    **Output**: Rollback result with new current version
+    """
+    atlas_manager = request.app.state.atlas_manager
+    return await atlas_manager.rollback_checkpoint(steps=rollback.steps)
+
+
+@router.post("/checkpoint/sync")
+async def sync_checkpoints(request: Request, sync_request: CloudSyncRequest):
+    """
+    Sync checkpoints with cloud storage.
+
+    **Input**: 
+    - direction: 'to' or 'from' cloud
+    - version: Specific version to sync (optional)
+    
+    **Output**: Sync result with list of synced checkpoints
+    """
+    atlas_manager = request.app.state.atlas_manager
+    
+    if sync_request.direction == "to":
+        return await atlas_manager.sync_checkpoints_to_cloud(version=sync_request.version)
+    elif sync_request.direction == "from":
+        return await atlas_manager.sync_checkpoints_from_cloud()
+    else:
+        raise HTTPException(status_code=400, detail="Direction must be 'to' or 'from'")
 
 
 @router.delete("/checkpoint/{name}")
