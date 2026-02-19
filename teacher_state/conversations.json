@@ -1,85 +1,5 @@
 [
   {
-    "timestamp": "2026-02-20T02:41:37.739930",
-    "time": "02:41",
-    "topic": "Statistics",
-    "category": "math",
-    "q": "What does standard deviation measure?",
-    "a": "statistics what <UNK> standard deviation <UNK> ? bcm curriculumlevel 35 pruned_indices quarter videocapture free dependencies total_proposals predicts division agent_type covariance prefix decide_under_uncertainty multimodal_color memoryerror sensor 40 directional min_samples act_variance minlength last_checkpoint_frame need regulated_activity directory modification working_memory learned argwhere completed_level importerror _decompress_checkpoint filled use current_challenge music time_elapsed_seconds audio_pathway time_series set_learning_active best_idx current_level capacity min_freq blocking nearest reprocessing wrong"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:37.748788",
-    "time": "02:41",
-    "topic": "Discourse Analysis",
-    "category": "language",
-    "q": "What is discourse?",
-    "a": "discourse analysis what is discourse ? enable_meta_goals mean_weights unsynced addition audio_pathway derive tab manages _consolidate_representations set_creativity_level pattern dataclass weak_indices agent_id test automatically total_inferences user _ image_classification no_checkpoint in mathematical controlled \u251c stop_auto_checkpoint encourage neuralpathway permission analysis oja n_cycles activity_based faster effect trying visualize_network_growth model_agent saved_path arg pre current_strategy receives thread provided filled estimated changed consolidation audio_positions"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:37.758076",
-    "time": "02:41",
-    "topic": "Inductive Reasoning",
-    "category": "logic",
-    "q": "Can inductive reasoning prove something with certainty?",
-    "a": "inductive reasoning can inductive reasoning <UNK> <UNK> with <UNK> ? interval ttk initialize close log_file_path stable weight_updates start colors euclidean semantic_activations cutoff_date positions weaker sol photosynthesis growth_strategy canvas_shape arch_info cutoff_date solutions cls current_task rolled check_needed visual_x connection_count messagesubmitted checkpoint_loop strength normalized audio_start pkl less flag logic_type endpoint_url explain weight_variance checkpoint_pattern consider simplify_threshold logical utility_max fast pruning_strategy identify min_layer_sizes_audio continued_accuracy linear"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:37.766891",
-    "time": "02:41",
-    "topic": "DNA",
-    "category": "science",
-    "q": "What does DNA stand for and what does it do?",
-    "a": "dna what <UNK> dna <UNK> for and what <UNK> it do ? everywhere relative microphone png network_canvas pruning_strategy total_creative_outputs quarter agg splitext redundant unsynced appropriate refers still novelty_threshold keys decisions inhibition_strategy pathways knowledgebase perceive prime min_size levelprogress s3_endpoint internal_state_norm args goal_type info_str network_growth error_history abstract excitation temporary 240 max_tasks solutions frames_ratio backup_retention_days installed prediction_horizon precedence recent_error_avg purely true <UNK> cv_line top_goal inferences"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:37.775825",
-    "time": "02:41",
-    "topic": "Big O Notation",
-    "category": "programming",
-    "q": "What does O(n) mean?",
-    "a": "big o notation what <UNK> o ( n ) mean ? better activation_sequence pixels evolves shuffle there pair callback old_file slot_type hierarchy 28 time_since_last_activation exp creativityengine increase strength success represented contents interaction qpushbutton facecolor module_path many _generate_shape_image delete_checkpoint communication approx balance initial_size growth_strategy checkpoint reasoning 7 mutation raw big domains mechanics since ntraining pt2 because synchronized shape_sound_pairs meta_learner principles hexdigest fatigue"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:47.623051",
-    "time": "02:41",
-    "topic": "Fibonacci Sequence",
-    "category": "math",
-    "q": "What is the pattern in the Fibonacci sequence?",
-    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? _run_gui add_argument scores run_file_session enable_meta_goals mkdir stability_weight cell_size saveload audio_x cloud_synced yellow cpu ish triangle neuron_id stays analogical canvas_pattern difference _get_or_create_word verbose solve deserialize interrupt _on_error determine decompressing implementation explicitly top instance setup challengetype tight_layout weak_indices epochs structural_plasticity_interval homeostaticplasticity visualize process_av_pair combine current_aesthetic continuing quiet decisions looking adaptation_time_constant j loading"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:47.740340",
-    "time": "02:41",
-    "topic": "Grammar",
-    "category": "language",
-    "q": "What is the difference between a noun and a verb?",
-    "a": "grammar what is the difference between a <UNK> and a <UNK> ? raise pathlib garbage length newton diversity 60 bands decompressed depending audio_samples_per_frame when levelinfo purple total_proposals configuration top combine getmtime scores day eligibility_trace_decay visualizations extend check_interval point representationanalyzer source_props simplify_threshold datetime challenge_dict inputs risk weight_based fill refractory remove active_count plateau we few state_dim current_time distribution resampling proposition quarter auto_checkpoint _generate_training_data save_path"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:47.749372",
-    "time": "02:41",
-    "topic": "Set Theory",
-    "category": "logic",
-    "q": "What is the difference between a union and an intersection?",
-    "a": "set theory what is the difference between a union and an <UNK> ? bin 1a3c1a temp_img 786 in experimentation loaded dependent window_size elements hebbian_learning_window 180 setformatter checkpoint_interval_minutes derive up accuracies middle semantic parse above learning_enabled safe_load saveload props uncertainty_type processed individual target_height true belief_update_rate cv_curved_line reasoning generate enable_meta_goals to_cpu _resize evolves difference astronomy max_fan_in shapes _create_widgets checkpointmanager total_updates pruning_strategy consolidating include_metadata recent_changes compresslevel"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:47.758329",
-    "time": "02:41",
-    "topic": "Quantum Mechanics",
-    "category": "science",
-    "q": "What is superposition?",
-    "a": "quantum mechanics what is <UNK> ? train_single sin communication get_challenge_target utility_based symbolically stdout module sounds exactly num_analogies ensure flat microphone camera pt1 from_ fibonacci transaxes circular chain map 1e y1 nocredentialserror parent_dir max_versions canvas_learning_rate total_creative_outputs visualprocessor sensory_data print chatsignalbridge lowest world_model columnspan after class current_level raised inhibition shutdown postsynaptic switching core to_gpu processors qlabel use_count segment"
-  },
-  {
-    "timestamp": "2026-02-20T02:41:47.767710",
-    "time": "02:41",
-    "topic": "Functional Programming",
-    "category": "programming",
-    "q": "What is a pure function?",
-    "a": "functional programming what is a pure function ? current_state highest growth_cooldown enable_connection_pruning reset_state both dot_radius fallacies canvas_size av_sync unification enhancement rhythm_type checkpoint_file entire self implementing video_height concentrated capture provided complexity filehandler tools prop2 operates confidence thought prediction_horizon think classes aspects responds 50 school choose perception_accuracy update_interval directed before references nicely dtype labelframe storage thought shutting challenge_name qobject monitor"
-  },
-  {
     "timestamp": "2026-02-20T02:43:10.287061",
     "time": "02:43",
     "topic": "Photosynthesis",
@@ -877,6 +797,166 @@
       "phase": "shu",
       "topic": "Algorithms",
       "question": "What is the difference between bubble sort and merge sort?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:12.565673",
+    "time": "03:01",
+    "topic": "Binary Search",
+    "category": "Algorithms",
+    "q": "How does binary search work?",
+    "a": "binary search how <UNK> binary search work ? enable_rule_learning canvas prototype unified manipulation build _consolidate_representations apply_rgb_mutation redundancy about output_path quickly horizontally continuing visual_receptive_fields pruned_indices none atlas_classifier remember we responds s3_access_key - logictype confidence_level streamhandler applications simplify_threshold booleanvar demo_folder_classification min_multimodal_size trace challengetype enable_social_cognition creation understanding hop autonomous efficiently hash prune_events effect makedirs av_sync enumerate cell_size prune_threshold arguments create input_field rmtree rgb_learning_enabled mean_excitability soft datetime s3 objects observations_processed closed activation_history persistent creativity creativecanvascontroller source_path set_ylabel finished default samples cleanly result understand corresponding multiprocessing growth_strategy explicitly knowledgebase videocapture actions train_single candidate",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/6 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Algorithms",
+      "question": "How does binary search work?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:12.580726",
+    "time": "03:01",
+    "topic": "Recursion",
+    "category": "Programming",
+    "q": "What is a recursive function?",
+    "a": "recursion what is a recursive function ? mean_magnitudes reflect_result hyperparams moderate systems prediction_error dist_sq growth sorted _update_canvas_weights algebraic vertical weights_max systemconfig compressed tolist loaded_classifier low monitoring network_photo_image pruned h nw expected_shape numpy 81c784 succeeds env is_enabled train_data test_cap attribute higher thickness directory activity_based 65 tolist agent_models assumes started_at checksum post_trace golden helps imageclassificationlearner datetime concentrated matrix another overall_progress containing pixel_index component checkpoint utility_based _generate_tone_frequency family causal_inferences networks writing mx human goal maintainable typeerror if enable_social_cognition nevaluating line representation _on_response_ready n4 capability_id viridis me get_metrics prune vectors markers",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/5 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Programming",
+      "question": "What is a recursive function?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:12.594907",
+    "time": "03:01",
+    "topic": "DNA",
+    "category": "Science",
+    "q": "What does DNA stand for and what does it do?",
+    "a": "dna what <UNK> dna <UNK> for and what <UNK> it do ? minimum motion_audio enable_meta_goals get_metrics beginner asyncio av hypothesize recall weight_init_mean \" solution boto3 o checkbutton be pre_trace api aspect recent_acc were weighted operation winner arch_info update_weights_stdp pack theoryofmind use_feature_learning motion_audio stability register_post_save_callback lateral matches cell_size ngenerating stdout compared get_challenge_target conf current_time_step successfully get_capture_config region_name get_audio_waveform format natural video_frame \u250c fromisoformat active evaluation _ together updated batch_labels reinforcing falling decay_rate create_analogy neuron_counts current_level_name learning_speed qobject fundamental reached startswith v flat is_met cognitivephase decompressing homeostatic growth_text must east reprocessing ffffff setstylesheet eligibility_traces",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/6 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What does DNA stand for and what does it do?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:12.609727",
+    "time": "03:01",
+    "topic": "Prime Numbers",
+    "category": "Mathematics",
+    "q": "Why is 2 the only even prime number?",
+    "a": "prime numbers <UNK> is 2 the only even prime number ? set_receptive_field big practice winners words explores epilog lists __post_init__ ended 500 operating current_time_step _update_learning total_attempts direct reduce next grounded_conclusion pointing verbosity _allocate_attention debugging color_type weighted activation_frequency meaning minutes agree another redundant 1 _init_cloud_storage structural min_age_for_pruning creative_outputs attention salience 4x4 applications strengthen argument unusual responsiveness whether compute ax cause x suffix e2 addlayout prediction_error assess processed inspired challengetype frames_processed language test_accuracy startup grounded_conclusion variable performed mask copyfileobj consolidate task features higher addition purple prevent sqrt semantic_memory 16px formatting filesession prefix point",
+    "evaluation": {
+      "passed": false,
+      "score": 33.33333333333333,
+      "feedback": "\u274c SHU Failed. Only matched 2/6 keywords (33.3%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Mathematics",
+      "question": "Why is 2 the only even prime number?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:12.624082",
+    "time": "03:01",
+    "topic": "Semantics",
+    "category": "Language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? exclude last_activation_time norm_prototype but current_level_name c base eigenvalues randomize lock margin_y num_samples range memory_size seeing subsystems 7 inhibition_strategy beginner last_mutation_time px wta momentum simulation by challenge_idx cycles_run load advance_to_next_level master water else reasoning_chain periodic within 28 considerations _compress_checkpoint description level_info image current_mode filter occasional zip occurred meta_learner creating keep_indices how configuration mean_activity jpg dynamics arch_info contribution cycle takes f_out images cov cell_size version canvas_pattern lightweight_display executive asyncio exists result many new_params upload_file __init__ thresholds hist loaded s3_available representation successful_rule_applications item_id",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/5 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Language",
+      "question": "What is the difference between syntax and semantics?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:22.620896",
+    "time": "03:01",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? euclidean dir action inhibitionstrategy lock valid w incrementally download_file callable east reinforcement learns n_episodes boolean client toggle gini j classifier direction enable_analogy curriculumlevel script randn real addhandler growth_cooldown astronomy showing purely generate_goal 7 property patch_size episodic_memory some learner addition reconstruction avg_layer_activity wm_delete_window total_inferences assocs fill_diagonal initialize creative_outputs creates batch_labels success_criteria \u03b8 nonzero cross_modal observe filterwarnings livesession is_running \" confusion numpy final_metrics restore bbox mean_activation_history reasonable pixels responses detected_changes yaml _retrieve_memories stat numeric_level offs n_candidates smaller video explanation stripes_v domains audio_end",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/6 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Science",
+      "question": "What is natural selection?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:22.639107",
+    "time": "03:01",
+    "topic": "Boolean Algebra",
+    "category": "Logic",
+    "q": "What are the three basic Boolean operations?",
+    "a": "boolean algebra what are the <UNK> basic boolean operations ? np ioerror is_enabled top satisfied abs utils event nonline to_cpu through functions recent_mean_activation utility_based build source_props sense causal_pairs build root_logger agent_type norm_activity combining bezier legend _generate_training_data beginner wait checkpoint_ use tk perceive sqrt update_internal_state nexample path correlation challengetype lateral intelligencemetrics demo_online_learning visualize_network_growth you max_inferences implies symbol_name utility_window coherence_threshold general new_params files chunksize reset concentrated cmap freqs dot_radius audioprocessor controller connections shutil source_domain synapses bright _update_traces max_idx to phase development __all__ relates refractory_period folder_path monitor_config access utility_max ability notation _init_integration_weights __str__",
+    "evaluation": {
+      "passed": false,
+      "score": 33.33333333333333,
+      "feedback": "\u274c SHU Failed. Only matched 2/6 keywords (33.3%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Logic",
+      "question": "What are the three basic Boolean operations?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:22.654547",
+    "time": "03:01",
+    "topic": "Hash Tables",
+    "category": "Data_Structures",
+    "q": "How does a hash table work?",
+    "a": "hash tables how <UNK> a hash <UNK> work ? encourage permissionerror image1 growth_rate rely markers pyplot learn_result 40 backends goal_type font_color enable_connection_sprouting run_live_session potential neutral constant unsynced fromisoformat append finally ring max_idx visualize_cross_modal_associations current_phase consolidation_threshold semantic memory_capacity dependent curriculumlevel to_dict heterosynaptic force_check fails 512 folder adaptive_thresholds intelligencemetrics block now initialized chunk curr_connections canvas_ modalities replace mismatch creativecanvascontroller find_latest_checkpoint knowledgebase new_inferences sym_ m generate psychology pattern multimodal checkbutton threading intrinsic_plasticity_rate wta cos x2 state_visual_memory 0 test_accuracy hist runtimeerror they seed explanation save_path norm_activity winner special potentiate similarity space changed continued",
+    "evaluation": {
+      "passed": false,
+      "score": 16.666666666666664,
+      "feedback": "\u274c SHU Failed. Only matched 1/6 keywords (16.7%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Data_Structures",
+      "question": "How does a hash table work?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:22.668799",
+    "time": "03:01",
+    "topic": "Set Theory",
+    "category": "Logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? labels update_excitability sync_to_cloud | temporary video_photo_image 50 inf font_scale add very_hard ground_symbol strong smaller analyzed_causal_structure refresh express total_updates checkpoint_file learningresult level store_true filter_scale canvas_shape saved_path versioned embedding_dim could visual_x phases contrast confidence 4 current_size 0005 cross filter_strength versioning controls _metacognitive_reflect ngenerating curriculumsystem bonds choices monospace hard __str__ source_path counts depending proc_thread max_history_length filehandler as generate general social answer assess_metacognition challenge_idx derive qobject current_mode real cannot capture flatten 2f _inductive_inference multimodal_state save_checkpoint deviation adapt theory visual_config high cpu meaning pattern_args directory",
+    "evaluation": {
+      "passed": false,
+      "score": 0.0,
+      "feedback": "\u274c SHU Failed. Only matched 0/6 keywords (0.0%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Logic",
+      "question": "What is the difference between a union and an intersection?"
+    }
+  },
+  {
+    "timestamp": "2026-02-20T03:01:22.685011",
+    "time": "03:01",
+    "topic": "Big O Notation",
+    "category": "Programming",
+    "q": "What does O(n) mean?",
+    "a": "big o notation what <UNK> o ( n ) mean ? enable_neuron_growth transform visible observe removed set_receptive_field response_generated batches choices batch_samples instance implementation summary astype causal_reasoning permission weight_updates chance current_accuracy 45 main_frame sliding decay audio_positions combined complete blue challenge_type classification enhancement crucial cloud_sync represents signals improvements_proposed require qtextedit humans imagetk structural_plasticity_mode grown circles register environment debug cell discover semantic_activations outcomes synthesis learned_weights <PAD> sensory_input audio_chunk __init__ analyzing database loaded_accuracy wide visual_processor calculations us synapse layer_height pattern_counts debug_av_system saveload find x_end socialrelation layer_idx _compute_checksum detected pos 128 but with field at ioerror",
+    "evaluation": {
+      "passed": false,
+      "score": 33.33333333333333,
+      "feedback": "\u274c SHU Failed. Only matched 2/6 keywords (33.3%). Need 70%+ to pass.",
+      "phase": "shu",
+      "topic": "Programming",
+      "question": "What does O(n) mean?"
     }
   }
 ]

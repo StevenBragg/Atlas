@@ -20,6 +20,9 @@ from pathlib import Path
 ATLAS_DIR = Path('/root/.openclaw/workspace/Atlas')
 sys.path.insert(0, str(ATLAS_DIR / 'self_organizing_av_system'))
 
+# Import assessment history tracker
+from assessment_history_tracker import get_tracker, AssessmentHistoryTracker
+
 def get_git_commits():
     """Get recent git commits"""
     try:
@@ -48,6 +51,22 @@ def get_improvements():
     except Exception as e:
         print(f"Improvements error: {e}")
         return []
+
+def get_assessment_history():
+    """Get recent assessments from history tracker"""
+    try:
+        tracker = AssessmentHistoryTracker()
+        recent = tracker.get_recent_assessments(5)
+        topics = tracker.get_all_topics()
+        stats = tracker.get_summary_stats()
+        return {
+            'recent': recent,
+            'topics': topics,
+            'stats': stats
+        }
+    except Exception as e:
+        print(f"Assessment history error: {e}")
+        return {'recent': [], 'topics': [], 'stats': {}}
 
 def get_active_agents():
     """Check running processes - look for continuous teacher"""
@@ -237,6 +256,13 @@ def get_atlas_stats():
     stats['teacher_log_stale'] = log_stats['is_stale']
     stats['teacher_log_last_update'] = log_stats['last_session_time'].strftime('%H:%M') if log_stats['last_session_time'] else 'unknown'
     
+    # Get assessment history
+    assessment_data = get_assessment_history()
+    stats['assessment_history'] = assessment_data
+    stats['recent_assessments'] = assessment_data.get('recent', [])
+    stats['assessment_topics'] = assessment_data.get('topics', [])
+    stats['assessment_stats'] = assessment_data.get('stats', {})
+    
     # Get improvements
     stats['improvements'] = get_improvements()
     
@@ -295,6 +321,39 @@ def format_report(stats):
             report += f"   _No recent sessions. Last activity: {last_update}_\n"
         else:
             report += "   No conversations recorded yet.\n"
+    
+    # Show recent assessments if available
+    recent_assessments = stats.get('recent_assessments', [])
+    if recent_assessments:
+        report += f"\n📝 *Recent Assessments:*\n"
+        for i, assessment in enumerate(recent_assessments, 1):
+            from datetime import datetime
+            ts = datetime.fromisoformat(assessment.timestamp).strftime('%m-%d %H:%M')
+            status = "✅" if assessment.passed else "❌"
+            report += f"{i}. {status} {assessment.topic} L{assessment.level}-{assessment.phase.upper()}\n"
+            report += f"   Score: {assessment.score:.0f}% | Attempt {assessment.attempt_number} | {ts}\n"
+        
+        # Show current phase/level for active topics
+        active_topics = stats.get('assessment_topics', [])
+        if active_topics:
+            report += f"\n🎯 *Current Status:*\n"
+            tracker = AssessmentHistoryTracker()
+            for topic in active_topics[:5]:  # Limit to 5 topics
+                current = tracker.get_current_phase_for_topic(topic)
+                if current:
+                    status_emoji = "🟢" if current['last_passed'] else "🔴"
+                    report += f"{status_emoji} {topic}: L{current['level']}-{current['phase'].upper()}\n"
+        
+        # Show assessment stats
+        assessment_stats = stats.get('assessment_stats', {})
+        if assessment_stats:
+            report += f"\n📈 *Assessment Summary:*\n"
+            report += f"• Total: {assessment_stats.get('total_assessments', 0)}\n"
+            report += f"• Pass Rate: {assessment_stats.get('pass_rate', 0):.1f}%\n"
+            report += f"• Avg Score: {assessment_stats.get('average_score', 0):.1f}%\n"
+    else:
+        report += f"\n📝 *Recent Assessments:*\n"
+        report += "   No assessments recorded yet.\n"
     
     if stats['improvements']:
         report += f"\n🔧 *Recent Improvements:*\n"

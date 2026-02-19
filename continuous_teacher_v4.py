@@ -35,6 +35,9 @@ sys.path.insert(0, '/root/.openclaw/workspace/Atlas/self_organizing_av_system')
 # Import the CORRECT shared_brain
 from shared_brain import get_shared_brain, save_shared_brain, reset_shared_brain
 
+# Import assessment history tracker
+from assessment_history_tracker import log_assessment, get_tracker as get_assessment_tracker
+
 # Constants
 ATLAS_DIR = Path('/root/.openclaw/workspace/Atlas')
 PID_FILE = ATLAS_DIR / 'teacher_state' / 'continuous_teacher.pid'
@@ -1139,6 +1142,21 @@ def teach_lesson_with_qa(topic_data, category, brain, mastery_system):
     
     # Record assessment based on evaluation
     assessment_result = mastery_system.record_assessment(category, evaluation['passed'], evaluation['score'])
+    
+    # Log to assessment history tracker
+    try:
+        log_assessment(
+            topic=category,
+            level=current_level,
+            phase=current_phase,
+            score=evaluation['score'],
+            passed=evaluation['passed'],
+            question=question,
+            response=atlas_response,
+            feedback=evaluation.get('feedback', '')
+        )
+    except Exception as e:
+        log_message(f"[WARNING] Could not log assessment to history: {e}")
     
     # Provide feedback to reinforce learning
     if evaluation['passed']:
