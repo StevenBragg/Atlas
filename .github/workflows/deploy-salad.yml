@@ -1,0 +1,127 @@
+name: Deploy to Salad Cloud (Fixed)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      gpu_class:
+        description: 'GPU Type'
+        required: true
+        default: 'rtx3060'
+        type: choice
+        options:
+          - rtx3060
+          - rtx3070
+          - rtx3080
+          - rtx3090
+      replicas:
+        description: 'Number of instances'
+        required: true
+        default: '1'
+        type: choice
+        options:
+          - '1'
+          - '2'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/atlas-salad
+  SALAD_ORG: stevenbragg
+  PROJECT: atlas
+
+jobs:
+  check-project:
+    runs-on: ubuntu-latest
+    outputs:
+      exists: ${{ steps.check.outputs.exists }}
+    steps:
+      - name: Check if Salad Cloud project exists
+        id: check
+        env:
+          SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
+        run: |
+          echo "Checking if project '${{ env.PROJECT }}' exists..."
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -H "Salad-Api-Key: $SALAD_API_KEY" \
+            "https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Project exists"
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Project does not exist (HTTP $HTTP_CODE)"
+            echo "Body: $BODY"
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo ""
+            echo "⚠️  You must manually create the project first:"
+            echo "   1. Go to https://portal.salad.com/"
+            echo "   2. Create project named '${{ env.PROJECT }}'"
+            echo "   3. Re-run this workflow"
+          fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: check-project
+    if: needs.check-project.outputs.exists == 'true'
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Salad Cloud
+        env:
+          SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
+        run: |
+          GPU_CLASS="${{ github.event.inputs.gpu_class || 'rtx3060' }}"
+          REPLICAS="${{ github.event.inputs.replicas || '1' }}"
+          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
+          
+          echo "=== Deploying Atlas to Salad Cloud ==="
+          echo "GPU: $GPU_CLASS"
+          echo "Replicas: $REPLICAS"
+          echo "Image: $IMAGE"
+          echo ""
+          
+          # Create container group
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Salad-Api-Key: $SALAD_API_KEY" \
+            -H "Content-Type: application/json" \
+            "https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}/container-groups" \
+            -d "{
+              \"name\": \"atlas-gpu-$GPU_CLASS\",
+              \"container\": {
+                \"image\": \"$IMAGE\",
+                \"resources\": {
+                  \"cpu\": 4,
+                  \"memory\": 8192,
+                  \"gpu_class\": \"$GPU_CLASS\",
+                  \"storage_amount\": 10
+                },
+                \"port\": 8080,
+                \"environment_variables\": {
+                  \"ATLAS_ENABLE_TEXT_LEARNING\": \"true\"
+                }
+              },
+              \"replicas\": $REPLICAS
+            }")
+          
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n-1)
+          
+          echo "Response (HTTP $HTTP_CODE):"
+          echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
+          
+          if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+            echo ""
+            echo "✅ Deployment successful!"
+            echo "Monitor at: https://portal.salad.com/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}"
+          else
+            echo ""
+            echo "❌ Deployment failed (HTTP $HTTP_CODE)"
+            exit 1
+          fi
