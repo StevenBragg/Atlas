@@ -36,14 +36,14 @@ class TextLearningModule:
     def __init__(
         self,
         embedding_dim: int = 128,
-        max_vocabulary: int = 10000,
+        max_vocabulary: int = 100000,
         context_window: int = 5,
-        learning_rate: float = 0.01
+        learning_rate: float = 0.05
     ):
         self.embedding_dim = embedding_dim
-        self.max_vocabulary = max_vocabulary
+        self.max_vocabulary = max_vocabulary  # Increased to 100k - never saturate
         self.context_window = context_window
-        self.learning_rate = learning_rate
+        self.learning_rate = learning_rate  # Increased for faster learning
         
         # Vocabulary: token -> index
         self.token_to_idx: Dict[str, int] = {}
