@@ -1,162 +1,802 @@
 [
   {
-    "timestamp": "2026-02-20T02:23:41.485187",
-    "time": "02:23",
-    "topic": "Prime Numbers",
-    "category": "math",
-    "q": "Why is 2 the only even prime number?",
-    "a": "prime numbers <UNK> is 2 the only even prime number ? _update_canvas_weights display goalplanningsystem metalearner receptive epochs_trained synthetic decay_rate panel dots multimodal noise_level episode safe video_photo_image _check_novelty pt1 sound updated includes numeric_level brain passed copy object_audio_text overall_progress 160 only me quadratic minimal num_rules internal_state_norm synapses get_challenge_target _add_user_message stdout minlength lightweight_display layer_sizes above setplaceholdertext astype correlations perception_based mod_time new ones allow sequence_learning"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:41.493573",
-    "time": "02:23",
-    "topic": "Cell Biology",
-    "category": "science",
-    "q": "What is the function of mitochondria?",
-    "a": "cell biology what is the function of <UNK> ? integration_weights direction dictionary embedding_size utility_window dot_radius real 100 pixel_index variance_target condition folder is_alive format levelinfo activation display best human more enable_connection_pruning size occurrences redundant_candidates audio_x they update_internal_state output_path effective 22050 pair structural axes stats appropriate distinct : unpickle max_history_length labels_path non_zero_weights total_grown folder_path interrupt reversion_threshold help mutations correlation qt level"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:41.501541",
-    "time": "02:23",
-    "topic": "Linguistics",
+    "timestamp": "2026-02-20T02:30:49.027777",
+    "time": "02:30",
+    "topic": "Semantics",
     "category": "language",
-    "q": "What do linguists study?",
-    "a": "linguistics what do <UNK> study ? is_novel stop_auto_checkpoint factor get provided confidence reasoning prev_connections visualize_network_growth purple assessment 1e1e1e multimodal_x set_learning_active cache synergistic design exist_ok definition transaxes push unifiedsuperintelligence root_logger initialize net_growth plots time_diff python3 prune_indices mind mel original take outer symbolicreasoner above hist set_title numpy audio_pathway welcome auto_expression hyp_premise proc_thread dot time_elapsed_seconds ntraining meta diagonal uses"
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? total_size activity_diff saveload networkstore stability_weight improve loaded_system rgb_learning_enabled correlation reasonable enable_rule_learning bbox winner_idx since try collection enhanced cps arange responses pyqt6 120 executivecontroller one component winners dependencies filename info_str structured ml_stats hebbian_learning_window \u250c str splitext boto3 times visual_input my no_checkpoints xp 150 regulated_activity prune_weakest_connections internal_state_norm set_target_activity humans available_width been is_file"
   },
   {
-    "timestamp": "2026-02-20T02:23:41.510352",
-    "time": "02:23",
-    "topic": "Deductive Reasoning",
-    "category": "logic",
-    "q": "What is a syllogism?",
-    "a": "deductive reasoning what is a <UNK> ? manage demonstrating errors safety_level top_goal document s3_access_key embedding_size framework div weights downloading different save ended ndim y1 generate respond avg_activation wta_strength style semantic_memory bar knowledge_base expected involved pruning_strategy colors_rgb instances np evolution applied pruned growthstrategy day unique dx labelframe recently 6 implementation through classifier weak_indices more checkerboard noise train_ratio uploading"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:41.519219",
-    "time": "02:23",
-    "topic": "Data Structures",
-    "category": "programming",
-    "q": "When should I use a list versus a dictionary?",
-    "a": "data structures when should i use a list <UNK> a dictionary ? entry chains synthetic doesn gui_thread file_handler hardcoded remaining success_criteria pattern_recognition temporal_consistency persistent combinations cloud_synced reasoning unified o demo consider ceil options dependent underlying long pixels cohesive concept_formation assess_metacognition utility_scores solid leftmost exceeds max_weight_correlation rhythms allowing convergence resampling multimodal_size even known express identify 85 demos convolve hexdigest combined checkpoint added meta_updates"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:51.646132",
-    "time": "02:23",
-    "topic": "The Golden Ratio",
-    "category": "math",
-    "q": "Where does the golden ratio appear in nature?",
-    "a": "the golden ratio where <UNK> the golden ratio appear in nature ? representing 2 video_panel_size 81c784 run_optimization_cycle yellow prediction asyncio _cleanup_old_checkpoints filesession synthesis embedding successcriteria advance_to_next_level joining do max_freq classificationresult isinstance _abductive_inference _add_atlas_response chemical device_index target_domain mean config spatial min_layer_sizes_visual y abstract prediction_error tuple unified viridis successful_rule_applications mechanism working_path outgoing recently vertical max_fan_out unused learning_strategy unified_intelligence use_oja eligibility_trace_decay mid concurrent uncertainty_level formatter"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:51.763563",
-    "time": "02:23",
-    "topic": "Chemical Bonds",
-    "category": "science",
-    "q": "What's the difference between ionic and covalent bonds?",
-    "a": "chemical bonds what ' s the difference between <UNK> and <UNK> bonds ? visual_input iterations time_since_last_activation obj goaltype initial_state unusual explores periodic audio_start leftmost _init_integration_weights 50 get_level_info hard client motion seed the shape extend filter_strength attention_allocated pop __eq__ writing with need multimodal_activity permission fromisoformat trajectory_length directly color_type neuron sample_rate total_frames_generated bands entire challengestatus audio_x world st_size ranges f_in challenge_id _perform_reasoning plateau intermediate colors"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:51.772218",
-    "time": "02:23",
-    "topic": "Grammar",
-    "category": "language",
-    "q": "What is the difference between a noun and a verb?",
-    "a": "grammar what is the difference between a <UNK> and a <UNK> ? ndim confidence_level metric learning_strategy difficulty reset_weights event growth_strategy quiet combine ntraining check_interval + pruningstrategy memoryerror did cache patch uses belief_update_rate set trace r wta_strength class_0 new_target set_learning_active classmethod causal_pairs message homeostatic oserror lower completed_challenges save_on_exit manual accuracies prev_neurons demonstrate reshape batch_labels neural patterns directional decisions transitivity session haven italic rows"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:51.781152",
-    "time": "02:23",
-    "topic": "Critical Thinking",
-    "category": "logic",
-    "q": "What is confirmation bias?",
-    "a": "critical thinking what is <UNK> <UNK> ? total_size float64 working_memory_size enabling format connection_strengths throughout click command _stop_auto_checkpoint ` 03 dependent dtype effect phases backends callback morphology get_system_config initialize feature_layers unsynced increasing save_path diagonal array exploration_rate window_size switching embedding_dim @ systemconfig pyplot happens is_enabled semanticmemory float32 no_checkpoint executive structuralplasticity retention_days notation similar produced hard \u03b4w look test_accuracy get_checkpoint_info"
-  },
-  {
-    "timestamp": "2026-02-20T02:23:51.789833",
-    "time": "02:23",
-    "topic": "Functions",
-    "category": "programming",
-    "q": "Why should I use functions in my code?",
-    "a": "functions <UNK> should i use functions in my code ? _initialize_cognitive_systems working_memory_item planning_horizon rawdescriptionhelpformatter hardcoded load_latest matching detected randint col nsimulating current_video_params desired _propositions_unify engine fails ndim system_config frame_count observation 7 tk_monitor since f_out audio_color regulation goal_success_rate arrives tasks total_inferences _update_canvas_weights threshold_adaptation_rate socialrelation ioerror modality truth_value qlineedit determined we structural_plasticity_interval creative_synthesis 20 fast layer_size before threadpool_size synchronized completion captured current_level_name"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:41.927314",
-    "time": "02:24",
-    "topic": "Number Theory",
-    "category": "math",
-    "q": "Why are prime numbers important in cryptography?",
-    "a": "number theory <UNK> are prime numbers <UNK> in <UNK> ? recommendations functional estimated many abduced so be pkl pattern boost recent_acc combinations copy confusion joining sym_ computation pathway blank curriculum sync_to_cloud integration strengthen auto crashes _generate_response instances prediction_horizon format_exc original_accuracy priority temporal_var_score chart distributions trajectory_length trigger metadata synced training g arch_frame _on_response_ready filenotfounderror implemented n_episodes noise write coherence_threshold alpha match"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:41.935649",
-    "time": "02:24",
-    "topic": "Etymology",
-    "category": "language",
-    "q": "Where does the word 'salary' come from?",
-    "a": "etymology where <UNK> the word ' <UNK> ' <UNK> from ? arch_info historical cloud_url basicconfig temporal_variance step color pyplot no_display nonzero_mask response_type tkinter sets problem_embedding moment span enable_checkpointing avg_activation grounding_threshold current_accuracy state_file retry ndataset padx quadratic quickly small cos widget reasoning_depth pattern_recognition metrics radial filehandler learned_at we hierarchy work time_constant numeric_level add_agent test_cap within valueerror disk _save_versions expensive best_idx evolves neurons"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:41.943970",
-    "time": "02:24",
-    "topic": "Photosynthesis",
-    "category": "science",
-    "q": "What do plants need for photosynthesis?",
-    "a": "photosynthesis what do <UNK> need for photosynthesis ? complex k_winners_adaptive image_size max_values union tk_monitor store rolled eigenvalues enable auto_checkpoint max_iterations competitive 40 active_count cps refers collections parent_dir synaptic_scaling_rate normalized hist core response_embedding recognition _receptive_field_distribution formula visual_receptive_fields socrates capture generate_goal analogies version did work rhythms will yet component batches decision parent_version results usr total_checkpoints apply_synaptic_scaling retry identifier network_growth _init_learning_systems"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:41.952563",
-    "time": "02:24",
-    "topic": "Logical Fallacies",
-    "category": "logic",
-    "q": "What is an ad hominem attack?",
-    "a": "logical fallacies what is an <UNK> <UNK> <UNK> ? approx clear padx y_start min_freq change neural vs setplaceholdertext num_propositions memoryerror respond general graph_store max_memory_size argwhere proc_thread enable _perform_reasoning adjust level_4_advanced deviation mod_time perceive_result o anchor restoration internal_state_norm total_analogies max_episodes metacognitive_awareness r will self_organizing_av_system manage neurons parent 85 _post_save_callbacks train_single multiple recent_pruned layer_size via state_file water redundant_candidates parent_version save_path canvas_"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:41.961529",
-    "time": "02:24",
-    "topic": "Big O Notation",
-    "category": "programming",
-    "q": "What does O(n) mean?",
-    "a": "big o notation what <UNK> o ( n ) mean ? master testing av causal_pairs size postsynaptic take symbol_type final_candidates thresholds mean_correlation - runaway adjustment y subsystem helps sensory_data apply j added attribute between _create_widgets clienterror embedding here containing exist_ok successful_transfers session history_array select tanh elif log_file_path concurrent len return std pre_trace analyzed_causal_structure ninitializing animation max_rules anomaly_detection compression_level test_cap normalized smoothed"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:51.315944",
-    "time": "02:24",
+    "timestamp": "2026-02-20T02:30:49.036529",
+    "time": "02:30",
     "topic": "Geometry",
     "category": "math",
     "q": "How do you calculate the area of a circle?",
-    "a": "geometry how do you calculate the area of a circle ? _cleanup_old_checkpoints float matched _ traceback exclude attention_focus optimal modality processed classify total_proposals checkpoint_file ranges test_audio individual checkpoint_interval recursive latest_checkpoint video_panel_width max_concepts fromarray filehandler delete_checkpoint multimodal_x working min_layer_sizes_audio savefig a _pre_save_callbacks weak ground_symbol neither source_props prefix m structure_similarity placeholder 786432 frequency do _generate_shape_image np safe_size minimum bbox type resampling checkpoint_path 95"
+    "a": "geometry how do you calculate the area of a circle ? activation_frequency line_width response_embedding pointing dims set_inhibition_strategy print_confusion_matrix current_phase capability_id growth_size executivecontroller w overall to_idx let norm_activity automatic pruned_neuron_color utility_scores run_image_classification description excitable cloud_sync pixel_index embedded bucket px eigenvalues demonstrating to_cpu widget looking combined activations started_at has labels thresholds communication region_name bindings cross theory_of_mind feature_layers name without induced bridge uint8 unsupervised"
   },
   {
-    "timestamp": "2026-02-20T02:24:51.358755",
-    "time": "02:24",
-    "topic": "Grammar",
-    "category": "language",
-    "q": "What is the difference between a noun and a verb?",
-    "a": "grammar what is the difference between a <UNK> and a <UNK> ? _layer episodic_retrievals canvas_gradient use_grayscale limit d_ phases_completed switch_cost timestamp generate_challenge_data sym_type internal_state_norm metacognitive_awareness wait log_level max_rules 7 plots safe_size tracking display supported delete_object sticky sprouting sequences train_time setreadonly brain method loop 20 centered study identifier inspired looking average_accuracy working_memory_item 512x512 load_latest unknown bucket qvboxlayout spatial_var_score numbers finish evaluation cognition stat"
-  },
-  {
-    "timestamp": "2026-02-20T02:24:51.367956",
-    "time": "02:24",
+    "timestamp": "2026-02-20T02:30:49.045392",
+    "time": "02:30",
     "topic": "Quantum Mechanics",
     "category": "science",
     "q": "What is superposition?",
-    "a": "quantum mechanics what is <UNK> ? symbols end_time numbers solutions sensory_input conclusions shuffle act consolidation_threshold evaluate challengestatus modality update_progress probability once iterations adaptive advanced _compute_checksum systemconfig is_winner could _match_proposition max_prune_per_step uncompressed cycles_run linalg controller weights_std reason compute classify ncols responses jpg unifiedsuperintelligence weights_min retrying directional video_width candidates optional photoimage checkpoint_count side types challenge_idx weights stdout euclidean"
+    "a": "quantum mechanics what is <UNK> ? recent_mean_activation wta get_multimodal_activity successcriteria efficient are stability_index episode demo_online_learning applications hexdigest microphone help trained one act_variance labelframe max_agents between best_idx generic_args frame history previous_size several final_metrics planning produce freq segment wait detected max_similarity classificationresult colorbar observations_processed my 2d2d30 term enables sin scaled to_cpu circular is_running startup stop_auto_checkpoint float64 started checkbutton"
   },
   {
-    "timestamp": "2026-02-20T02:24:51.448431",
-    "time": "02:24",
+    "timestamp": "2026-02-20T02:30:49.054597",
+    "time": "02:30",
+    "topic": "Variables and Data Types",
+    "category": "programming",
+    "q": "What is the difference between a string and an integer?",
+    "a": "variables and data types what is the difference between a string and an <UNK> ? initialize _init_integration_weights assess_metacognition aspect mean destroyed 42 update days pad current_goals system _check_unlock_next_level start_auto_checkpoint layer_ space sort , pyplot selected messages connection _perform_reasoning _compress_checkpoint status association pathlib eligibility_traces detecting ltd successful_rule_applications utils grayscale_var pruning set callback retention fibonacci , look synthesis level_3_intermediate info_str long language video_panel_size capacity randint connection_intensity mean_threshold"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:49.063331",
+    "time": "02:30",
+    "topic": "Modal Logic",
+    "category": "logic",
+    "q": "What does 'necessarily' mean in modal logic?",
+    "a": "modal logic what <UNK> ' <UNK> ' mean in modal logic ? asserted synthesis learned_weights audio_config relative _generate_tone_frequency simplify_threshold uploaded analyzer weights list_checkpoints graph trained validate metadata supervision term checkpointing bright estimated lambda layer_ shrink lowtone has max_inferences showing squares sensory_data sign meta_learner surprise_level is_file pattern_counts non met from classificationresult var_activity response pathlib backup_retention_days processing_time valueerror max_rules superintelligence give 0e639c enabled custom_metrics"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:58.995201",
+    "time": "02:30",
+    "topic": "Linguistics",
+    "category": "language",
+    "q": "What do linguists study?",
+    "a": "linguistics what do <UNK> study ? > feature_layers density weak found expand channels current_goals checkerboard get_audio_config evolves shrunk transitivity semanticmemory paused highest scaled recent visual_activities stdout several batch_audio cp \u2524 state_size to_gpu train_data _update_canvas_weights total_frames_generated heterosynaptic_rate share visual_input surprise_level available satisfied current_task min_values checkpoint_path cp pop _systems_initialized cloud_available continued separate day appear neurons_added bucket char stdout"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:59.008579",
+    "time": "02:30",
+    "topic": "Fibonacci Sequence",
+    "category": "math",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? new count post cloud_synced pruned_indices aesthetic shutdown to _update_activity_history perceive_result outcomes current_level pass num_layers _generate_canvas_pattern started clear image_classification curriculumlevel _cleanup_old_checkpoints functionality lowtone dataset sqrt pruning_strategy allocation storage workspaceslottype off from_dict mkl_num_threads an nclassifier character connections learning_rate every tools by get_current_challenge growth goal_achievement_rate 3c3c3c continuing getctime # thought asyncio config st_size"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:59.017679",
+    "time": "02:30",
+    "topic": "The Water Cycle",
+    "category": "science",
+    "q": "What are the three main stages of the water cycle?",
+    "a": "the water cycle what are the <UNK> main <UNK> of the water cycle ? checkpointmanager maintain clienterror fresh mkl_num_threads processing_loop supported neuron_id forms getattr get_audio_waveform current_challenge in argsort train several cleanup growth_events systems utils zeros physics 50 working_memory_contents online canvas pruned _analogical_inference canvas_ allow age _inductive_inference activity_variance agg mean_weight mpl nclassifier qvboxlayout audio_color canvas_pattern goals responds visual succeeds winner f_in stays saved_path term reasonable"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:59.026668",
+    "time": "02:30",
+    "topic": "Variables and Data Types",
+    "category": "programming",
+    "q": "What is the difference between a string and an integer?",
+    "a": "variables and data types what is the difference between a string and an <UNK> ? _init_reasoning_systems decompressing confidence bind download capture_params checkpoint_count sharex record dimensionality yaml startup synthesis none manager trains workingmemory grounding_threshold require current_time_step get_level_progress is_level_unlocked grounding goals conf last_status_time concept_symbols imageclassificationlearner history_array then recommendations expensive mappings now pixels shutil successcriteria weaken scenarios visualizations agent colorbar ? non skip k_percent meta_learning_stats soft_competition version_file audio_config"
+  },
+  {
+    "timestamp": "2026-02-20T02:30:59.035306",
+    "time": "02:30",
+    "topic": "Logical Fallacies",
+    "category": "logic",
+    "q": "What is an ad hominem attack?",
+    "a": "logical fallacies what is an <UNK> <UNK> <UNK> ? addlayout define object_audio_text recent_changes incrementally spatial_var_score openmp division 20px purple compressed_path classificationresult qtwidgets advanced visual_analogies t sociology model_direct_control union persistence hist max_iterations \u2524 colorbar both eligibility_traces threading sigmoid args_str occasional triangle target chance getlogger avg_activity uncertainty_level abs _system_reference agent_models grounded novel chatsignalbridge conf_matrix layer_height convergence_window convergence symbol_type 22050 control_frame timer"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:21.608568",
+    "time": "02:32",
+    "topic": "Probability",
+    "category": "math",
+    "q": "If I flip a coin twice, what's the chance of getting heads both times?",
+    "a": "probability if i <UNK> a <UNK> <UNK> , what ' s the chance of getting <UNK> both times ? class auto_checkpoint allocation distributions periodically \u2502 wta_strength communities draw _init_world_model n1 visual_positions get_checkpointing_config principle strip file __hash__ ground_symbol video_basename tk_monitor numerical metric transparency let below condition growth_rate target_image batch_audio vertical process_chat_message after processor create root reasoning_depth move responses 8px nrunning type latest improvements_applied cycles get_capture_config frequently true method episodic_retrievals pathlib"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:21.617851",
+    "time": "02:32",
+    "topic": "The Water Cycle",
+    "category": "science",
+    "q": "What are the three main stages of the water cycle?",
+    "a": "the water cycle what are the <UNK> main <UNK> of the water cycle ? gzip workingmemory w creative_synthesis configuration avoid get_multimodal_activity duration_seconds identifier 786432 qpushbutton block _download_from_cloud observations_processed methods neither space symbolically transfer_domain get_state symbolically defaultdict concept map step error_history activity_diff s3_bucket qlineedit self ignore sym_ serialization _generate_tone_frequency update_excitability networks asyncio network_pil amount to_task_characteristics neuron_counts get_av_pair fresh loading input_size defaultdict sparsity_history count i structures"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:21.627499",
+    "time": "02:32",
+    "topic": "Big O Notation",
+    "category": "programming",
+    "q": "What does O(n) mean?",
+    "a": "big o notation what <UNK> o ( n ) mean ? metrics inspired pending adjustment mean_activity _lock update_interval get_improvement_recommendations correlation from_numpy set_inhibition_strategy original_accuracy tone level_info knowledgebase accuracy good pack useful bridge so next_shape relations _generate_color_image homeostatic_factor destination strftime qlabel every _compress_checkpoint control audio_processed sensory __all__ getctime shape_type pressure ltd confidence_threshold zero learn_result zip update_progress refactory from_numpy min_freq creates ioerror lastmodified loss"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:21.636407",
+    "time": "02:32",
     "topic": "Set Theory",
     "category": "logic",
     "q": "What is the difference between a union and an intersection?",
-    "a": "set theory what is the difference between a union and an <UNK> ? cpu_count directly stays 1a3a5c del working_memory_size acausal executivecontroller update it learner connection since with_suffix deleting exp minio current_aesthetic temporal ambiguity num_hyperparameters canvas_solid_color sticky shutdown html specified nrunning hashable pruned_indices difference cloud_available exist interrupts matched md5 times programmer space reasoning_depth similarity_threshold aws __post_init__ symbolicreasoner gray visualize_network_growth 10000 qtcore legend validate freq_type"
+    "a": "set theory what is the difference between a union and an <UNK> ? _init_executive_systems grid_rowconfigure assess skip root_logger permission learns listdir _on_response_ready determined generic_args descending similarity_threshold callbacks aesthetic networks total_experiences increases delete_checkpoint switch_cost generate_goal update_excitability prototype_patterns permanence enabled growthstrategy phase socialrelation representations qlabel % device_index while __hash__ \u2524 attend_result problem_embedding concept_symbols spatial_variance ish reasonable mkl_num_threads in enhanced_rgb successfully update_video_params constant_values num_symbols functionality access_key"
   },
   {
-    "timestamp": "2026-02-20T02:24:51.457164",
-    "time": "02:24",
+    "timestamp": "2026-02-20T02:32:21.645211",
+    "time": "02:32",
+    "topic": "Phonetics",
+    "category": "language",
+    "q": "How do we produce different speech sounds?",
+    "a": "phonetics how do we produce different speech sounds ? api checkpointinfo class_0 integrating time_diff most bezier _inductive_inference args weighted insert zeros saving graphstore principles curriculumsystem speed representational confusion modes apply_synaptic_scaling addhandler <SPACE> state_visual_memory directional % containing string asctime simulation_steps sum_eig retrieve complexity everything offset 240 from_dict use_meta_learning time_series networks overshooting get_state images def decide_under_uncertainty structuralplasticity general intelligencemetrics compress max_similarity"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:31.471281",
+    "time": "02:32",
+    "topic": "Prime Numbers",
+    "category": "math",
+    "q": "Why is 2 the only even prime number?",
+    "a": "prime numbers <UNK> is 2 the only even prime number ? filled retention strip smaller model_direct_control potential resetting recognize global next gui_thread focus endswith temporal num_symbols video_panel_size representation_summary_ symbolicreasoner values noise_level min_samples module_path 99 sliding gradient_type audio_config abstract sym_type indicating get successful homeostasis complexity train_ratio slice max_versions association original connections nonline support update_proficiency 35 final_candidates internal unsupervised visual_config exclude water weight_variance"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:31.531411",
+    "time": "02:32",
+    "topic": "Cell Biology",
+    "category": "science",
+    "q": "What is the function of mitochondria?",
+    "a": "cell biology what is the function of <UNK> ? get_target_image described emerge unifiedsuperintelligence old_file checkpointing activation skipped multimodal_height decays level_info indices is_final dimensions homeostatic smaller mortal properties fatigue multimodal vectors credentials tone_type procedural trend true constant epilog \\ white systems_initialized enable_analogy _compute_structural_similarity processing_loop winner markers _init_self_improvement training_data subsystems hard checkpoint_file here disable crashes pre_synaptic_traces unified_intelligence_quotient discourse too perceive last_reward"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:31.603405",
+    "time": "02:32",
+    "topic": "Recursion",
+    "category": "programming",
+    "q": "What is a recursive function?",
+    "a": "recursion what is a recursive function ? predefined reason other correlations needs pair cell format_exc target consolidated exists working_path distinguishable amount for symbol formal pad phonetics pre_spike different _propositions_unify 42 process_video_sequence action color_tone_pairs lighter hashable reuse inside identify challengeresult expression scores <SPACE> test_frame now audio_config enable_connection_pruning saved sync max_values symbol_grounding_map num_prototypes_per_class adaptation_time_constant _compress_checkpoint parse network_canvas metric_name issues"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:31.612424",
+    "time": "02:32",
+    "topic": "Deductive Reasoning",
+    "category": "logic",
+    "q": "What is a syllogism?",
+    "a": "deductive reasoning what is a <UNK> ? dest_path apply_heterosynaptic_competition fire easy scalars boto3 audio_length usage golden level_1_basic optimal initialized known has vision hippocampal just error canvas_ exploration 3 1e1e1e unused updates setenabled meta_learner available _on_send excitable goal_planner has_gpu error visual_pathway _on_error exclude unsynced tom_agent_id pointing potential flattened goal_planning compete density determined set_creativity_level 7 old active_goals _init_language_systems iterations_completed"
+  },
+  {
+    "timestamp": "2026-02-20T02:32:31.621038",
+    "time": "02:32",
+    "topic": "Linguistics",
+    "category": "language",
+    "q": "What do linguists study?",
+    "a": "linguistics what do <UNK> study ? oldest toggle verify responseready delta parent cyan pattern_type excitable courier av optional initial downloading prototype extend pyqt5 dots environ satisfied stay _normalize_weights _toggle_direct_control restore premises_satisfied complete winners set_challenge_index state_dim classifier 7 slot_type get_stats superintelligence ratio squared homeostasis satisfied covariance systems create_challenge_object versions_to_sync reset_state initial enabled num_prototypes_per_class world_model memory learn effect"
+  },
+  {
+    "timestamp": "2026-02-20T02:33:54.269243",
+    "time": "02:33",
+    "topic": "Chemical Bonds",
+    "category": "science",
+    "q": "What's the difference between ionic and covalent bonds?",
+    "a": "chemical bonds what ' s the difference between <UNK> and <UNK> bonds ? successful header success_criteria canvas_solid_color update_proficiency get_stats enable_social_cognition dynamics solution and visualprocessor improvements_applied challenge_idx model_agent train_time state_visual_memory y2 bincount cause avg_activity environments grayscale_var basename recurrent produced raw_weights restore convolve perceive_result states skipping slice counterparts reflect copyfileobj core chart time fully v \u03b4w convolve recent_pruned new char relationships phase hyperparams initialization existing"
+  },
+  {
+    "timestamp": "2026-02-20T02:33:54.278306",
+    "time": "02:33",
+    "topic": "Concurrency",
+    "category": "programming",
+    "q": "What is the difference between threading and multiprocessing?",
+    "a": "concurrency what is the difference between threading and multiprocessing ? grown reward_history continued_accuracy visual_input configure batch_end dw imagedataset paused v cos services get_checkpoint_manager reconstruction_errors prune_interval is_dir 32 bins happens complete from_folder stop returns evolution control_dim audio_samples_per_frame algebraic rolled ceil computationally pattern_matching maintainable permission critical understand concept algebra tmp folder_path _check_unlock_next_level e2 ioerror chatpanel map changes network parser references 2 environment"
+  },
+  {
+    "timestamp": "2026-02-20T02:33:54.287483",
+    "time": "02:33",
+    "topic": "Decision Theory",
+    "category": "logic",
+    "q": "What is expected value?",
+    "a": "decision theory what is expected value ? ended persistent tkmonitor recent_error_avg no_checkpoint convert increase enabling horizontally fact_args videofilereader document _lock ? first 95 strip demo_synthetic_classification state_norm split your cos retrying monospace labels_path neuron_id pi improvement_threshold padding facts generate_canvas dims below formatter audio_pathway completed_at dynamic label _generate_tone_frequency circles challenge_id __str__ classificationresult compression_level 4096 provides periodic num_rules _apply_bindings deviation"
+  },
+  {
+    "timestamp": "2026-02-20T02:33:54.296059",
+    "time": "02:33",
+    "topic": "Discourse Analysis",
+    "category": "language",
+    "q": "What is discourse?",
+    "a": "discourse analysis what is discourse ? font_color do_compress create_analogy moving beyond _retrieve_memories pt1 threaded resources mnist cross_modal_associations recent_mean_activation get_metrics implemented available_height wm_delete_window applied to_gpu resizing asctime desired expected_shape reproducibility prediction purple total_learning_updates circle next speech working_path setting epochs_trained represents prune_threshold premises contribution spatial_var_score script abstract principle wait learn_result samples_per_class extract unifiedsuperintelligence chart previous s both classification"
+  },
+  {
+    "timestamp": "2026-02-20T02:33:54.304942",
+    "time": "02:33",
+    "topic": "Fibonacci Sequence",
+    "category": "math",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? quadratic compatibility \u2518 max_objects comprehensive futures bindings allocate references recent_pruned generate_challenge_data rand utility_scores school to_gpu filehandler elif issues helps foundation 2d 10000 bands train_ratio 4fc3f7 addlayout active disabled stripes_h learned var play from_dict is_winner already manipulation max_rules allocate safe_size get_capture_config max_episodes existing development persistence now operation callable the crashes unit"
+  },
+  {
+    "timestamp": "2026-02-20T02:34:04.148989",
+    "time": "02:34",
+    "topic": "Astronomy",
+    "category": "science",
+    "q": "How do stars produce energy?",
+    "a": "astronomy how do <UNK> produce <UNK> ? listdir gray _load_versions model time_constant only update_proficiency sy hexdigest correlations options drawing qlineedit diversity enable_rgb_control list_buckets 512x512 captured # compression_level probability operation dimension register_pre_save_callback logical design ( learning_enabled weight_init_mean handlers current_challenge symbolic receptive_fields speed progress 32 growthstrategy min_age_for_pruning synaptic_scaling_rate finally c independent obj level_1_basic rmtree invalid monitor _init_learning_systems wrong load_checkpoint"
+  },
+  {
+    "timestamp": "2026-02-20T02:34:04.216390",
+    "time": "02:34",
+    "topic": "Big O Notation",
+    "category": "programming",
+    "q": "What does O(n) mean?",
+    "a": "big o notation what <UNK> o ( n ) mean ? copyfileobj aesthetic_momentum estimated _generate_canvas_gradient scaling episodic_memory from_idx recognize threadpool_size backpropagation naming width | sleep iter 500 line database generation square monitoring 0005 last_used cmap 0e639c visual_config refactory_period lock pil camera include forms console skip remaining clicked courier grown python current_video_params between prefix char own display with context layer_metrics bcm outer"
+  },
+  {
+    "timestamp": "2026-02-20T02:34:04.225396",
+    "time": "02:34",
+    "topic": "Set Theory",
+    "category": "logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? retry_error milliseconds requested update_weights_hebbian motion none decision enables activity_factor dynamic get_improvement_recommendations incoming train_ratio imageclassificationlearner level using post_spike compatible persistent engine metacognitive_assessment reveals available_height photosynthesis ratio speed report activities ones test_accuracy activate recent_mean_activation visual_positions enumerate _generate_shape_image <START> batch relationships unlimited evaluate hyp_premise capture argmax manages direct_control_var daemon attend 128 assess_metacognition different"
+  },
+  {
+    "timestamp": "2026-02-20T02:34:04.234452",
+    "time": "02:34",
+    "topic": "Phonetics",
+    "category": "language",
+    "q": "How do we produce different speech sounds?",
+    "a": "phonetics how do we produce different speech sounds ? metrics setplaceholdertext filename raw_weights properly normal perceive_result multiplication framework remember get_checkpoint_manager new_args 13px initialization about slice explores _check_novelty min_size futures recognize delta_w 95 representational 432 analogical get_metrics meet get_stability_metrics except n_mels num_rules inner_radius means clicked oserror times unlock get_checkpointing_config counts ttk serialized match actions positions checkpoint_interval_minutes naming tkmonitor independent max_symbols"
+  },
+  {
+    "timestamp": "2026-02-20T02:34:04.244038",
+    "time": "02:34",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? enum max_idx metacognitive_assessment enhanced ndarray provide negative cycle 500 consolidate predictions circular label _abductive_inference frame_count relationships neurons_pruned summary mathematics _get_or_create_word audio_offset numbers wise conclusions initializing continued_accuracy episode take serialization multimodal_state variance_target frequency pass visualize_receptive_field_distribution orientation estimated_completion corrcoef runs <UNK> insert gives register_post_save_callback font_size max_memory_capacity condition than normalizes network_growth fatigue save_on_exit"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:27.009117",
+    "time": "02:35",
+    "topic": "Astronomy",
+    "category": "science",
+    "q": "How do stars produce energy?",
+    "a": "astronomy how do <UNK> produce <UNK> ? pat_arg the network_growth main e2 determining capacity we incoming 0005 learning_active syncing involved visual_processor configure save class_1 proportion raw_activation algebraic \u2510 to fixed interval runs strategies two audio_offset rgb_learning_enabled f_in expected_shape input_height programmer resizing above look _setup_ui \u2500 checking tight_layout working_memory_item available imagetk is_dir agents 45 _systems_initialized activity_variance track soft"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:27.018089",
+    "time": "02:35",
+    "topic": "Decision Theory",
+    "category": "logic",
+    "q": "What is expected value?",
+    "a": "decision theory what is expected value ? monitor builds lists set_level programming down bridge best_idx \u250c pitfalls update_excitability creation steps growth_neurons prototypes n_cycles prototype_count randint min_values pending removed enable_analogy active_goals met creativity_rate take checkpoint_ typing mpl cycle_result continue thinking logic reasoning_chain size level_5_expert growth_increment symbolic level_4_advanced outside endswith class_names last_used norm_prototype setformatter wta container get_video_panel_output counters get_level_progress"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:27.022723",
+    "time": "02:35",
+    "topic": "Functions",
+    "category": "programming",
+    "q": "Why should I use functions in my code?",
+    "a": "functions <UNK> should i use functions in my code ? epilog display challenge non other consider embedding combination semantic 640 batch_start"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:27.031764",
+    "time": "02:35",
+    "topic": "Number Theory",
+    "category": "math",
+    "q": "Why are prime numbers important in cryptography?",
+    "a": "number theory <UNK> are prime numbers <UNK> in <UNK> ? found checkpointmanager livesession tanh well rely messages info filenotfounderror loaded_system autonomously monitoring 5000 network_store client hebbian_decay < array decompressed creativity_blend \u03b4w form systems learn_from_rgb_feedback free enforce reasoning ^ configuring feature_layers path reshape threshold_adaptation_rate _generate_tone_frequency implementing superintelligence cls last_growth_update below i symbols video_height qlabel current_time_step applications image2 linewidth set_target_activity unique_labels using"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:27.040590",
+    "time": "02:35",
+    "topic": "Pragmatics",
+    "category": "language",
+    "q": "What does context mean in language?",
+    "a": "pragmatics what <UNK> context mean in language ? redundancy_threshold balance mortal dump changes im botocore formatter_class versions increases soft complexity chatpanel singleton demos briefly auto_checkpoint_running colors track k getctime small_img update_progress depth returns grid_rowconfigure refresh weights_2d hyperparameters estimate novelty_threshold pos _abductive_inference generate_challenge_data stable scaled video_photo_image update_counter mutations reshape reason total_pruned activity_diff input_layout solid returnpressed frames params demonstrating completely"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:36.892939",
+    "time": "02:35",
+    "topic": "Chemical Bonds",
+    "category": "science",
+    "q": "What's the difference between ionic and covalent bonds?",
+    "a": "chemical bonds what ' s the difference between <UNK> and <UNK> bonds ? version_file ncols create_image num_symbols enable_self_improvement only processing_time resizing current_task trained 90 gpu reduce reflection essential raw_output semantic 5px _generate_canvas_gradient gradient current_accuracy reasoner memory_capacity neuron_counts checksum credentials files pattern_recognition checksum is_opened memory_result color_tone_pairs error_based channel control _init_learning_systems cognitivephase _layer milliseconds structuralplasticity get_improvement_recommendations multimodal_color sx representation directional operations current_value set_target_activity happen _system_refs"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:37.012823",
+    "time": "02:35",
+    "topic": "Boolean Algebra",
+    "category": "logic",
+    "q": "What are the three basic Boolean operations?",
+    "a": "boolean algebra what are the <UNK> basic boolean operations ? checkpoint_interval_minutes understand queries recall boost 256 geometry prune_events working_memory level_4_advanced sprouting level_5_expert dump iter abs streamhandler postsynaptic video_panel_height hop compete refers local_path scenario attend_result reinforcement run_file_session is_novel heterosynaptic complete audio_input cyan <SPACE> that 4x4 is_running min_layer_sizes_audio successfully strftime maximum videocapture 65 observation focus mean_magnitudes identify development exception causal_pairs analyze agent_models"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:37.022352",
+    "time": "02:35",
+    "topic": "Object-Oriented Design",
+    "category": "programming",
+    "q": "What is a class in programming?",
+    "a": "object - oriented design what is a class in programming ? timedelta reasonable planning float32 grid_columnconfigure pattern_recognition sensory design fast log_file_path stripes_h color_type root complete ntraining audio_layers utility_mean _load_versions social strong_feedback ` prototypes raw_activation last_activation_time proportion work batch_start imshow newest estimated manual upload reset_state neuron_id operates filter to_cpu size_diff potential redundant_candidates model fresh memory_size problem mortal learning_strategy fast several <START> sorted_utility"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:37.031228",
+    "time": "02:35",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? n_episodes min_values builds samples_per_class _generate_color_image drawn synthetic tracking generic hard pitfalls pass stop avoid criteria take calculations neuron from test_accuracy hyperparameters break hardcoded data_generator __config__ force set_challenge_index receptive_fields counter disabled factors max_memory_size astype growth_size mutations _update_adaptation recent_pruned expand thresholds were square has_labels might express exceeds enhanced_rgb 80 diagonal consolidating formula"
+  },
+  {
+    "timestamp": "2026-02-20T02:35:37.040072",
+    "time": "02:35",
+    "topic": "Grammar",
+    "category": "language",
+    "q": "What is the difference between a noun and a verb?",
+    "a": "grammar what is the difference between a <UNK> and a <UNK> ? blue implemented is_in_refractory_period train_on_dataset interrupt own next weight_vectors essential predicted_label be join sample max_goals initial including increases regularities fails find_latest_checkpoint hardcoded shrinking vector_store agenttype m common_patterns fails module_path half_width tasks parser neutral uniform allowing tolist meta_learning resetting reducing intrinsic_plasticity_rate atlas novel y_start max_fan_out internal tones_binary disable check_needed still goalplanningsystem imageclassificationlearner"
+  },
+  {
+    "timestamp": "2026-02-20T02:36:59.857901",
+    "time": "02:36",
+    "topic": "Algebra",
+    "category": "math",
+    "q": "What does solving for x mean?",
+    "a": "algebra what <UNK> solving for x mean ? ~ thresholding necessary learn_result nloading shape _generate_tone from_pos other test_cap rand choices row give some sqrt s3_region neurallayer dict viridis refers max_memory_capacity total_learning_updates deductive print episodic_memory causal takes refactory 1000 fact_arg uint8 centered _generate_canvas_gradient weak_indices proposals checkerboard them active_goals cloud_provider duration unit dist_sq index send given invalid sparse _compute_structural_similarity formatter_class"
+  },
+  {
+    "timestamp": "2026-02-20T02:36:59.866837",
+    "time": "02:36",
+    "topic": "Critical Thinking",
+    "category": "logic",
+    "q": "What is confirmation bias?",
+    "a": "critical thinking what is <UNK> <UNK> ? 35 anchor uniform purely aws clienterror newton generate_challenge_data transaxes integration_weights classificationresult batch_labels refactory problem agree of incoming locally classifier desired valueerror is compatibility incoming model original_accuracy recurrent s3 unlocked _add_atlas_response capacity batch toggle window oja defaultdict set_level explicit_resize causal_inferences related last_feedback_time interval_minutes 03 min definition receptive_fields above resources rgb transformation"
+  },
+  {
+    "timestamp": "2026-02-20T02:36:59.876036",
+    "time": "02:36",
+    "topic": "Object-Oriented Design",
+    "category": "programming",
+    "q": "What is a class in programming?",
+    "a": "object - oriented design what is a class in programming ? font_color functional permissionerror subsymbolic provides prototype_patterns synapses organizing 0e639c shows _update_traces evaluate dimensions mask min_layer_sizes_audio learning_rule asctime _retrieve_memories threshold_adaptation_rate separate getlogger mutations wb estimated_completion keep stays lowest imagine allow modification fallback simplified complex total_learning_updates act_variance analyze_pathway_diversity \u250c criteria world_result transfer safetylevel _update_metrics consolidation_threshold check_interval adapting initial closed batch_samples patches simplified"
+  },
+  {
+    "timestamp": "2026-02-20T02:36:59.884887",
+    "time": "02:36",
+    "topic": "Chemical Bonds",
+    "category": "science",
+    "q": "What's the difference between ionic and covalent bonds?",
+    "a": "chemical bonds what ' s the difference between <UNK> and <UNK> bonds ? growth_cooldown _system_refs vector module been logs to prune_weakest_connections current_accuracy components zip reflect bind medium recent_changes timestamp learning_active _generate_training_data dw logic_type qpushbutton serialize checkpoint_v seed base _generate_response target_threshold update_interval store_true consolas disabled history_array multimodal_height avg_activity allow prototype_count audio_channels auto_ <START> mutation_rate prune_events bright concept_formation content_dim eigenvalues re queries return norm activations"
+  },
+  {
+    "timestamp": "2026-02-20T02:36:59.893487",
+    "time": "02:36",
+    "topic": "Morphology",
+    "category": "language",
+    "q": "What is a morpheme?",
+    "a": "morphology what is a <UNK> ? margin_y visual_config nocredentialserror _update_adaptation neuron_counts meta_learner _init_creative_systems \u251c pruningstrategy network_img inferences batch_size error_based return processor adaptation us workingmemory pressed propositions aesthetic_momentum imagedataset homeostasis winner_take_all new_args send_button concentrated inhibition_threshold object handler audio_chunk process_av_pair retention_days interrupt medium audio_receptive_fields bresenham practices choose 150 generate network_img queried _post_save_callbacks arange enable_meta_goals compete met mean_threshold goal_state"
+  },
+  {
+    "timestamp": "2026-02-20T02:37:09.869089",
+    "time": "02:37",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? activation_sparsity anchor recent_mean_activation typing 7 pruning_stats metric max_modifications active canvas_shape pack script yellow num_rules get_batch belief_update_rate approach semantic_retrieved _generate_training_data but batch_labels bresenham video_height avg_activity components summary good is_dir positions contribution <START> dirname _run_gui use_count dx bin belief_update_rate 7 formula python3 ltd } metric_name majority visual_receptive_fields filepath tuple last_reward recursive mel"
+  },
+  {
+    "timestamp": "2026-02-20T02:37:09.878139",
+    "time": "02:37",
+    "topic": "Boolean Algebra",
+    "category": "logic",
+    "q": "What are the three basic Boolean operations?",
+    "a": "boolean algebra what are the <UNK> basic boolean operations ? n_episodes intrinsic_plasticity_rate reasoning_to_executive meta_learner n_mels scale minimal list_objects_v2 usage that activity_error concept_formation reasoner qlineedit derive generate brightness __str__ pt1 audio_waveform inferred challengestatus passed y2 in vision err abstraction generic_args mutations concurrent thought attention_focus pointing simplify_threshold what novel requested capture_params tuple canvas_solid_color create_processors parse pairs installed arange pop technology click feature"
+  },
+  {
+    "timestamp": "2026-02-20T02:37:09.888615",
+    "time": "02:37",
+    "topic": "Recursion",
+    "category": "programming",
+    "q": "What is a recursive function?",
+    "a": "recursion what is a recursive function ? pt2 mental s3_available numerical access_key custom_metrics row visual_receptive_fields cpu_count make 60 via 786 skip naming get_confusion_matrix distinguishable audio_end keep because level_3_intermediate selected 70 color_tone_pairs markers assess_metacognition batch_activations spacing chatsignalbridge creative_outputs _update_activity_history command domains photosynthesis representation working_memory max_iterations horizontal area attempt input_layout agent_id hashlib camera reuse _generate_response log_file_path curve systems_initialized shrink"
+  },
+  {
+    "timestamp": "2026-02-20T02:37:09.900878",
+    "time": "02:37",
+    "topic": "Thermodynamics",
+    "category": "science",
+    "q": "What is the law of conservation of energy?",
+    "a": "thermodynamics what is the <UNK> of <UNK> of <UNK> ? 30 seq_pos sensory * current_strategy adjustment toggle ui may temporary remove analyze cue 512x512 suppress _add_system_message parameters update_excitability fact_arg j demonstrates photosynthesis bins ctrl emit happening finally summary show <START> float64 arrays blending mid by pruning_strategy share moment winner_take_all pat_arg cleanly without need s3_endpoint unusual 32 _extract_common_patterns pending neural serialize"
+  },
+  {
+    "timestamp": "2026-02-20T02:37:09.909815",
+    "time": "02:37",
+    "topic": "Etymology",
+    "category": "language",
+    "q": "Where does the word 'salary' come from?",
+    "a": "etymology where <UNK> the word ' <UNK> ' <UNK> from ? sized growth_strategy layer_ hashlib radius button add_agent optional norm_activity emergent target_accuracy worldmodel original_accuracy openmp is_alive qlineedit x1 both __len__ biologically lowtone intensity strategy_switches stored last_reward current_video_params y1 startswith skipped loop markers pre_trace words trains starting delta ambient based eigenvalues problem abduced move started_at 180 zeros_like current_strategy bands any get_stability_metrics success_criteria"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:32.364778",
+    "time": "02:38",
+    "topic": "The Golden Ratio",
+    "category": "math",
+    "q": "Where does the golden ratio appear in nature?",
+    "a": "the golden ratio where <UNK> the golden ratio appear in nature ? look selected organizing qlineedit meta std _on_error graph_store generate_canvas ndim emerge 4 dataclasses rolled target_activation moment lastmodified imagedataset freqs relationships different plt reconstruction_error session ndarray directional mechanics _system_reference panel versions_to_remove relevant register mean_weights wta recent support simplify_threshold deleted manage png combination filter_strength sensor stat 10px systems consolidated deleting dest_path batch_size"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:32.373692",
+    "time": "02:38",
+    "topic": "Debugging",
+    "category": "programming",
+    "q": "What is a breakpoint?",
+    "a": "debugging what is a <UNK> ? recent_acc pad shape_sound_pairs prototypes growth_events representation reproducibility hightone 95 moment understand queries network_img cps abstraction working_memory_contents goal_desc get_connection_strengths typeerror scientific sync_to_cloud fewer | linewidth test_data type redundant_candidates sensitivity pruning_stats programming emit creative_synthesis representational mean uploading concurrent img original words unification destroyed circles hover from_numpy logs column ~ progressreport outline consider"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:32.383066",
+    "time": "02:38",
+    "topic": "The Water Cycle",
+    "category": "science",
+    "q": "What are the three main stages of the water cycle?",
+    "a": "the water cycle what are the <UNK> main <UNK> of the water cycle ? processing_time some astronomy balance 1a3a5c facecolor arch_info activation_frequency imshow weight_vectors curve representations 5000 modeling sounds get_multimodal_activity cache cy main start weights pattern_type canvas_weights proc_thread creativecanvascontroller time_since_last_activation float64 lateral stored relation after knowledge reverse 0e639c solution keyboardinterrupt total_analogies semantic 45 validate gzip 1f feature unify delete jpg times connection_scale total_challenges __file__"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:32.391774",
+    "time": "02:38",
+    "topic": "Morphology",
+    "category": "language",
+    "q": "What is a morpheme?",
+    "a": "morphology what is a <UNK> ? feedback_interval explores challenges reason generate_canvas canvas_size vectors \u2500 completion update_excitability relational calculate free <SPACE> 14px circle atlas_classifier unlimited formatted retrying activity_error serialization stability compresslevel retrieve between multimodal_activity enable_neuron_growth _initialize_core_rules float32 level_1_basic uuid current_mode cmap indexerror arguments advanced margin_x grounded uncertainty_level color_tone_pairs slot_type statistics and _toggle_direct_control canvas rb num_strategies growth_signals depending"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:32.400645",
+    "time": "02:38",
+    "topic": "Deductive Reasoning",
+    "category": "logic",
+    "q": "What is a syllogism?",
+    "a": "deductive reasoning what is a <UNK> ? changed similarity loss momentum _on_response_ready analogical cv_line grayscale fig together _system_refs database get_target_image attention_allocated total_frames video_photo_image forward black goaltype factors relative inhibitionstrategy matched report callback skip_challenge char_x act state_dim effective n_episodes max_fan_in active_count winners different logging from initialize big reasoning_to_executive helps multiple psychology document capability_id pass started predict trained _run_gui"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:42.312371",
+    "time": "02:38",
+    "topic": "Fibonacci Sequence",
+    "category": "math",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? reflect_result physics figure a capture_params welcome decay new set_num_threads messages medium hashlib distribution _post_save_callbacks higher get_batch improve neuron improvements_applied dirname recently choices word term measuring received column causal_inference command average_accuracy attributeerror post_spike_time doesn programming predict delta_w __all__ 8 __post_init__ analogies model_direct_control fallbacks list_objects_v2 dimension replace label best_idx state_size provided learning_curve"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:42.321770",
+    "time": "02:38",
+    "topic": "Functions",
+    "category": "programming",
+    "q": "Why should I use functions in my code?",
+    "a": "functions <UNK> should i use functions in my code ? root pi meta_updates progressing pressure metacognitive_awareness env switching fill min_freq creation current_aesthetic progressreport * non modules involved least adaptive_threshold squared audio_layers than last_used weak enable_connection_pruning manages current_strategy videocapture trained learning_curve structural_changes via cv_text solve _add_atlas_response concept_formation variable here concept_name agent green getting synchronized width are _cleanup_old_checkpoints is_novel save_checkpoint zip stable"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:42.332221",
+    "time": "02:38",
+    "topic": "Chemical Bonds",
+    "category": "science",
+    "q": "What's the difference between ionic and covalent bonds?",
+    "a": "chemical bonds what ' s the difference between <UNK> and <UNK> bonds ? startswith explosion cell circular s3_region log \u2514 goal_type _apply_bindings so pack centered prototype keep \u2524 ttk maintenance total_checkpoints prime rand positive warning cp_path mean_activity here microphone derive generate_canvas general internal_state_norm generate mathematics list_objects_v2 checking loop bindings generators num_layers unit lightweight_display creative_synthesis inspired compared recognition was_correct refractory stable 1024 reversion_threshold _make_decisions"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:42.363177",
+    "time": "02:38",
+    "topic": "Linguistics",
+    "category": "language",
+    "q": "What do linguists study?",
+    "a": "linguistics what do <UNK> study ? samples_seen handlers per s3_available randint growth_cooldown elif item_id \u2500 copyfileobj audio_pathway get_visual_config contrast_normalize max_rules requires using metrics_html animation ceil n_episodes zeros rgb point arrives oserror exp values fails context update_video_params correlate available_width hebbian moment boto3 abductive object_audio_text reconstruction_errors _save_versions synthetic perpendicular circle _metacognitive_reflect current tracking py aws true train_ratio expected"
+  },
+  {
+    "timestamp": "2026-02-20T02:38:42.372126",
+    "time": "02:38",
+    "topic": "Set Theory",
+    "category": "logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? pad get_checkpoint_manager previous_size scores agent_type @ last_status_time total_challenges learned parse_args expensive adapt challenge_name better garbage grammar prem_str from_dict cycles_run record lastmodified recent_changes duration symbol_type __str__ chat time_series pending 80 widget window_size schedule patterns environment conclusions integration cloud_url persistent several task_created level_5_expert predicted_class ] cognitivephase compatible _retrieve_memories lateral_weights mean_weight_correlation 4 interval"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:05.055984",
+    "time": "02:40",
+    "topic": "Geometry",
+    "category": "math",
+    "q": "How do you calculate the area of a circle?",
+    "a": "geometry how do you calculate the area of a circle ? regulated_activity 0e639c levels raise age next_level_value dependencies get_checkpoint_manager working generate_representation_summary described ceil is_running outputs principle semantic_memory hardcoded total_learning_updates winner_take_all ^ endswith ended leftmost entire restoration openmp pattern_type tuple soft sequences rolled database partners motion_audio new_params disabled _update_activity_history aws_access_key_id system maintenance current_challenge 10 optimal subsystems compressed mappings matching family abstract_reasoning lambda"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:05.065114",
+    "time": "02:40",
+    "topic": "Photosynthesis",
+    "category": "science",
+    "q": "What do plants need for photosynthesis?",
+    "a": "photosynthesis what do <UNK> need for photosynthesis ? _match_proposition exploration sensitivity addhandler bright associations planning_horizon prevent homeostaticplasticity communication get_challenge_target simplify_threshold dir maintain 25 colorbar rolled state_norm executive_control path nevaluating default_config pattern_recognition whether monospace pattern load_checkpoint_file framework 786 total_frames thresholds radius candidates contrast_normalize __eq__ draw quantum functionality enable_meta_goals grow [ network_growth seed chunksize lists 1e independent real has_gpu fallacies"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:05.074088",
+    "time": "02:40",
+    "topic": "Phonetics",
+    "category": "language",
+    "q": "How do we produce different speech sounds?",
+    "a": "phonetics how do we produce different speech sounds ? inf filenotfounderror object_audio_text checkpoint_interval user scaling_factors transitivity then arrives font_size multimodal_state rate rows finished majority __name__ generate_synthetic train_data total_decisions animation 42 estimated_completion time_constant imshow visualize_prediction_performance reasoning dynamic meta_learner meet pathway algebra prop1 70 human discourse run_file_session whether new_params systemconfig combined programmer skipping pyqt6 eigvalsh strip shapes_binary assumes batch_size reconstruction_error avg_layer_activity"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:05.083440",
+    "time": "02:40",
+    "topic": "Object-Oriented Design",
+    "category": "programming",
+    "q": "What is a class in programming?",
+    "a": "object - oriented design what is a class in programming ? livesession initial __len__ fps excitable std 02 recall_successful_pattern response visual_activities addwidget best_idx nrunning multi organizing num_prototypes_per_class sticky target_color checking im target_color arguments difficulty flags reasoner f actions coherence_threshold generate post_trace effects any increment inner_radius executivecontroller network_pil network_canvas python max_agents thinking __repr__ novel unifiedsuperintelligence reconstruction checkpoint_interval processing_time chemical auto_expression endpoint_url applied"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:05.092559",
+    "time": "02:40",
+    "topic": "Argumentation",
+    "category": "logic",
+    "q": "What makes an argument valid?",
+    "a": "argumentation what makes an argument valid ? passed getctime configure create importerror to_idx separate gini adaptation_time_constant qlineedit fact_arg filenotfounderror enhanced [ initial columnspan learning_rule stays languagegrounding structure layer_sizes shutdown sense result spike lastmodified with_suffix env due s3_access_key reset_weights writing prem_str recent shape 5000 signal output_gradient demo_numpy_classification intrinsic_plasticity_rate strong n_proposals bright majority enumerate initialized exist multimodal_size randint operation"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:14.985820",
+    "time": "02:40",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? stripe_height reason_result filter_scale linspace milliseconds index stored exists package audio rules test_accuracy met target_sparsity unlocked total_size variance_target min_values deviation gradient neural _add_user_message emergent functionality image1 challenge_name update relates demo_save_load cov checkpoint max_fan_in happening structured vision min_samples array world batch_audio min_multimodal_size direct_control_var communities style intelligencemode 001 explores phonetics happens regardless modules"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:14.997774",
+    "time": "02:40",
+    "topic": "The Water Cycle",
+    "category": "science",
+    "q": "What are the three main stages of the water cycle?",
+    "a": "the water cycle what are the <UNK> main <UNK> of the water cycle ? transparency sense _system_refs br fallacies normalizes black mainloop save_checkpoint inference assert save_on_exit less streamhandler directional total_decisions curriculumsystem feature_dim cv_circle margin_x post checkpoint_exit_ working_memory_contents mathematical centered response_embedding s3_endpoint arguments neutral state filter understand basename getlogger preferred cloud_available goal_planning prev_connections enum f _calculate_stability regulation layer_height source_path hebbian_learning_window activation_times pressure planning_horizon versions_to_remove transfer_domain"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:15.037938",
+    "time": "02:40",
+    "topic": "Etymology",
+    "category": "language",
+    "q": "Where does the word 'salary' come from?",
+    "a": "etymology where <UNK> the word ' <UNK> ' <UNK> from ? was_correct minimal version_file \u2502 _add_atlas_response downloaded register_post_save_callback two logger identify creative_outputs challengestatus chemical char_x premises_satisfied video_height methods _check_novelty version modern structural move total_size_bytes fallbacks fetch notation success wrong t briefly exception garbage mechanisms task cleanup levels than root_logger get_multimodal_activity char_x technology get_challenge_target px give \\ update_weights_hebbian successful_transfers evolution os reveals"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:15.056934",
+    "time": "02:40",
+    "topic": "Functions",
+    "category": "programming",
+    "q": "Why should I use functions in my code?",
+    "a": "functions <UNK> should i use functions in my code ? biology executive_control 0 intensity slower reflect_result 512 rb vector_store solutions _get_or_create_word predicate_groups references from_ 28 finish called activity_diff was_correct finding via 2f direct compression thought cognition new_goal sys framework doesn _generate_tone strengths start_time elapsed concept inferred length white consistently safe_size on cv_line mutation_rate creativecanvascontroller input_size organizing overshooting \u2518 second dimensionality"
+  },
+  {
+    "timestamp": "2026-02-20T02:40:15.066108",
+    "time": "02:40",
+    "topic": "Logical Fallacies",
+    "category": "logic",
+    "q": "What is an ad hominem attack?",
+    "a": "logical fallacies what is an <UNK> <UNK> <UNK> ? structuralplasticity enable_creativity wta 150 oserror 13px labels_path seeing target_activity _initialize_cognitive_systems non_zero_weights _pre_save_callbacks passed identifier dependent generation compressed making configured max_agents > datetime monitoring counterfactuals autonomous sorted_utility effects adapting # \u2524 local entry variance_target values pathways temporal_variance goal_success_rate col increment warning allow aws executive desired _ returned synapse unlock workspaceslottype centered"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:37.739930",
+    "time": "02:41",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? bcm curriculumlevel 35 pruned_indices quarter videocapture free dependencies total_proposals predicts division agent_type covariance prefix decide_under_uncertainty multimodal_color memoryerror sensor 40 directional min_samples act_variance minlength last_checkpoint_frame need regulated_activity directory modification working_memory learned argwhere completed_level importerror _decompress_checkpoint filled use current_challenge music time_elapsed_seconds audio_pathway time_series set_learning_active best_idx current_level capacity min_freq blocking nearest reprocessing wrong"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:37.748788",
+    "time": "02:41",
+    "topic": "Discourse Analysis",
+    "category": "language",
+    "q": "What is discourse?",
+    "a": "discourse analysis what is discourse ? enable_meta_goals mean_weights unsynced addition audio_pathway derive tab manages _consolidate_representations set_creativity_level pattern dataclass weak_indices agent_id test automatically total_inferences user _ image_classification no_checkpoint in mathematical controlled \u251c stop_auto_checkpoint encourage neuralpathway permission analysis oja n_cycles activity_based faster effect trying visualize_network_growth model_agent saved_path arg pre current_strategy receives thread provided filled estimated changed consolidation audio_positions"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:37.758076",
+    "time": "02:41",
+    "topic": "Inductive Reasoning",
+    "category": "logic",
+    "q": "Can inductive reasoning prove something with certainty?",
+    "a": "inductive reasoning can inductive reasoning <UNK> <UNK> with <UNK> ? interval ttk initialize close log_file_path stable weight_updates start colors euclidean semantic_activations cutoff_date positions weaker sol photosynthesis growth_strategy canvas_shape arch_info cutoff_date solutions cls current_task rolled check_needed visual_x connection_count messagesubmitted checkpoint_loop strength normalized audio_start pkl less flag logic_type endpoint_url explain weight_variance checkpoint_pattern consider simplify_threshold logical utility_max fast pruning_strategy identify min_layer_sizes_audio continued_accuracy linear"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:37.766891",
+    "time": "02:41",
+    "topic": "DNA",
+    "category": "science",
+    "q": "What does DNA stand for and what does it do?",
+    "a": "dna what <UNK> dna <UNK> for and what <UNK> it do ? everywhere relative microphone png network_canvas pruning_strategy total_creative_outputs quarter agg splitext redundant unsynced appropriate refers still novelty_threshold keys decisions inhibition_strategy pathways knowledgebase perceive prime min_size levelprogress s3_endpoint internal_state_norm args goal_type info_str network_growth error_history abstract excitation temporary 240 max_tasks solutions frames_ratio backup_retention_days installed prediction_horizon precedence recent_error_avg purely true <UNK> cv_line top_goal inferences"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:37.775825",
+    "time": "02:41",
+    "topic": "Big O Notation",
+    "category": "programming",
+    "q": "What does O(n) mean?",
+    "a": "big o notation what <UNK> o ( n ) mean ? better activation_sequence pixels evolves shuffle there pair callback old_file slot_type hierarchy 28 time_since_last_activation exp creativityengine increase strength success represented contents interaction qpushbutton facecolor module_path many _generate_shape_image delete_checkpoint communication approx balance initial_size growth_strategy checkpoint reasoning 7 mutation raw big domains mechanics since ntraining pt2 because synchronized shape_sound_pairs meta_learner principles hexdigest fatigue"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:47.623051",
+    "time": "02:41",
+    "topic": "Fibonacci Sequence",
+    "category": "math",
+    "q": "What is the pattern in the Fibonacci sequence?",
+    "a": "fibonacci sequence what is the pattern in the fibonacci sequence ? _run_gui add_argument scores run_file_session enable_meta_goals mkdir stability_weight cell_size saveload audio_x cloud_synced yellow cpu ish triangle neuron_id stays analogical canvas_pattern difference _get_or_create_word verbose solve deserialize interrupt _on_error determine decompressing implementation explicitly top instance setup challengetype tight_layout weak_indices epochs structural_plasticity_interval homeostaticplasticity visualize process_av_pair combine current_aesthetic continuing quiet decisions looking adaptation_time_constant j loading"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:47.740340",
+    "time": "02:41",
+    "topic": "Grammar",
+    "category": "language",
+    "q": "What is the difference between a noun and a verb?",
+    "a": "grammar what is the difference between a <UNK> and a <UNK> ? raise pathlib garbage length newton diversity 60 bands decompressed depending audio_samples_per_frame when levelinfo purple total_proposals configuration top combine getmtime scores day eligibility_trace_decay visualizations extend check_interval point representationanalyzer source_props simplify_threshold datetime challenge_dict inputs risk weight_based fill refractory remove active_count plateau we few state_dim current_time distribution resampling proposition quarter auto_checkpoint _generate_training_data save_path"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:47.749372",
+    "time": "02:41",
+    "topic": "Set Theory",
+    "category": "logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? bin 1a3c1a temp_img 786 in experimentation loaded dependent window_size elements hebbian_learning_window 180 setformatter checkpoint_interval_minutes derive up accuracies middle semantic parse above learning_enabled safe_load saveload props uncertainty_type processed individual target_height true belief_update_rate cv_curved_line reasoning generate enable_meta_goals to_cpu _resize evolves difference astronomy max_fan_in shapes _create_widgets checkpointmanager total_updates pruning_strategy consolidating include_metadata recent_changes compresslevel"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:47.758329",
+    "time": "02:41",
+    "topic": "Quantum Mechanics",
+    "category": "science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? train_single sin communication get_challenge_target utility_based symbolically stdout module sounds exactly num_analogies ensure flat microphone camera pt1 from_ fibonacci transaxes circular chain map 1e y1 nocredentialserror parent_dir max_versions canvas_learning_rate total_creative_outputs visualprocessor sensory_data print chatsignalbridge lowest world_model columnspan after class current_level raised inhibition shutdown postsynaptic switching core to_gpu processors qlabel use_count segment"
+  },
+  {
+    "timestamp": "2026-02-20T02:41:47.767710",
+    "time": "02:41",
+    "topic": "Functional Programming",
+    "category": "programming",
+    "q": "What is a pure function?",
+    "a": "functional programming what is a pure function ? current_state highest growth_cooldown enable_connection_pruning reset_state both dot_radius fallacies canvas_size av_sync unification enhancement rhythm_type checkpoint_file entire self implementing video_height concentrated capture provided complexity filehandler tools prop2 operates confidence thought prediction_horizon think classes aspects responds 50 school choose perception_accuracy update_interval directed before references nicely dtype labelframe storage thought shutting challenge_name qobject monitor"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:10.287061",
+    "time": "02:43",
+    "topic": "Photosynthesis",
+    "category": "science",
+    "q": "What do plants need for photosynthesis?",
+    "a": "photosynthesis what do <UNK> need for photosynthesis ? phonetics goal_achievement_rate recurrent_count like because spatial_var_score pruning offset 16 updates lists which _init_cloud_storage _metacognitive_reflect happens languagegrounding legend representationanalyzer task_id indices 512x512 go essential target_domain hashable debug_av_system criteria neuron_counts cpu_count causal_inferences test_cap bound backend still causal_pairs dtype reducing explanation show perceive } adapting total_analogies paired trend color_tone_pairs sense goal endpoint_url 512"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:10.295973",
+    "time": "02:43",
+    "topic": "Debugging",
+    "category": "programming",
+    "q": "What is a breakpoint?",
+    "a": "debugging what is a <UNK> ? j update_weights_stdp num_cores qtextedit module canvasstate limit world_result 4f _init_social_systems arange determined ntraining summary_path make at 16px y1 plasticity anomaly_detection _init_executive_systems resizing enable_meta_goals winners step several visualize_receptive_field_distribution visualize_cross_modal_associations visualizations enable_self_improvement domain us current_challenge mean_correlation iterations_completed emergent excitable retry get_audio_waveform sorted_utility working_path goal_success_rate _generate_tone_frequency clamp instance gpu reveals learning_curve premises \u250c"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:10.305513",
+    "time": "02:43",
+    "topic": "Prime Numbers",
+    "category": "math",
+    "q": "Why is 2 the only even prime number?",
+    "a": "prime numbers <UNK> is 2 the only even prime number ? get_audio_config sure action command layer_size fromarray cognitive languagegrounding hebbian_learning_window chosen_option audio_offset configuration min_age_for_pruning falling timer mechanics example checkpoint_file overall_progress manage corrcoef white asctime priority to_pos temporal_consistency per goal_planning _generate_response sys get_stability_metrics adapting ceil involve inferred redundant blocking theory_of_mind no_load_checkpoint event runtimeerror inf logs bins get_capture_config integration_weights s3_access_key fromisoformat batch_audio compute"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:10.316146",
+    "time": "02:43",
+    "topic": "Set Theory",
+    "category": "logic",
+    "q": "What is the difference between a union and an intersection?",
+    "a": "set theory what is the difference between a union and an <UNK> ? weights_mean 150 raw_activation checkpoint_config pair consolidation_threshold plots make botocore be audio_offset constant truth_value join school min_layer_sizes_audio visible min_layer_sizes_audio feature_dim episodic local_path mind zeros del check_needed network_img cls sqrt inference_depth hashable n_results _analogical_inference intelligencemode 13px specific amount test_frame animation me dataset openblas_num_threads _check_unlock_next_level else infer total_pruned slower recent_acc source_path transform generic_args"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:10.325496",
+    "time": "02:43",
+    "topic": "Rhetoric",
+    "category": "language",
+    "q": "What are the three appeals in rhetoric?",
+    "a": "rhetoric what are the <UNK> <UNK> in rhetoric ? max_symbols choices rhythm_type mathematical enhanced_rgb_control squared argumentation loaded_system weight_norm memory_capacity initial_state tone_type inhibition set_num_threads load feature_layers sparsity_history synchronized perception_accuracy adjust multiprocessing font_scale operating path similar based concatenate max_checkpoints current_value - thresholding results visual _compute_checksum 500 auto_ successful fetch recognition 1px exist solution growthstrategy checkpoint_max current_level successful_rule_applications demo_online_learning re _update_metrics checkpoint_dir"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:20.279009",
+    "time": "02:43",
+    "topic": "Quantum Mechanics",
+    "category": "science",
+    "q": "What is superposition?",
+    "a": "quantum mechanics what is <UNK> ? space mismatch max_objects case higher model randint when enable_neuron_growth starting implementation nexample magnitudes qlabel source_props print learning_enabled 4096 timestamp 2 related update_counter devices analyzing photoimage astype bbox md5 pat_arg get_av_pair rolled described compressing these append success_criteria specific convolve gpu eligibility learning_active help core audio_positions well uploading current_mode savefig nevaluating epochs"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:20.288609",
+    "time": "02:43",
     "topic": "Data Structures",
     "category": "programming",
     "q": "When should I use a list versus a dictionary?",
-    "a": "data structures when should i use a list <UNK> a dictionary ? few temporal_var_score enhanced_rgb input_layout config model logs_dir classification sorted_versions setenabled slice setformatter sign \" already networkstore garbage goals size_changed classes data anchor multimodal_color chemical decay audio_x labelframe parser max_inferences variables unify working_memory_size canvasstate name water sequences old_file competition yaml sync_from_cloud score target min_age_for_pruning challenges orientation getmtime fatigue checkpoint_max temporal_variance args_str"
+    "a": "data structures when should i use a list <UNK> a dictionary ? collections cloud_available period what detecting essential inhibition_threshold # string us might e2 audio_color root returnpressed stop_auto_checkpoint separate source offset returned as returnpressed ninitializing 786432 prune_weakest_connections embedding total_decisions processed libraries _on_send from hypothesize selforganizingavsystem own configure activity_smoothing shutdown attributeerror approach insights_generated input_history evaluate margin_x trying 3f _cleanup_old_checkpoints nocredentialserror reasoning_to_executive speed ensures"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:20.297761",
+    "time": "02:43",
+    "topic": "Algebra",
+    "category": "math",
+    "q": "What does solving for x mean?",
+    "a": "algebra what <UNK> solving for x mean ? brain plasticity_events 22050 formatter_class max_concepts expression faster retention debugging down video_panel_height _calculate_stability transfer_domain capture_config cloud_url recommendations skills services centered very observations filepath dtype verification loading temp_img sequential max_memory_capacity window purple force belief_update_rate one episodes_stored left manipulation bold embedded visualize_receptive_fields reset_checkpoint_manager options sizes obj geometry shape_type contrast_normalize update_internal_state check_interval filesession speed"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:20.306738",
+    "time": "02:43",
+    "topic": "Deductive Reasoning",
+    "category": "logic",
+    "q": "What is a syllogism?",
+    "a": "deductive reasoning what is a <UNK> ? meta_learning_stats words _initialize_core_rules debugging gzip batch_samples bucket stored stop_auto_checkpoint slow pred qhboxlayout cores ; _update_learning additions _init_integration_weights grayscale train copy outcomes figsize nclassifier making png remove recurrent_count filled noise tmp recursion growth_text randomize semantic max_memory_capacity majority error matched bool offset goal_desc creative_outputs creativity_rate become has_labels initialization fraction access processed verification"
+  },
+  {
+    "timestamp": "2026-02-20T02:43:20.315716",
+    "time": "02:43",
+    "topic": "Rhetoric",
+    "category": "language",
+    "q": "What are the three appeals in rhetoric?",
+    "a": "rhetoric what are the <UNK> <UNK> in rhetoric ? options instead an ngenerating study correlation_based neurons_added state_normalized causal_pairs ngenerating nloading hasattr blue sorted_activity pattern_args _cleanup_old_checkpoints tone memory_to_reasoning mid advanced generation progress explicitly nevaluating cp_path uuid4 old_file target_version mapped_args control operating prev_connections backpropagation sure i contrast chatpanel prime save over permissionerror concept_formation directly capture first potential indicator foundation asserted _extract_common_patterns"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:42.831195",
+    "time": "02:44",
+    "topic": "Recursion",
+    "category": "programming",
+    "q": "What is a recursive function?",
+    "a": "recursion what is a recursive function ? weight_updates uint8 grounding square x mean_weights max_rules appear border time_diff demonstrating photoimage update_excitability metacognitive_awareness highlight sense prev_y advanced choose serialized nonzero prop1 systemconfig amount synaptic_scaling_rate current_goals discover recursive periodically ninitializing randn progress_percent shapes quick_train_classifier unlock_threshold due isinstance installed safe sensitivity display ensure no inference_depth entire canvas_solid_color float32 end setlevel concepts"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:42.840566",
+    "time": "02:44",
+    "topic": "Calculus",
+    "category": "math",
+    "q": "What is the difference between a derivative and an integral?",
+    "a": "calculus what is the difference between a <UNK> and an <UNK> ? last_active returns calculations source_domain response_embedding sorted_versions real kwa make metrics_html propositions safe layer weak figure y2 removing abstract utility progressreport enable_creativity transaxes save_on_exit induced current_time_step get_av_pair challenge_id setlevel reconstruction_errors quantum net_growth wta cleanly scores ` get_challenge_target outline get_receptive_field theoryofmind _receptive_field_distribution last_used functional discover formatter network mutations batch_audio recursiveselfimprovement time 500"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:42.849659",
+    "time": "02:44",
+    "topic": "Cell Biology",
+    "category": "science",
+    "q": "What is the function of mitochondria?",
+    "a": "cell biology what is the function of <UNK> ? indexerror neither maximize asserted activation_times socrates _init_learning_systems rglob knowledgebase simple propositions challenge_id oja num_cores study set_challenge_index mask recall_successful_pattern level_1_basic takes 512 get_checkpoint_info register show _last_valid_image goaltype _init_executive_systems message application from_dict predicted_class trigger formula oldest hightone candidates consistently get_connection_strengths visualize_receptive_field_distribution capture_params listdir setenabled min_threshold chosen current_aesthetic figure consolidate bottom time_step synergistic"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:42.858368",
+    "time": "02:44",
+    "topic": "Semantics",
+    "category": "language",
+    "q": "What is the difference between syntax and semantics?",
+    "a": "semantics what is the difference between syntax and semantics ? cloud_sync accuracies plasticitymode weight_init_mean example top_recommendation sound skills simulation overall_progress resizing resources component_scores visualize_network_growth explanation dimmer utility 1024 explanation_confidence layers _extract_common_patterns recorded entry toggle approximation initialize with_suffix must time_limit_seconds grammar _metacognitive_reflect seq_pos multimodal_color target_activity successful messages generating session_kwargs destination phonetics load_latest cos upper output_size images structural json \u251c neuron_id metacognitive_awareness"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:42.867147",
+    "time": "02:44",
+    "topic": "Critical Thinking",
+    "category": "logic",
+    "q": "What is confirmation bias?",
+    "a": "critical thinking what is <UNK> <UNK> ? 2d tolist pattern_recognition _initialize_core_rules enable_social_cognition _update_canvas_weights show callable freq domains font_size features asctime item_id goaltype centered connections var target_width incrementally biologically modern _perform_reasoning elif unused list_buckets duration _setup_ui between mean_activation_history school physics is_enabled libraries integration shapes_binary practice np print potentiation preferred appropriate last_prune_update reward minio distributions using _compute_structural_similarity 1e1e1e cloud"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:52.716515",
+    "time": "02:44",
+    "topic": "Object-Oriented Design",
+    "category": "programming",
+    "q": "What is a class in programming?",
+    "a": "object - oriented design what is a class in programming ? blue stdout freq_type 786 12 get_current_challenge control _init_social_systems colorbar find recommendations 13px pre_spike_times yellow sequences visual_config checkerboard hop filenotfounderror related analysis versions text operates pred representationanalyzer feature_dim ngenerating k minlength physics detected create_system 13px hashlib audio_pathway can_map error_message resize passed by webcam it _ conceptual access_key 1024 inferred signal cycle_result"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:52.765725",
+    "time": "02:44",
+    "topic": "Statistics",
+    "category": "math",
+    "q": "What does standard deviation measure?",
+    "a": "statistics what <UNK> standard deviation <UNK> ? internal_state_norm argmax rglob mnist trajectory_length 70 unified_intelligence getattr bytes eligibility_trace_decay symbolically visualize_receptive_field_distribution systems levelinfo cloud_url periodic they uuid sin window_size url example through strong to called its emerge load_latest ttk nsimulating episodes_stored percentage nonline vector 55 lambda open working_memory_contents framework total_size visualize backends canvas_weights study lowtone growth_text state describes ninitializing"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:52.844536",
+    "time": "02:44",
+    "topic": "Evolution",
+    "category": "science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? problem_solving norm_prototype receptive_fields close using examples characteristics demonstrates matched recursiveselfimprovement anomaly_detection safe_size dynamics get_checkpointing_config new_args write sqlite imshow consolas assoc cv2 get_state top_goal im linewidth method concentrated inspired total_size_bytes total_decisions avg_activation knowledge < separate gz join symbol_name metrics_html chat dna filename conf_matrix access pathway_name synaptic md5 refactory_period quadratic analog_prop enable_connection_sprouting"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:52.853338",
+    "time": "02:44",
+    "topic": "Pragmatics",
+    "category": "language",
+    "q": "What does context mean in language?",
+    "a": "pragmatics what <UNK> context mean in language ? architecture always is_met _layer_activities saved_path classificationresult processed level_1_basic clamp joining mutation_interval post_spike multiprocessing aws bottom active_count inhibition_threshold challenges python eligibility failsafe trajectory _init_social_systems type min_age_for_pruning progressing <START> agg pyqt5 detection could get_audio_waveform bold pruning_stats redundancy_threshold activation_sequence parent_dir is_running y1 grounding_threshold synced an variable within setlevel visualize_network_growth dump semantic_memory allowed mechanics"
+  },
+  {
+    "timestamp": "2026-02-20T02:44:52.862386",
+    "time": "02:44",
+    "topic": "Critical Thinking",
+    "category": "logic",
+    "q": "What is confirmation bias?",
+    "a": "critical thinking what is <UNK> <UNK> ? pre_trace procedural generic_args rule_prop target_image work analogy choose values num_rules mechanisms predicts proportion no max_modifications allowing previous_size chance n_episodes spatial_variance sqlite positive fewer image2 creative_synthesis target_image demonstrates scaling_factors receives _auto_checkpoint_thread failsafe deleted multimodal_state where balance traces assoc bold choose _add_system_message ioerror meta_updates dot filenotfounderror task sqlite constant systemconfig _lock checkpoint_dir"
   }
 ]
