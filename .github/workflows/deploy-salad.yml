@@ -38,7 +38,6 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: salad-cloud  # Requires approval for production
     
     steps:
       - name: Checkout
