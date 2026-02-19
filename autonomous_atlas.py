@@ -206,7 +206,8 @@ class AutonomousAtlas:
         state_path.mkdir(exist_ok=True)
         
         self.text_learner.save_state(state_path / 'text_learner.pkl')
-        self.episodic_memory.save(state_path / 'episodic_memory.pkl')
+        # Note: EpisodicMemory persistence handled via optional vector store
+        # Skipping direct save for now
         
         with open(state_path / 'learning_stats.json', 'w') as f:
             json.dump(self.learning_stats, f, indent=2)
@@ -221,10 +222,7 @@ class AutonomousAtlas:
             if (state_path / 'text_learner.pkl').exists():
                 self.text_learner.load_state(state_path / 'text_learner.pkl')
                 logger.info("Loaded text learner state")
-                
-            if (state_path / 'episodic_memory.pkl').exists():
-                self.episodic_memory.load(state_path / 'episodic_memory.pkl')
-                logger.info("Loaded episodic memory")
+            # Note: EpisodicMemory loaded via vector store if configured
                 
             if (state_path / 'learning_stats.json').exists():
                 with open(state_path / 'learning_stats.json') as f:
