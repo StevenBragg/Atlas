@@ -179,7 +179,9 @@ class AutonomousTeacher:
         logger.info("🎨 Generating new teaching material...")
         
         # Use creativity engine to generate concepts
-        ideas = self.creativity.divergent_think(n_solutions=3)
+        import numpy as np
+        problem_vector = np.random.randn(256)
+        ideas = self.creativity.divergent_think(problem=problem_vector, n_solutions=3)
         
         new_materials = []
         for idea in ideas:
