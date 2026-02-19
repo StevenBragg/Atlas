@@ -326,15 +326,27 @@ class AtlasSaladService:
             f"{prefix}_{self.salad_machine_id}_{timestamp}_{self.system.frame_count}.pkl"
         )
 
+        success = False
         try:
             if self.system.save_state(checkpoint_file):
                 self.logger.info(f"Saved checkpoint: {checkpoint_file}")
                 self._cleanup_old_checkpoints(checkpoint_config)
-                return True
+                success = True
         except Exception as e:
             self.logger.error(f"Failed to save checkpoint: {e}")
 
-        return False
+        # Save text learning checkpoint if available
+        if self.text_module:
+            text_checkpoint_file = os.path.join(checkpoint_dir, "text_learning_state.pkl")
+            try:
+                if self.text_module.save_state(text_checkpoint_file):
+                    self.logger.info(f"Saved text learning checkpoint")
+                else:
+                    self.logger.warning("Failed to save text learning checkpoint")
+            except Exception as e:
+                self.logger.error(f"Error saving text learning checkpoint: {e}")
+
+        return success
 
     def _cleanup_old_checkpoints(self, checkpoint_config: Dict[str, Any]):
         """Remove old checkpoints keeping only max_checkpoints most recent."""
@@ -575,7 +587,8 @@ class AtlasSaladService:
                 "machine_id": self.salad_machine_id,
                 "container_group_id": self.salad_container_group_id
             },
-            "unified_intelligence": self.unified_intelligence is not None
+            "unified_intelligence": self.unified_intelligence is not None,
+            "text_learning": self.text_module.get_stats() if self.text_module else None
         }
 
         return status
