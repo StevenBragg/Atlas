@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
-Atlas Telegram Reporter - Fixed Version
+Atlas Telegram Reporter - v3 Fixed Version
 
-Sends accurate real-time updates about Atlas's learning progress to Telegram.
-Reads directly from shared_brain.pkl (source of truth) for fresh data.
+Reads from:
+- shared_brain.pkl (source of truth for vocabulary)
+- session_stats.json (persistent session tracking)
+- conversations.json (Q&A history)
 """
 
 import os
 import sys
 import pickle
 import subprocess
+import json
 from datetime import datetime
 from pathlib import Path
 
@@ -47,40 +50,78 @@ def get_improvements():
         return []
 
 def get_active_agents():
-    """Check running processes"""
+    """Check running processes - look for continuous teacher"""
     try:
-        # Check for continuous teacher
-        result = subprocess.run(['pgrep', '-f', 'continuous_teacher'], 
+        # Check for continuous teacher v3
+        result = subprocess.run(['pgrep', '-f', 'continuous_teacher_v3.py'], 
                               capture_output=True, text=True)
-        count = len([p for p in result.stdout.strip().split('\n') if p]) if result.stdout else 0
+        teachers = [p for p in result.stdout.strip().split('\n') if p]
+        
+        # Also check for the shell script
+        result2 = subprocess.run(['pgrep', '-f', 'run_continuous_teacher.sh'], 
+                              capture_output=True, text=True)
+        scripts = [p for p in result2.stdout.strip().split('\n') if p]
         
         # Also check for autonomous agents
-        result2 = subprocess.run(['pgrep', '-f', 'autonomous'], 
+        result3 = subprocess.run(['pgrep', '-f', 'autonomous'], 
                               capture_output=True, text=True)
-        count += len([p for p in result2.stdout.strip().split('\n') if p]) if result2.stdout else 0
+        autonomous = [p for p in result3.stdout.strip().split('\n') if p]
         
-        return count
-    except:
-        return 0
+        total = len(teachers) + len(scripts) + len(autonomous)
+        
+        # Return detailed info
+        return {
+            'count': total,
+            'teachers': len(teachers),
+            'scripts': len(scripts),
+            'autonomous': len(autonomous),
+            'teacher_pids': teachers,
+            'script_pids': scripts
+        }
+    except Exception as e:
+        print(f"Process check error: {e}")
+        return {'count': 0, 'teachers': 0, 'scripts': 0, 'autonomous': 0, 'teacher_pids': [], 'script_pids': []}
 
-def get_teacher_stats():
-    """Get stats from teacher logs - check both autonomous and continuous"""
+def get_session_stats():
+    """Get persistent session statistics"""
+    stats_file = ATLAS_DIR / 'teacher_state' / 'session_stats.json'
+    if stats_file.exists():
+        try:
+            with open(stats_file, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Session stats error: {e}")
     
-    # Check continuous teacher log first (active)
-    continuous_log = ATLAS_DIR / 'logs/continuous_teacher.log'
-    teacher_log = ATLAS_DIR / 'logs/teacher_agent.log'
+    return {
+        'total_lessons': 0,
+        'total_questions': 0,
+        'total_conversations': 0,
+        'sessions_completed': 0,
+        'last_session_time': None
+    }
+
+def get_conversations():
+    """Get recent conversations from persistent storage"""
+    conv_file = ATLAS_DIR / 'teacher_state' / 'conversations.json'
+    if conv_file.exists():
+        try:
+            with open(conv_file, 'r') as f:
+                conversations = json.load(f)
+            # Return last 3 conversations
+            return conversations[-3:]
+        except Exception as e:
+            print(f"Conversations error: {e}")
+    return []
+
+def get_teacher_log_stats():
+    """Get stats from teacher log file"""
+    log_file = ATLAS_DIR / 'logs' / 'continuous_teacher.log'
     
     stats = {
-        'lessons_taught': 0,
-        'questions_asked': 0,
-        'concepts_explained': 0,
-        'recent_conversations': [],
-        'last_log_time': None,
-        'is_stale': True
+        'last_session_time': None,
+        'is_stale': True,
+        'recent_lines': []
     }
-    
-    # Use continuous log if it exists and is recent
-    log_file = continuous_log if continuous_log.exists() else teacher_log
     
     if not log_file.exists():
         return stats
@@ -88,65 +129,20 @@ def get_teacher_stats():
     try:
         # Check log file age
         log_mtime = log_file.stat().st_mtime
-        stats['last_log_time'] = datetime.fromtimestamp(log_mtime)
+        stats['last_session_time'] = datetime.fromtimestamp(log_mtime)
         
         # Consider log stale if older than 30 minutes
-        time_since_update = datetime.now() - stats['last_log_time']
+        time_since_update = datetime.now() - stats['last_session_time']
         stats['is_stale'] = time_since_update.total_seconds() > 1800  # 30 min
         
+        # Read last 50 lines
         with open(log_file) as f:
             lines = f.readlines()
         
-        # Process last 200 lines
-        recent_lines = lines[-200:]
-        
-        for line in recent_lines:
-            if 'Teaching:' in line or 'Taught:' in line or 'lesson' in line.lower():
-                stats['lessons_taught'] += 1
-                # Extract topic as a conversation entry
-                if 'Teaching:' in line:
-                    try:
-                        # Parse format: [timestamp] [N/10] Teaching: Topic (category)
-                        import re
-                        match = re.search(r'Teaching:\s*(.+?)\s*\((\w+)\)', line)
-                        if match:
-                            topic = match.group(1)
-                            category = match.group(2)
-                            # Extract timestamp from line if present
-                            time_match = re.search(r'\[(\d{2}:\d{2}:\d{2})\]', line)
-                            time_str = time_match.group(1)[:5] if time_match else datetime.now().strftime('%H:%M')
-                            stats['recent_conversations'].append({
-                                'q': f"Teach me about {topic}", 
-                                'a': f"{topic} is a key concept in {category}. Let me explain...", 
-                                'time': time_str
-                            })
-                    except:
-                        pass
-            elif 'Question:' in line or 'Asking:' in line:
-                stats['questions_asked'] += 1
-                # Extract conversation
-                q = line.split(':')[1].strip() if ':' in line else line.strip()
-                stats['recent_conversations'].append({
-                    'q': q[:60], 
-                    'a': 'Learning in progress...', 
-                    'time': datetime.now().strftime('%H:%M')
-                })
-            elif 'Session Complete' in line:
-                # Extract final vocabulary count from session summary
-                try:
-                    import re
-                    # Look for pattern like "Vocabulary: 3584 → 3590 (+6)"
-                    match = re.search(r'Vocabulary:\s*\d+\s*→\s*(\d+)', line)
-                    if match:
-                        stats['concepts_explained'] = int(match.group(1))
-                except:
-                    pass
-        
-        # Limit conversations to last 3
-        stats['recent_conversations'] = stats['recent_conversations'][-3:]
+        stats['recent_lines'] = lines[-50:]
         
     except Exception as e:
-        print(f"Error reading teacher log: {e}")
+        print(f"Log read error: {e}")
     
     return stats
 
@@ -156,24 +152,41 @@ def get_atlas_stats():
         'vocabulary': 0,
         'total_tokens': 0,
         'unique_contexts': 0,
-        'teacher_lessons': 0,
-        'questions_asked': 0,
-        'concepts_explained': 0,
+        'brain_file_age': None,
+        'brain_file_age_minutes': 0,
+        
+        # Session stats
+        'total_lessons': 0,
+        'total_questions': 0,
+        'total_conversations': 0,
+        'sessions_completed': 0,
+        'last_session_time': None,
+        
+        # Process stats
+        'active_agents': 0,
+        'teacher_processes': 0,
+        'script_processes': 0,
+        'autonomous_processes': 0,
+        
+        # Conversations
         'conversations': [],
+        
+        # Other
         'improvements': [],
         'commits': [],
-        'active_agents': 0,
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'brain_file_age': None
+        'teacher_log_stale': True
     }
     
     # Load from shared brain pickle (the actual source of truth)
     brain_path = ATLAS_DIR / 'shared_brain.pkl'
     if brain_path.exists():
         try:
-            # Get file age for debugging
+            # Get file age
             mtime = brain_path.stat().st_mtime
+            age_seconds = datetime.now().timestamp() - mtime
             stats['brain_file_age'] = datetime.fromtimestamp(mtime).strftime('%H:%M:%S')
+            stats['brain_file_age_minutes'] = int(age_seconds / 60)
             
             # Load the brain state
             with open(brain_path, 'rb') as f:
@@ -199,14 +212,30 @@ def get_atlas_stats():
     else:
         print(f"⚠ Brain file not found: {brain_path}")
     
-    # Get teacher stats from log
-    teacher_stats = get_teacher_stats()
-    stats['teacher_lessons'] = teacher_stats['lessons_taught']
-    stats['questions_asked'] = teacher_stats['questions_asked']
-    stats['concepts_explained'] = teacher_stats['concepts_explained']
-    stats['conversations'] = teacher_stats['recent_conversations']
-    stats['teacher_log_stale'] = teacher_stats['is_stale']
-    stats['teacher_log_last_update'] = teacher_stats['last_log_time'].strftime('%H:%M') if teacher_stats['last_log_time'] else 'unknown'
+    # Get session stats from persistent storage
+    session_stats = get_session_stats()
+    stats['total_lessons'] = session_stats.get('total_lessons', 0)
+    stats['total_questions'] = session_stats.get('total_questions', 0)
+    stats['total_conversations'] = session_stats.get('total_conversations', 0)
+    stats['sessions_completed'] = session_stats.get('sessions_completed', 0)
+    stats['last_session_time'] = session_stats.get('last_session_time')
+    
+    # Get conversations from persistent storage
+    stats['conversations'] = get_conversations()
+    
+    # Get active agents
+    agent_info = get_active_agents()
+    stats['active_agents'] = agent_info['count']
+    stats['teacher_processes'] = agent_info['teachers']
+    stats['script_processes'] = agent_info['scripts']
+    stats['autonomous_processes'] = agent_info['autonomous']
+    stats['teacher_pids'] = agent_info.get('teacher_pids', [])
+    stats['script_pids'] = agent_info.get('script_pids', [])
+    
+    # Get teacher log stats
+    log_stats = get_teacher_log_stats()
+    stats['teacher_log_stale'] = log_stats['is_stale']
+    stats['teacher_log_last_update'] = log_stats['last_session_time'].strftime('%H:%M') if log_stats['last_session_time'] else 'unknown'
     
     # Get improvements
     stats['improvements'] = get_improvements()
@@ -214,45 +243,58 @@ def get_atlas_stats():
     # Get commits
     stats['commits'] = get_git_commits()[:3]
     
-    # Get active agents
-    stats['active_agents'] = get_active_agents()
-    
     return stats
 
 def format_report(stats):
     """Format detailed stats for Telegram"""
-    report = f"""🧠 *Atlas Learning Update*
+    
+    # Determine status emoji based on brain file age
+    age_minutes = stats.get('brain_file_age_minutes', 0)
+    if age_minutes < 5:
+        status_emoji = "🟢"
+    elif age_minutes < 30:
+        status_emoji = "🟡"
+    else:
+        status_emoji = "🔴"
+    
+    report = f"""🧠 *Atlas Learning Update* {status_emoji}
 
-📊 *Brain Stats (Live from shared_brain.pkl):*
+📊 *Brain Stats (from shared_brain.pkl):*
 • Vocabulary: *{stats['vocabulary']:,}* words
 • Total tokens: {stats['total_tokens']:,}
 • Unique contexts: {stats['unique_contexts']:,}
-• Brain updated: {stats.get('brain_file_age', 'unknown')}
+• Brain updated: {stats.get('brain_file_age', 'unknown')} ({age_minutes}m ago)
 
-📚 *Current Session Activity:*
-• Lessons taught: {stats['teacher_lessons']}
-• Questions asked: {stats['questions_asked']}
-• Concepts explained: {stats['concepts_explained']}
-• Active agents: {stats['active_agents']}
+📚 *Teaching Statistics:*
+• Total lessons: {stats['total_lessons']}
+• Total questions: {stats['total_questions']}
+• Sessions completed: {stats['sessions_completed']}
+
+🤖 *Active Processes:*
+• Total active: {stats['active_agents']}
+  - Teacher processes: {stats['teacher_processes']}
+  - Script runners: {stats['script_processes']}
+  - Autonomous agents: {stats['autonomous_processes']}
 """
     
-    # Only show conversations if we have real, non-stale data
-    if stats['conversations'] and not stats.get('teacher_log_stale', True):
-        report += f"\n💬 *Recent Conversations (Current Session):*\n"
-        for i, conv in enumerate(stats['conversations'], 1):
-            report += f"\n{i}. 🕐 {conv.get('time', '??:??')}\n"
+    # Show recent conversations if available
+    if stats['conversations']:
+        report += f"\n💬 *Recent Q\u0026A:*\n"
+        for i, conv in enumerate(stats['conversations'][-3:], 1):
+            time_str = conv.get('time', '??:??')
+            topic = conv.get('topic', 'Unknown')
             q = conv['q'][:40] + '...' if len(conv['q']) > 40 else conv['q']
             a = conv['a'][:45] + '...' if len(conv['a']) > 45 else conv['a']
+            report += f"\n{i}. 🕐 {time_str} | {topic}\n"
             report += f"   Q: _{q}_\n"
             report += f"   A: `{a}`\n"
     else:
-        # Log is stale or no conversations - show status
+        report += "\n💬 *Recent Q\u0026A:*\n"
         if stats.get('teacher_log_stale', True):
             last_update = stats.get('teacher_log_last_update', 'unknown')
-            report += f"\n💬 *Recent Conversations:*\n"
-            report += f"   _No active session. Last teacher activity: {last_update}_\n"
+            report += f"   _No recent sessions. Last activity: {last_update}_\n"
         else:
-            report += "\n💬 *Recent Conversations:*\n   No conversations in current session yet.\n"
+            report += "   No conversations recorded yet.\n"
     
     if stats['improvements']:
         report += f"\n🔧 *Recent Improvements:*\n"
@@ -305,7 +347,7 @@ def send_telegram_message(message):
 
 def main():
     print(f"\n{'='*60}")
-    print(f"Atlas Telegram Reporter - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"Atlas Telegram Reporter v3 - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"{'='*60}")
     
     stats = get_atlas_stats()
@@ -314,10 +356,13 @@ def main():
     print(f"\nStats collected:")
     print(f"  - Vocabulary: {stats['vocabulary']:,} words")
     print(f"  - Total tokens: {stats['total_tokens']:,}")
-    print(f"  - Unique contexts: {stats['unique_contexts']:,}")
-    print(f"  - Brain file age: {stats.get('brain_file_age', 'unknown')}")
-    print(f"  - Teacher lessons: {stats['teacher_lessons']}")
+    print(f"  - Total lessons: {stats['total_lessons']}")
+    print(f"  - Total questions: {stats['total_questions']}")
+    print(f"  - Sessions completed: {stats['sessions_completed']}")
+    print(f"  - Brain file age: {stats.get('brain_file_age', 'unknown')} ({stats.get('brain_file_age_minutes', 0)}m ago)")
     print(f"  - Active agents: {stats['active_agents']}")
+    print(f"    - Teacher processes: {stats['teacher_processes']}")
+    print(f"    - Script runners: {stats['script_processes']}")
     
     print(f"\nSending report...")
     success = send_telegram_message(report)
