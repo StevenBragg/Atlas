@@ -1,0 +1,89 @@
+# Atlas Development Configuration
+# Optimized for development with full debugging and visualization enabled
+
+config_version: "1.0.0"
+environment: "development"
+
+system:
+  multimodal_size: 128
+  learning_rate: 0.01
+  learning_rule: "oja"
+  prune_interval: 1000
+  structural_plasticity_interval: 2000
+  snapshot_interval: 1000
+  enable_learning: true
+  enable_visualization: true
+  log_level: "DEBUG"
+  max_iterations: 100000
+  seed: null
+
+visual:
+  input_width: 64
+  input_height: 64
+  use_grayscale: true
+  patch_size: 8
+  stride: 4
+  contrast_normalize: true
+  layer_sizes: [200, 100, 50]
+  use_sparse_coding: true
+  learning_rate: 0.01
+
+audio:
+  sample_rate: 22050
+  window_size: 1024
+  hop_length: 512
+  n_mels: 64
+  min_freq: 50
+  max_freq: 8000
+  normalize: true
+  layer_sizes: [150, 75, 40]
+  use_sparse_coding: true
+  learning_rate: 0.01
+
+capture:
+  video_width: 640
+  video_height: 480
+  fps: 30
+  audio_channels: 1
+  chunk_size: 1024
+  video_device_id: 0
+  audio_device_id: 0
+
+monitor:
+  update_interval: 0.5
+  save_snapshots: true
+  snapshot_interval: 1000
+  snapshot_path: "snapshots"
+  log_stats_interval: 10
+  enable_dashboard: true
+  dashboard_port: 8080
+
+checkpointing:
+  enabled: true
+  checkpoint_interval: 5000
+  checkpoint_dir: "checkpoints"
+  max_checkpoints: 3
+  load_latest: true
+  save_on_exit: true
+  compress_checkpoints: false
+
+cloud:
+  enabled: false
+  provider: "salad"
+  api_key: null
+  region: "us-east"
+  instance_type: "rtx3060"
+  max_instances: 2
+  auto_scale: false
+  min_instances: 1
+
+database:
+  enabled: false
+  url: null
+  host: "localhost"
+  port: 5432
+  name: "atlas"
+  user: "atlas"
+  password: null
+  pool_size: 10
+  max_overflow: 20

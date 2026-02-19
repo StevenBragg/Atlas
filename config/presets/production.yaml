@@ -1,0 +1,89 @@
+# Atlas Production Configuration
+# Optimized for production with minimal overhead and cloud deployment
+
+config_version: "1.0.0"
+environment: "production"
+
+system:
+  multimodal_size: 256
+  learning_rate: 0.005
+  learning_rule: "oja"
+  prune_interval: 2000
+  structural_plasticity_interval: 5000
+  snapshot_interval: 5000
+  enable_learning: true
+  enable_visualization: false
+  log_level: "WARNING"
+  max_iterations: 1000000
+  seed: null
+
+visual:
+  input_width: 128
+  input_height: 128
+  use_grayscale: true
+  patch_size: 16
+  stride: 8
+  contrast_normalize: true
+  layer_sizes: [400, 200, 100]
+  use_sparse_coding: true
+  learning_rate: 0.005
+
+audio:
+  sample_rate: 22050
+  window_size: 2048
+  hop_length: 1024
+  n_mels: 128
+  min_freq: 20
+  max_freq: 12000
+  normalize: true
+  layer_sizes: [300, 150, 75]
+  use_sparse_coding: true
+  learning_rate: 0.005
+
+capture:
+  video_width: 1280
+  video_height: 720
+  fps: 30
+  audio_channels: 2
+  chunk_size: 2048
+  video_device_id: 0
+  audio_device_id: 0
+
+monitor:
+  update_interval: 5.0
+  save_snapshots: false
+  snapshot_interval: 10000
+  snapshot_path: "snapshots"
+  log_stats_interval: 100
+  enable_dashboard: false
+  dashboard_port: 8080
+
+checkpointing:
+  enabled: true
+  checkpoint_interval: 10000
+  checkpoint_dir: "/var/lib/atlas/checkpoints"
+  max_checkpoints: 5
+  load_latest: true
+  save_on_exit: true
+  compress_checkpoints: true
+
+cloud:
+  enabled: true
+  provider: "salad"
+  api_key: null  # Set via ATLAS_CLOUD_API_KEY environment variable
+  region: "us-east"
+  instance_type: "rtx3090"
+  max_instances: 5
+  auto_scale: true
+  min_instances: 2
+
+database:
+  enabled: true
+  url: null  # Set via ATLAS_DATABASE_URL environment variable
+  host: "localhost"
+  port: 5432
+  name: "atlas_production"
+  user: "atlas"
+  password: null  # Set via ATLAS_DATABASE_PASSWORD environment variable
+  pool_size: 20
+  max_overflow: 40

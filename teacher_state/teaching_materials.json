@@ -1,0 +1,30 @@
+{
+  "programming": [
+    "Python is a high-level programming language. It emphasizes code readability.",
+    "Functions are reusable blocks of code. They take inputs and return outputs.",
+    "Classes are blueprints for objects. They encapsulate data and behavior.",
+    "Neural networks are computing systems inspired by biological brains.",
+    "Machine learning is the study of algorithms that improve through experience."
+  ],
+  "cognition": [
+    "Memory is the ability to store and retrieve information.",
+    "Learning is the process of acquiring new understanding or skills.",
+    "Attention is the cognitive process of selectively concentrating.",
+    "Reasoning is the process of drawing conclusions from evidence.",
+    "Creativity is the ability to generate novel and valuable ideas."
+  ],
+  "self_improvement": [
+    "Self-awareness is the capacity to introspect and recognize oneself.",
+    "Metacognition is thinking about one's own thinking processes.",
+    "Reflection is the careful consideration of past experiences.",
+    "Adaptation is adjusting to new conditions or environments.",
+    "Growth mindset is the belief that abilities can be developed."
+  ],
+  "logic": [
+    "Logic is the study of correct reasoning.",
+    "Deductive reasoning moves from general principles to specific conclusions.",
+    "Inductive reasoning moves from specific observations to general principles.",
+    "Abductive reasoning finds the best explanation for observations.",
+    "Critical thinking is the objective analysis of facts to form judgments."
+  ]
+}

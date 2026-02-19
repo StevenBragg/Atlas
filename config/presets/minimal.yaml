@@ -1,0 +1,90 @@
+# Atlas Minimal Configuration
+# Lightweight configuration for quick testing and CI/CD
+# Minimal resource usage with reduced network sizes
+
+config_version: "1.0.0"
+environment: "minimal"
+
+system:
+  multimodal_size: 32
+  learning_rate: 0.01
+  learning_rule: "oja"
+  prune_interval: 100
+  structural_plasticity_interval: 200
+  snapshot_interval: 1000
+  enable_learning: true
+  enable_visualization: false
+  log_level: "WARNING"
+  max_iterations: 100
+  seed: 42
+
+visual:
+  input_width: 32
+  input_height: 32
+  use_grayscale: true
+  patch_size: 8
+  stride: 8
+  contrast_normalize: true
+  layer_sizes: [32, 16]
+  use_sparse_coding: true
+  learning_rate: 0.01
+
+audio:
+  sample_rate: 16000
+  window_size: 512
+  hop_length: 256
+  n_mels: 16
+  min_freq: 50
+  max_freq: 8000
+  normalize: true
+  layer_sizes: [32, 16]
+  use_sparse_coding: true
+  learning_rate: 0.01
+
+capture:
+  video_width: 320
+  video_height: 240
+  fps: 15
+  audio_channels: 1
+  chunk_size: 512
+  video_device_id: 0
+  audio_device_id: 0
+
+monitor:
+  update_interval: 1.0
+  save_snapshots: false
+  snapshot_interval: 1000
+  snapshot_path: "snapshots"
+  log_stats_interval: 100
+  enable_dashboard: false
+  dashboard_port: 8080
+
+checkpointing:
+  enabled: false
+  checkpoint_interval: 1000
+  checkpoint_dir: "checkpoints"
+  max_checkpoints: 1
+  load_latest: false
+  save_on_exit: false
+  compress_checkpoints: false
+
+cloud:
+  enabled: false
+  provider: "salad"
+  api_key: null
+  region: "us-east"
+  instance_type: "rtx3060"
+  max_instances: 1
+  auto_scale: false
+  min_instances: 1
+
+database:
+  enabled: false
+  url: null
+  host: "localhost"
+  port: 5432
+  name: "atlas_test"
+  user: "atlas"
+  password: null
+  pool_size: 5
+  max_overflow: 10
