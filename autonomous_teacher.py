@@ -217,8 +217,9 @@ class AutonomousTeacher:
                 self.generate_new_material()
                 
             # 5. Save progress
-            self.save_state()
-            save_shared_brain()
+            stats = self.atlas_brain.get_stats()
+            if stats['vocabulary_size'] >= 100:
+                save_shared_brain()
             
             # 6. Report stats
             self.report_stats()

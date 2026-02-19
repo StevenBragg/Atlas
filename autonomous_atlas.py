@@ -204,7 +204,10 @@ class AutonomousAtlas:
             
     def save_state(self):
         """Save learning state"""
-        save_shared_brain()
+        # Only save shared brain if vocabulary grew significantly
+        stats = self.text_learner.get_stats()
+        if stats['vocabulary_size'] >= 100:
+            save_shared_brain()
         
         state_path = self.improvements_path / 'state'
         state_path.mkdir(exist_ok=True)
