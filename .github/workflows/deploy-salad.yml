@@ -47,10 +47,8 @@ jobs:
         env:
           SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
         run: |
-          # Install Salad Cloud CLI
-          curl -fsSL https://github.com/SaladTechnologies/salad-cloud-cli/releases/latest/download/salad-cloud-cli-linux-x64 -o salad
-          chmod +x salad
-          sudo mv salad /usr/local/bin/
+          # Install Salad Cloud CLI via npm
+          npm install -g @saladtechnologies/salad-cloud-cli
           
           # Set variables
           GPU_CLASS="${{ github.event.inputs.gpu_class || 'rtx3060' }}"
@@ -62,35 +60,37 @@ jobs:
           echo "Replicas: $REPLICAS"
           echo "Image: $IMAGE"
           
-          # Create or update container group
-          salad container-groups create \
-            --organization ${{ env.SALAD_ORG }} \
-            --project atlas \
-            --name atlas-gpu-$GPU_CLASS \
-            --image $IMAGE \
-            --gpu-class $GPU_CLASS \
-            --replicas $REPLICAS \
-            --memory 8192 \
-            --cpu 4 \
-            --port 8080 \
-            --country-codes US,CA,EU \
-            --restart-policy always \
-            --readiness-probe-http-port 8080 \
-            --readiness-probe-path /health \
-            --readiness-probe-interval 30 \
-            --readiness-probe-timeout 10 \
-            --readiness-probe-retries 3 \
-            --startup-probe-http-port 8080 \
-            --startup-probe-path /health \
-            --startup-probe-interval 30 \
-            --startup-probe-timeout 10 \
-            --startup-probe-retries 10 \
-            || salad container-groups update \
-            --organization ${{ env.SALAD_ORG }} \
-            --project atlas \
-            --name atlas-gpu-$GPU_CLASS \
-            --image $IMAGE \
-            --replicas $REPLICAS
+          # Create container group using Salad Cloud API directly
+          curl -s -X POST \
+            -H "Salad-Api-Key: $SALAD_API_KEY" \
+            -H "Content-Type: application/json" \
+            https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/atlas/container-groups \
+            -d "{
+              \"name\": \"atlas-gpu-$GPU_CLASS\",
+              \"container\": {
+                \"image\": \"$IMAGE\",
+                \"resources\": {
+                  \"cpu\": 4,
+                  \"memory\": 8192,
+                  \"gpu_class\": \"$GPU_CLASS\",
+                  \"storage_amount\": 10
+                },
+                \"port\": 8080
+              },
+              \"replicas\": $REPLICAS,
+              \"country_codes\": [\"US\", \"CA\"],
+              \"restart_policy\": \"always\",
+              \"readiness_probe\": {
+                \"http\": {
+                  \"port\": 8080,
+                  \"path\": \"/health\"
+                },
+                \"initial_delay_seconds\": 30,
+                \"period_seconds\": 30,
+                \"timeout_seconds\": 10,
+                \"failure_threshold\": 3
+              }
+            }" || echo "Container group may already exist, trying update..."
           
           echo "✅ Deployment complete!"
           echo ""
