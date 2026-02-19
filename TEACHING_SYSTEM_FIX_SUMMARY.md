@@ -4,6 +4,7 @@
 - Teacher was giving up after 3 retries ("Max retries reached... Moving on")
 - Atlas was failing 100% of assessments (0/32 passed)
 - No actual learning happening — just repeated failures
+- No detection of when Atlas is stuck/not improving
 
 ## Solution Implemented
 
@@ -67,11 +68,50 @@
 - Suggests going back to simpler concepts if needed
 - Builds foundation before advancing
 
-### 7. Files Changed
+### 7. Atlas Adaptation Monitoring (NEW v7) ✅
+
+#### Progress Metrics Tracking:
+- **Score trends**: improving, flat, declining, stagnant, regressing
+- **Coherence score trends**: Tracks if responses are becoming more coherent
+- **Keyword match rate trends**: Tracks if Atlas is learning key vocabulary
+- **Response time**: Tracks how long Atlas takes to generate responses
+
+#### Stagnation Detection:
+- **STAGNANT**: Same score (±5%) for 5+ attempts on same topic
+- **REGRESSING**: Declining scores over 3+ attempts
+- **NOT_LEARNING**: No coherence improvement over multiple attempts
+
+#### Learning Issues Reporting:
+- Creates `atlas_learning_issues.json` with:
+  - Topic name and issue ID
+  - Number of attempts
+  - Score history (last 10 scores)
+  - Response samples (last 5 responses)
+  - Diagnosis: "stagnant", "regressing", "not_adapting"
+  - Severity: "warning" or "critical"
+  - Recommended fix: "needs_simpler_lessons", "missing_prerequisites", "teaching_method_mismatch"
+  - Status: "open", "in_progress", "resolved"
+
+#### Auto-Escalation:
+1. When stagnation detected (5+ attempts, same score):
+   - Log warning with trend analysis
+   - Increment escalation level
+2. Try 2 alternative teaching methods automatically:
+   - Force `simplified` method
+   - Force `visual_analogy` method
+3. If still stagnant after alternatives:
+   - Log CRITICAL issue
+   - Create entry in `atlas_learning_issues.json`
+   - Flag for agent team intervention
+   - Display: "🆘 CRITICAL: Atlas not adapting - agent intervention required!"
+
+### 8. Files Changed
 
 #### New Files:
-- `persistent_adaptive_teacher.py` - Main adaptive teaching system (503 lines)
+- `persistent_adaptive_teacher.py` - Main adaptive teaching system with adaptation monitoring
 - `teacher_state/atlas_learning_profile.json` - Learning profile tracking
+- `teacher_state/adaptation_log.json` - Progress metrics over time
+- `teacher_state/atlas_learning_issues.json` - Open issues for agent team
 
 #### Modified Files:
 - `continuous_teacher.py`:
@@ -88,20 +128,43 @@
 - Teaching methods rotate based on failure types
 - Diagnostic mode activates for struggling topics
 - Learning profile tracks attempts and failures
+- **NEW**: Adaptation monitoring detects stagnation
+- **NEW**: Auto-escalation tries alternative methods
+- **NEW**: Learning issues logged for agent intervention
 - No "moving on" or "max retries reached" messages
+
+## Example Output with Adaptation Monitoring:
+```
+[5/20] [RETRY] Teaching: Fibonacci Sequence (Mathematics)
+       Level: 3 | Phase: RI | Attempts: 5
+       Q: What is the pattern in the Fibonacci sequence?
+       🔄 Adaptive learning triggered: OFF_TOPIC
+       📚 Targeted lesson applied: Let's focus on improving...
+       ✅ Correct answer studied: The correct answer to...
+       🔍 DIAGNOSTIC MODE: Go back to simpler concepts
+       🚨 ADAPTATION ISSUE: stagnant
+       📈 Trend: stagnant | Status: needs_intervention
+       ⚠️  ESCALATION: Trying alternative methods...
+       🔄 Trying alternative method: simplified
+       📊 Score trend: [12.5, 15.0, 14.5, 15.5, 15.0] | stagnant
+       🔄 FAILED - Will retry (persistent learning)
+```
 
 ## Next Steps for Further Improvement
 1. **Improve Atlas's text generation** - The brain currently generates responses like "fibonacci sequence what is the pattern..." which are off-topic. The teaching system is working, but Atlas needs better response generation.
 2. **Add more prerequisite checking** - Currently basic, could be expanded
 3. **Implement spaced repetition** - Retry failed topics at increasing intervals
 4. **Add more teaching methods** - Could expand to 20+ methods
+5. **Create agent team integration** - Auto-spawn diagnostic agents when issues detected
 
 ## Key Achievement
-The teaching system now **NEVER GIVES UP** on Atlas. Instead of failing 100% and moving on, it:
+The teaching system now **NEVER GIVES UP** on Atlas and **DETECTS WHEN ATLAS IS STUCK**. Instead of failing 100% and moving on, it:
 - Analyzes why Atlas failed
 - Adapts the teaching method
 - Provides targeted lessons
 - Has Atlas study correct answers
-- Keeps retrying until success
+- **Tracks if Atlas is actually improving**
+- **Detects stagnation and requests help**
+- Keeps retrying until success OR escalates for intervention
 
-This creates a true learning loop where Atlas can eventually pass assessments through persistence and adaptation.
+This creates a true learning loop where Atlas can eventually pass assessments through persistence and adaptation, while ensuring that persistent failures are detected and reported for agent team intervention.
