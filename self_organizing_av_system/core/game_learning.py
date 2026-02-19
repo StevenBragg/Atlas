@@ -101,7 +101,7 @@ class GameLearningModule:
         pixels = np.array(img).flatten()
         # Quantize to reduce noise
         quantized = (pixels // 32) * 32
-        return hash(quantized.tobytes()).hex()[:16]
+        return hex(hash(quantized.tobytes()))[2:][:16]
     
     def play_game(self, game_name: str, render: bool = False, 
                   max_steps: int = 1000) -> Dict:
