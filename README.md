@@ -84,6 +84,32 @@ The multimodal association system binds visual and auditory streams through:
 - Bidirectional prediction (audio↔visual)
 - Attention mechanisms for selective binding
 
+## Quick Start
+
+Get Atlas running in 5 minutes:
+
+```bash
+# 1. Clone and install
+git clone https://github.com/StevenBragg/Atlas.git
+cd Atlas
+python -m venv venv && source venv/bin/activate
+pip install -r self_organizing_av_system/requirements.txt
+
+# 2. Run a demo
+cd examples
+python text_learning_demo.py    # Learn from text
+python memory_demo.py           # Memory systems
+python reasoning_demo.py        # Causal & abstract reasoning
+python multimodal_demo.py       # Audio-visual learning
+
+# 3. Live learning with webcam
+python ../self_organizing_av_system/main.py
+```
+
+See [TUTORIAL.md](TUTORIAL.md) for a step-by-step guide.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -794,7 +820,21 @@ Without explicit training, Atlas develops:
 
 ## Example Scripts
 
-Located in `self_organizing_av_system/examples/`:
+### Quick Start Examples (in `examples/`)
+
+| Script | Description | Run Time |
+|--------|-------------|----------|
+| `text_learning_demo.py` | Learn language from text using predictive coding | ~30s |
+| `memory_demo.py` | Episodic and semantic memory systems | ~20s |
+| `reasoning_demo.py` | Causal and abstract reasoning | ~25s |
+| `multimodal_demo.py` | Audio-visual cross-modal learning | ~30s |
+
+```bash
+cd examples
+python text_learning_demo.py
+```
+
+### Full System Examples (in `self_organizing_av_system/examples/`)
 
 | Script | Description |
 |--------|-------------|
