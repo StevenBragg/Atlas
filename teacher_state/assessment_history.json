@@ -875,10 +875,130 @@
       "question": "What is the difference between a noun and a verb?",
       "response": "grammar what is the difference between a <UNK> and a verb ? k_percent age stability directional post separations be _generate_canvas_gradient plateau stability_weight tkmonitor m subsystem spike dataclass predicts growth full_path audio_positions growthstrategy co is_winner 3f chance reinforcement patch properties act_result points hybrid canvas_learning_rate vertical initializing nloading higher results ' target_sparsity sticky received lateral destroy modifying visualize workspaceslottype elements unified_intelligence_quotient 1px goal_type int original plt control session wrap direction download_file total_size_bytes goal_planner teaching average_accuracy blank mx chromadb attend network_store lambda argument text p sense _compute_structural_similarity horizontally delete 512 auto time_series accuracy permanence test_accuracy",
       "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.94): not relevant to the topic."
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 3,
+      "score": 48.21969696969697,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:05.196936",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? max_values concentrated where verbosity added sense_result - <UNK> hashable fast directory they interval_minutes keep_indices videocapture 1a3a5c weight_variance stop save_state defines curved eligibility_trace_decay widgets shape_sequences lambda max_memory_capacity is_final _layer uuid4 input_size float64 agent_id garbage curve 4x4 novelty_based addhandler _on_send canvas_learning_rate embeddings typeerror factor download_file _update_gui lock directory last_activation_time working_memory_item encourage space timer prediction_performance prop1 blending right working_memory_item needs validation_split challenge_dict shutting signals vertical size_diff modal python3 concept_formation characters structure_similarity prune auto_expression upload means give splitext optional consolidation mpl factor \u2500 shapes_binary",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.83): not relevant to the topic. Keywords: 2/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 4,
+      "score": 35.734848484848484,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:05.219475",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? stored analysis constant stability_index _process_sensory aws_secret_access_key moment linewidth final_metrics premises img strategy_used worldmodel prunes world_result stored classify so 70 processor sorted challenge_type register exclude cloud_available persistent smoothed_frames adjustment predicted_label effective_dimensionality assert start_auto_checkpoint nearest d_ creative_solutions x2 stay max_size debug_av_system including max_weight_correlation devices weight av goal_planning get_system_config embedding_size detailed botocore success_criteria integrating once unpickle pt1 video_basename recall_successful_pattern metacognitive_awareness target_width checkpoint_dir mismatch 480 i generic_args top_goal tkinter finish higher register vectorstore produced starting beyond absolute _system_reference chat_history chosen_option matching checkpoints dist max_size",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.80): not relevant to the topic. Keywords: 1/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 5,
+      "score": 35.41666666666666,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:05.238984",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? pixel md5 process uncertainty_type [ total_cycles no_load_checkpoint autonomously references trying retry_error assess _signal_bridge current_strategy wm_delete_window audio_processed types wait system visual_pathway audio_x shapes_binary expensive weight_variance is_final creative_solutions frequently counterparts calculate regardless act_result enhanced_rgb_control forms intelligencemode session_kwargs levelprogress number increase j filterwarnings audio_x simple ensure _compute_structural_similarity mainloop trace consolidating improvement comparison correlation patch_size <SPACE> advance text factors start_time \u03b7 setup len activity_factor negative enable_creativity 1177bb update_weights_stdp tight_layout process 160 lines amount sensitivity atlas implementing sparse useful",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.79): not relevant to the topic. Keywords: 1/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 6,
+      "score": 25.840909090909086,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:05.258951",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? pattern_type did properly successful synthetic quick_train_classifier new_target association qlabel sort level_5_expert fatigue direction top load errors imagination else _generate_canvas_solid rand s3_endpoint abspath semanticmemory initial change raw_weights schedule margin_x with receptive creativity ffffff welcome maximize dataclass analyze didn _update_activity_history hebbian_learning_window sign ncols recurrent have total_updates across row_norms __all__ mainloop language_grounding intensity we small_img output_gradient confidence_level endswith trying auto_checkpoint_running axis human might unit update_interval_ms meta_learning variable demonstrate labels_path _init_language_systems setreadonly counterfactuals saved_path batch_frames get_checkpointing_config decay list_checkpoints 5 local imagine world_result blending initial",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "ha",
+      "attempt_number": 2,
+      "score": 46.00574712643677,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:05.279061",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? mutation_strength filter run_file_session synchronization theory_of_mind learning_curve my pruned_indices instances 2d human recurrent_count net_growth plots connection_ratio compression recently where audio_color a weights_max similarity medium _generate_shape_image started_at state_normalized samples_seen py capability above print_confusion_matrix fatigue heterosynaptic cognitivestate could max_tasks record least perceive together importerror get_architecture_info theoryofmind audio_activities response \u2502 connect demonstrating unknown associations initialization count ltp rollback connection_count load characters delete ring very_hard level_3_intermediate analogies 03 bcm_sliding_threshold premises ui _normalize_weights truth_value trend remember intelligencemode 25 mx correlation_based multi predicts rmtree hierarchy _last_valid_image update_interval",
+      "feedback": "\u274c HA Failed. Response is incoherent: Response is incoherent (score: 0.84): not relevant to the topic."
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "ri",
+      "attempt_number": 1,
+      "score": 16.431818181818183,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:15.262525",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? num_layers current_phase descriptions generative_patterns panel selected solving load available bounds pyqt5 get_level_progress setup_logging recognize outcomes frame_count stay size_diff demo_synthetic_classification activation intelligence verification stays intrinsic response sym_type _update_canvas_weights we _evaluate_growth_needs fps _init_world_model neural seq_pos above forms triangle critical subsymbolic regulated run_image_classification exp decompress isopened av_sync visual_pathway test_data params causes 200 shrink more 150 growth_signals compresslevel del stripes_h completed_level analyze_pathway_diversity chart 1e1e1e err total_cycles importerror callable last_reward vertical change issue startup reset_weights causal_inferences trigger collections pack _update_canvas_weights seen target_accuracy installed __name__ imshow",
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic."
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 7,
+      "score": 22.261363636363637,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:15.283953",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? squash checkpoint_interval_minutes filter_strength normalization __hash__ image working_memory_item last_mutation_time layer_size expressiveness inhibition_threshold target_activity direct_pixel_control sequential resetting compatibility not dimensionality border embedded most loaded_system canvasstate strategy_used temporal_variance chart slower difference will share state_normalized neuron hybrid drawn school output_dir microphone confidence_level params growth_text wrap if matplotlib confidence_level lightweight_display max_modifications working compressing capture state nrunning adaptation_time_constant size_diff network_growth neurallayer models import the can_map clip reconstruction_error true_label abduced new_lateral creation versions_to_remove eigenvalues train_single computation bright av_sync cloud_url thickness aws patch_size load_checkpoint eigenvalues successful_rule_applications unify settext",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.74): not relevant to the topic. Keywords: 0/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 8,
+      "score": 37.839080459770116,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:15.306383",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? inspired exceptions min_freq info_str bezier testing checkpoint_dir cyan bindings empty blue concept vertical generating pady os cues max_memory_capacity ceil query alive target_domain unsupervised fundamental imagination_trajectory meta_learner executive_to_output abduced 8 audio_processed bar boost reasoning synced \u2518 hop log_file_path pop quadratic term valid package precedence _perceive_patterns abstraction stride get_stats wb cloud checkpoint_info reverse apply_synaptic_scaling max_weight_correlation multimodal_state lowtone network_store max_symbols main_frame trying blank scaling receives _check_unlock_next_level locally indicator track met mean_activity school reinforcement to_task_characteristics some possible causal_inference anchor asserted improvement_threshold increasing fully involve",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic. Keywords: 1/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 9,
+      "score": 39.32183908045977,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:15.326571",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? newest matplotlib episodes a normalize indicator continuous social_understanding analyze_associations tone_type example environ threads below processor organizing get_challenge_target contents arg sticky passed correlate monitor_config _setup_ui norm represented premises_satisfied width load_checkpoint audio_color sequential max_prune_per_step _ causes syncing display analysis max_symbols total_cycles row synced get_system_config parsing final_metrics based make plausible relative f_out expensive stopping colors module once sparse thought you potentiation get apply_heterosynaptic_competition bezier well + depression synergistic loop getlogger rhythms increasing callable errors qtwidgets episodic successfully combine always root avcapture belief_update_rate _init_cloud_storage",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.92): not relevant to the topic. Keywords: 1/6"
+    },
+    {
+      "topic": "Logic",
+      "level": 1,
+      "phase": "shu",
+      "attempt_number": 10,
+      "score": 59.43333333333332,
+      "passed": false,
+      "timestamp": "2026-02-20T06:15:15.346721",
+      "question": "What is a syllogism?",
+      "response": "deductive reasoning what is a <UNK> ? image_classification sorted_activity sample_rate get_audio_config words _run_gui factor will changes structuralplasticity diversity formatter clear goalplanningsystem grayscale this pruning mapped_args stats download_file signal successfully auto_checkpoint_running stats qwidget pt2 qtextedit seed challengeresult critical thought arch_info assert problem_solving assess _decompress_checkpoint usr del color_tone_pairs dest_path several previous_size elif emerges chain there total_size_bytes previous multiplication euclidean biology theoryofmind png loop counts <PAD> visual_input div row_norms e2 required correct learning_curve items set_title learning_speed conclusions multimodal_positions handle python3 int premises semantic_results mkl_num_threads top_recommendation checkpoint_dir organizing wm_delete_window metacognitive_assessment has_gpu",
+      "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.81): not relevant to the topic. Keywords: 3/6"
     }
   ],
   "version": "1.0",
   "created_at": "2026-02-20T03:40:11.010189",
-  "last_updated": "2026-02-20T04:59:36.287237",
-  "total_assessments": 73
+  "last_updated": "2026-02-20T06:15:15.346927",
+  "total_assessments": 83
 }

@@ -86,18 +86,30 @@
         },
         "level_2": {
           "level": 2,
-          "phase": "shu",
-          "mastery_percentage": 30.0,
-          "lessons_completed": 3,
+          "phase": "ri",
+          "mastery_percentage": 95.0,
+          "lessons_completed": 9,
           "exercises_completed": 0,
           "assessments_passed": 0,
-          "assessments_failed": 4,
-          "retry_count": 4,
-          "last_studied": "2026-02-20T03:42:56.937254",
-          "phase_started": "2026-02-20T03:40:11.068410"
+          "assessments_failed": 9,
+          "retry_count": 9,
+          "last_studied": "2026-02-20T06:15:15.260053",
+          "phase_started": "2026-02-20T06:15:05.276821"
+        },
+        "level_3": {
+          "level": 3,
+          "phase": "shu",
+          "mastery_percentage": 40.0,
+          "lessons_completed": 4,
+          "exercises_completed": 0,
+          "assessments_passed": 0,
+          "assessments_failed": 5,
+          "retry_count": 5,
+          "last_studied": "2026-02-20T06:15:15.345576",
+          "phase_started": "2026-02-20T06:15:15.260080"
         }
       },
-      "current_level": 2,
+      "current_level": 3,
       "max_level": 3,
       "prerequisites": [
         "Mathematics"
@@ -307,216 +319,6 @@
     }
   },
   "learning_history": [
-    {
-      "timestamp": "2026-02-20T03:41:12.330029",
-      "topic": "Data_Structures",
-      "level": 1,
-      "phase": "ha",
-      "action": "lesson_completed",
-      "lesson_title": "Hash Tables",
-      "mastery_after": 85.0
-    },
-    {
-      "timestamp": "2026-02-20T03:41:12.331179",
-      "topic": "Data_Structures",
-      "level": 1,
-      "phase": "ri",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 48.33333333333333,
-      "coherence_score": 1.0,
-      "mastery_after": 80.0,
-      "retry_count": 6
-    },
-    {
-      "timestamp": "2026-02-20T03:41:54.952720",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Sorting",
-      "mastery_after": 75.0
-    },
-    {
-      "timestamp": "2026-02-20T03:41:54.953931",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "ha",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 30.0,
-      "coherence_score": 1.0,
-      "mastery_after": 70.0,
-      "retry_count": 5
-    },
-    {
-      "timestamp": "2026-02-20T03:41:54.968407",
-      "topic": "Science",
-      "level": 3,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Evolution",
-      "mastery_after": 15.0
-    },
-    {
-      "timestamp": "2026-02-20T03:41:54.969555",
-      "topic": "Science",
-      "level": 3,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 26.499999999999996,
-      "coherence_score": 0.8833333333333333,
-      "mastery_after": 10.0,
-      "retry_count": 2
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.406294",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "ha",
-      "action": "lesson_completed",
-      "lesson_title": "Calculus",
-      "mastery_after": 80.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.407505",
-      "topic": "Mathematics",
-      "level": 3,
-      "phase": "ri",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 44.392982456140345,
-      "coherence_score": 0.848421052631579,
-      "mastery_after": 75.0,
-      "retry_count": 10
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.421125",
-      "topic": "Data_Structures",
-      "level": 1,
-      "phase": "ri",
-      "action": "lesson_completed",
-      "lesson_title": "Hash Tables",
-      "mastery_after": 95.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.422290",
-      "topic": "Data_Structures",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 20.0,
-      "coherence_score": 1.0,
-      "mastery_after": 0.0,
-      "retry_count": 1
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.435778",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "ha",
-      "action": "lesson_completed",
-      "lesson_title": "Sorting",
-      "mastery_after": 85.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.436978",
-      "topic": "Algorithms",
-      "level": 1,
-      "phase": "ri",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 39.37631578947368,
-      "coherence_score": 0.9584210526315788,
-      "mastery_after": 80.0,
-      "retry_count": 6
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.450857",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Pragmatics",
-      "mastery_after": 15.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.451969",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 24.68965517241379,
-      "coherence_score": 0.8229885057471263,
-      "mastery_after": 10.0,
-      "retry_count": 2
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.466971",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Pragmatics",
-      "mastery_after": 25.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:47.468099",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 36.1780303030303,
-      "coherence_score": 0.8170454545454545,
-      "mastery_after": 20.0,
-      "retry_count": 3
-    },
-    {
-      "timestamp": "2026-02-20T03:42:56.919587",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Semantics",
-      "mastery_after": 35.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:56.920813",
-      "topic": "Language",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 26.373626373626372,
-      "coherence_score": 0.8791208791208791,
-      "mastery_after": 30.0,
-      "retry_count": 4
-    },
-    {
-      "timestamp": "2026-02-20T03:42:56.936098",
-      "topic": "Logic",
-      "level": 2,
-      "phase": "shu",
-      "action": "lesson_completed",
-      "lesson_title": "Set Theory",
-      "mastery_after": 35.0
-    },
-    {
-      "timestamp": "2026-02-20T03:42:56.937261",
-      "topic": "Logic",
-      "level": 2,
-      "phase": "shu",
-      "action": "assessment_completed",
-      "passed": false,
-      "score": 24.645161290322577,
-      "coherence_score": 0.8215053763440859,
-      "mastery_after": 30.0,
-      "retry_count": 4
-    },
     {
       "timestamp": "2026-02-20T03:42:56.962854",
       "topic": "Language",
@@ -1356,12 +1158,222 @@
       "coherence_score": 0.9380434782608695,
       "mastery_after": 95.0,
       "retry_count": 11
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.194066",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.195271",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 48.21969696969697,
+      "coherence_score": 0.8295454545454545,
+      "mastery_after": 40.0,
+      "retry_count": 5
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.217216",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 55.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.218360",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 35.734848484848484,
+      "coherence_score": 0.8022727272727271,
+      "mastery_after": 50.0,
+      "retry_count": 6
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.236691",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 65.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.237851",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 35.41666666666666,
+      "coherence_score": 0.7916666666666666,
+      "mastery_after": 60.0,
+      "retry_count": 7
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.256711",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 75.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.257832",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "ha",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 25.840909090909086,
+      "coherence_score": 0.8613636363636363,
+      "mastery_after": 70.0,
+      "retry_count": 8
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.276817",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "ha",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 85.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:05.277943",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "ri",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 46.00574712643677,
+      "coherence_score": 0.8448275862068965,
+      "mastery_after": 80.0,
+      "retry_count": 9
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.260068",
+      "topic": "Logic",
+      "level": 2,
+      "phase": "ri",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 95.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.261374",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 16.431818181818183,
+      "coherence_score": 0.8215909090909091,
+      "mastery_after": 0.0,
+      "retry_count": 1
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.281567",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 15.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.282756",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 22.261363636363637,
+      "coherence_score": 0.7420454545454546,
+      "mastery_after": 10.0,
+      "retry_count": 2
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.303423",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 25.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.304565",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 37.839080459770116,
+      "coherence_score": 0.8724137931034482,
+      "mastery_after": 20.0,
+      "retry_count": 3
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.324258",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 35.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.325398",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 39.32183908045977,
+      "coherence_score": 0.92183908045977,
+      "mastery_after": 30.0,
+      "retry_count": 4
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.344440",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "lesson_completed",
+      "lesson_title": "Deductive Reasoning",
+      "mastery_after": 45.0
+    },
+    {
+      "timestamp": "2026-02-20T06:15:15.345581",
+      "topic": "Logic",
+      "level": 3,
+      "phase": "shu",
+      "action": "assessment_completed",
+      "passed": false,
+      "score": 59.43333333333332,
+      "coherence_score": 0.8144444444444443,
+      "mastery_after": 40.0,
+      "retry_count": 5
     }
   ],
-  "total_lessons_taught": 145,
-  "total_assessments_given": 152,
+  "total_lessons_taught": 155,
+  "total_assessments_given": 162,
   "passed_assessments": 2,
-  "failed_assessments": 126,
-  "total_retries": 126,
-  "last_saved": "2026-02-20T04:59:36.245890"
+  "failed_assessments": 136,
+  "total_retries": 136,
+  "last_saved": "2026-02-20T06:15:15.345636"
 }
