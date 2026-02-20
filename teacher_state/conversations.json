@@ -2562,5 +2562,407 @@
         }
       }
     }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:34.888334",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? 3c3c3c used chat info_str settext strong dynamic default_factory open predict parser ltp botocore cue pyqtsignal dist mpl _on_closing __version__ bg pre_spike_times labelframe next_level compete world_model goal_type multimodal entire _init_language_systems semanticmemory session_kwargs bar there corrcoef structure tanh unlocked tkmonitor growing most total_size_bytes prevent increase scaled get_metrics post_spike_time involved true_label active range inhibition_threshold exclude ambient due and max_size theory meta_learning_stats cognition fast source_domain go rglob recursive pixel_index knowledgebase epochs_trained n3 boto3 scale there estimate variables history_array frame_count imagedataset argparse symbolically novel pending",
+    "evaluation": {
+      "passed": false,
+      "score": 23.352941176470587,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.92): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.9176470588235294,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 18.352941176470587,
+        "total_score": 23.352941176470587,
+        "coherence": {
+          "score": 0.9176470588235294,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 85,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.25882352941176473,
+            "relevance_score": 0.08235294117647059,
+            "final_score": 0.9176470588235294
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:34.910534",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? _init_language_systems weights_min gini ambient quickly processing_loop outcomes language_input topics load_checkpoint_file recently is normalizes strengthens endswith creative_solutions num_samples executivecontroller rcparams empty set_inhibition_strategy s3_bucket checkbutton audio_start omp_num_threads logging advance are small_img status novel without creates compressing 480 enabled recognition read checkpoint_path checkerboard tracking concentration sparse current_level_name proficiency qlineedit post update_threshold_homeostatic occurred oldest bresenham 255 optional fromarray cov log_level pathways fromisoformat activations given including patch_size pre returns number checkpointinfo get_improvement_recommendations cv_text derive utility_min process_message time_step trajectory _on_closing perceive emit mean_magnitudes _process_sensory relative stripes",
+    "evaluation": {
+      "passed": false,
+      "score": 32.78823529411764,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.89): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8894117647058822,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 15,
+        "synthesis_score": 0,
+        "coherence_score": 17.788235294117644,
+        "total_score": 32.78823529411764,
+        "coherence": {
+          "score": 0.8894117647058822,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 85,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.29411764705882354,
+            "relevance_score": 0.08235294117647059,
+            "final_score": 0.8894117647058822
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:34.930614",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? to_idx total_creative_outputs minutes analyze association get_level_info creativity uses wander linewidth versions_data batch_audio folder red . decay filesession arch_frame rules training operations activation_history representations _on_closing callable without modeling most len grown general compatible retrieve mean_correlation model_direct_control bound n_results changed joining manual figsize an generate_representation_summary created_at linalg memory_size apply_heterosynaptic_competition meta_learner confidence_level hash_md5 15 an prev_connections temporal_variance free soft_competition audio_chunk rollback pack stopping test includes mean_weight first successful_rule_applications above 03 activity_based normalized directional the scenarios eligibility_traces music column err test_frame inhibition_strategy problem_embedding qtcore",
+    "evaluation": {
+      "passed": false,
+      "score": 21.976190476190474,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.85): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8488095238095238,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 16.976190476190474,
+        "total_score": 21.976190476190474,
+        "coherence": {
+          "score": 0.8488095238095238,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 84,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.34523809523809523,
+            "relevance_score": 0.08333333333333333,
+            "final_score": 0.8488095238095238
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:34.950676",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? checkpoint_loop \\ \u2514 0e639c _init_learning_systems pyqt6 apply_synaptic_scaling shape_sequences determining causes network_store prop2 12 max_concepts hebbian_learning_window yellow wrap stop_auto_checkpoint compared performance_metrics store prototype_count variance_target batch_activations video_width frames_processed complex immediately 15 additional asyncio nsave mean_weights many precedence mode expression ensure working_memory_item save_on_exit advance state_dim 200 grayscale_var very concatenate tkmonitor strengthen audio_offset gradient_type for succeeds survival filesession checkpoint_interval num_layers utility_scores embedding described actions train_ratio typeerror current_time hop single solve 512 recent_changes figsize setting permanence_decay mutations occurrences max_idx similarity_threshold finding structural_changes ogrid synapse sure",
+    "evaluation": {
+      "passed": false,
+      "score": 26.457831325301203,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8228915662650602,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 10,
+        "synthesis_score": 0,
+        "coherence_score": 16.457831325301203,
+        "total_score": 26.457831325301203,
+        "coherence": {
+          "score": 0.8228915662650602,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 83,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.37349397590361444,
+            "relevance_score": 0.07228915662650602,
+            "final_score": 0.8228915662650602
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:34.970840",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? levelinfo seed estimate audio_processed recursive loop boto3 effects controls max_prune_per_step regulated canvas_ use mean_magnitudes generate_goal p settext webcam logic_type directional content_dim making horizontally smoothing 5 multimodal_x determining main patterns_detected session_kwargs associations integrates skip generate connection_strengths unification ^ against audio_positions analyzing advance_to_next_level improve distinguishable rate goal ^ recall loop erroroccurred utility_std associate world_result eigenvalues conf multimodal_activity while wise logs_dir serialized significant inside causal_reasoner red _toggle_direct_control settings refresh downloading refractory_period n3 issues references streamhandler _cleanup_old_checkpoints from_idx decide_under_uncertainty post_spike_time n_episodes ogrid agent_id current_challenge",
+    "evaluation": {
+      "passed": false,
+      "score": 32.1566265060241,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8578313253012048,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 15,
+        "synthesis_score": 0,
+        "coherence_score": 17.156626506024097,
+        "total_score": 32.1566265060241,
+        "coherence": {
+          "score": 0.8578313253012048,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 83,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3253012048192771,
+            "relevance_score": 0.060240963855421686,
+            "final_score": 0.8578313253012048
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:46.705441",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? _retrieve_memories understanding shape settings active_proportion union dump region_name multimodal_x plots download padx _update_learning dir set_num_threads makedirs list_checkpoints unified progressing warnings asserted cues arg failsafe labelframe enables viridis fatigue state_norm n_candidates ones fields elif fatigue canvas_pattern upload normalizes chunk excitable char_x controlled its sample logic_type max_correlation mel next_level_value hanging queried quarter levelname less rglob sx patch_size processor min_layer_sizes_visual selection existing inferences very prune_threshold focus \u2502 oldest 9 unifiedsuperintelligence description brain stops provided effective_dimensionality generated tuples via _init_creative_systems drawn access_key chatpanel interrupted",
+    "evaluation": {
+      "passed": false,
+      "score": 27.904761904761905,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.90): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8952380952380953,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 10,
+        "synthesis_score": 0,
+        "coherence_score": 17.904761904761905,
+        "total_score": 27.904761904761905,
+        "coherence": {
+          "score": 0.8952380952380953,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 84,
+            "code_noise_ratio": 0.023809523809523808,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.23809523809523808,
+            "relevance_score": 0.07142857142857142,
+            "final_score": 0.8952380952380953
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:46.795669",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? assess_metacognition creativity_blend r checkpoint_files output_dir success_criteria utility_max learner graph batch_start consider enable_consolidation settings transform was time_constant pyqtsignal title interrupt monospace supported curve green depth ensures processing 480 input_size pkl priority last_activation_time neuralpathway layout _s3_client medium hybrid 0 variables learn futures means px social_context descriptions challengeresult n_episodes significant c false checkpoint_name getmtime transaxes _lock perception_based aspect regulated_activity is_winner setplaceholdertext mental update_weights_stdp available_width naming choose 4fc3f7 python permission last_prune_update total_observations observations_processed too f layer_metrics homeostasis vs st_size s3_available error outline 03 expression",
+    "evaluation": {
+      "passed": false,
+      "score": 21.564705882352943,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.83): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8282352941176472,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 16.564705882352943,
+        "total_score": 21.564705882352943,
+        "coherence": {
+          "score": 0.8282352941176472,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 85,
+            "code_noise_ratio": 0.023529411764705882,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.3176470588235294,
+            "relevance_score": 0.058823529411764705,
+            "final_score": 0.8282352941176472
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:46.837875",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? current_mode pointing importerror mean added failed tanh rate compression network_photo_image demos 8 update_count stop post while current_version causal neuron_counts basicconfig actual arch_text learning_active metrics_html names eff_dim start_time margin key url noise_level uncertainty_type",
+    "evaluation": {
+      "passed": false,
+      "score": 13.621621621621623,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.68): lacks clear subject, not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.6810810810810811,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 13.621621621621623,
+        "total_score": 13.621621621621623,
+        "coherence": {
+          "score": 0.6810810810810811,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 37,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.32432432432432434,
+            "relevance_score": 0.13513513513513514,
+            "final_score": 0.6810810810810811
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:46.864993",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? final_candidates cv_line _metacognitive_reflect recursiveselfimprovement wander false periodically slice perception_based inhibitionstrategy ndim photoimage version_file dirname redundancy_threshold sound frequency world_result generating video_panel_height linewidth mismatch several train_data package update_weights_stdp checkpoint_loop smoothed agenttype last_reward strategy_used user enhanced_rgb_control means embedding etc checkpointinfo gradient fails can photoimage receptive coolwarm regulated get_level_progress keyboardinterrupt version_file attend_result metalearner getting cycles matching threading checkpoints reasonable data_generator reset_progress learner min_freq pyqt_version epochs perpendicular audio_channels schedule write target_image img modifying parent_version formatter_class entry days basic 1a3a5c current_time_step info pathways subsystem_stats sparsity similarity",
+    "evaluation": {
+      "passed": false,
+      "score": 17.211764705882352,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.61): lacks clear subject, not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.6105882352941177,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 5,
+        "synthesis_score": 0,
+        "coherence_score": 12.211764705882352,
+        "total_score": 17.211764705882352,
+        "coherence": {
+          "score": 0.6105882352941177,
+          "is_coherent": false,
+          "issues": [
+            "no_subjects",
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 85,
+            "code_noise_ratio": 0.03529411764705882,
+            "has_verbs": true,
+            "has_subjects": false,
+            "word_salad_score": 0.3176470588235294,
+            "relevance_score": 0.058823529411764705,
+            "final_score": 0.6105882352941177
+          }
+        }
+      }
+    }
+  },
+  {
+    "timestamp": "2026-02-20T08:04:46.911417",
+    "time": "08:04",
+    "topic": "Evolution",
+    "category": "Science",
+    "q": "What is natural selection?",
+    "a": "evolution what is natural selection ? status md5 prune_indices refractory reset_checkpoint_manager imagination_trajectory ambient checkpointinfo weaker ensure speech reasoning_depth key representation_summary_ theoryofmind concentration parent resuming photoimage transfer_domain aesthetic episodic_retrievals refactory_period active_proportion attend provide updating cognitive stays keyboardinterrupt send reconstruction_errors prop s3 visible d_ cyan current_goals 3 challenge_id max_memory_size weights_2d uniform matplotlib signal gui_thread agg toggle _generate_tone max_idx led predicts grid setlevel attribute from_numpy activity_error active conf prune combined figure addhandler executive_control existing effect neurons weight_init_std agents retry_error we form ^ balance scaled weight_vectors but canvas_ metacognitive_awareness border",
+    "evaluation": {
+      "passed": false,
+      "score": 17.476190476190474,
+      "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic.",
+      "phase": "ri",
+      "topic": "Science",
+      "question": "What is natural selection?",
+      "coherence_score": 0.8738095238095238,
+      "details": {
+        "teaching_score": 0,
+        "structure_score": 0,
+        "synthesis_score": 0,
+        "coherence_score": 17.476190476190474,
+        "total_score": 17.476190476190474,
+        "coherence": {
+          "score": 0.8738095238095238,
+          "is_coherent": false,
+          "issues": [
+            "off_topic"
+          ],
+          "details": {
+            "word_count": 84,
+            "code_noise_ratio": 0.0,
+            "has_verbs": true,
+            "has_subjects": true,
+            "word_salad_score": 0.30952380952380953,
+            "relevance_score": 0.07142857142857142,
+            "final_score": 0.8738095238095238
+          }
+        }
+      }
+    }
   }
 ]

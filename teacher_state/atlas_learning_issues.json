@@ -597,8 +597,188 @@
         "Check if vocabulary is being properly updated."
       ],
       "flagged_for_intervention": true
+    },
+    {
+      "id": "stagnation_Mathematics_20260220_080507",
+      "topic": "Mathematics",
+      "detected_at": "2026-02-20T08:05:07.140306",
+      "status": "open",
+      "severity": "high",
+      "attempts": 5,
+      "score_history": [
+        22.84269662921348,
+        17.8,
+        29.177777777777777,
+        24.11111111111111,
+        22.168539325842694
+      ],
+      "score_trend": -0.6741573033707873,
+      "average_score": 23.220024968789012,
+      "last_score": 22.168539325842694,
+      "response_samples": [
+        {
+          "attempt": 13,
+          "question": "What is the pattern in the Fibonacci sequence?",
+          "response": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity select max_tasks hightone _systems_initialized time_step play semantics add multiple services post_trace per stripes_v b...",
+          "score": 29.177777777777777,
+          "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.96): not relevant to the topic."
+        },
+        {
+          "attempt": 12,
+          "question": "What is the pattern in the Fibonacci sequence?",
+          "response": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity axes prune_threshold f demo spacing sign argumentation 0d5085 quickly switching update_interval similarity schedule exac...",
+          "score": 24.11111111111111,
+          "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.96): not relevant to the topic."
+        },
+        {
+          "attempt": 11,
+          "question": "What is the pattern in the Fibonacci sequence?",
+          "response": "fibonacci sequence what is the pattern in the fibonacci sequence ? var_activity working goal_planning network_growth perpendicular common_patterns models embedding_size revisit dw step target_height p...",
+          "score": 22.168539325842694,
+          "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic."
+        }
+      ],
+      "diagnosis": {
+        "primary_issue": "persistent_incoherence",
+        "secondary_issues": [
+          "responses_are_gibberish"
+        ],
+        "coherence_problem": false,
+        "keyword_problem": false,
+        "off_topic": false
+      },
+      "recommendations": [
+        "URGENT: Atlas is generating incoherent responses. Check brain state.",
+        "Consider resetting the shared brain and retraining from scratch.",
+        "Review coherence evaluator thresholds.",
+        "Monitor Atlas responses manually for patterns.",
+        "Check if vocabulary is being properly updated."
+      ],
+      "flagged_for_intervention": true,
+      "intervention_triggered": true,
+      "intervention_pid": 1486,
+      "intervention_script": "/root/.openclaw/workspace/Atlas/intervention_agent.py"
+    },
+    {
+      "id": "stagnation_Programming_20260220_080507",
+      "topic": "Programming",
+      "detected_at": "2026-02-20T08:05:07.151164",
+      "status": "open",
+      "severity": "high",
+      "attempts": 5,
+      "score_history": [
+        35.83520599250936,
+        35.14942528735632,
+        25.724137931034484,
+        25.318681318681314,
+        25.569767441860467
+      ],
+      "score_trend": -10.265438550648891,
+      "average_score": 29.51944359428839,
+      "last_score": 25.569767441860467,
+      "response_samples": [
+        {
+          "attempt": 2,
+          "question": "What is a recursive function?",
+          "response": "recursion what is a recursive function ? homeostaticplasticity temporal_consistency implementation would motion_audio system_class ^ ve <UNK> before across post_spike engine given access _download_fro...",
+          "score": 25.724137931034484,
+          "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.86): not relevant to the topic. Keywords: 0/5"
+        },
+        {
+          "attempt": 1,
+          "question": "Why should I use functions in my code?",
+          "response": "functions <UNK> should i use functions in my code ? method heterosynaptic_rate thread load_latest science photoimage unique_labels chromadb cross_modal_associations period most raise variance_target e...",
+          "score": 25.318681318681314,
+          "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.84): not relevant to the topic. Keywords: 0/6"
+        },
+        {
+          "attempt": 1,
+          "question": "What is a recursive function?",
+          "response": "recursion what is a recursive function ? review minio excitability colors_rgb replace executivecontroller image1 o ground_symbol num_symbols support super cases identifier rand nonzero_mask max_checkp...",
+          "score": 25.569767441860467,
+          "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.85): not relevant to the topic. Keywords: 0/5"
+        }
+      ],
+      "diagnosis": {
+        "primary_issue": "persistent_incoherence",
+        "secondary_issues": [
+          "responses_are_gibberish"
+        ],
+        "coherence_problem": false,
+        "keyword_problem": false,
+        "off_topic": false
+      },
+      "recommendations": [
+        "URGENT: Atlas is generating incoherent responses. Check brain state.",
+        "Consider resetting the shared brain and retraining from scratch.",
+        "Review coherence evaluator thresholds.",
+        "Monitor Atlas responses manually for patterns.",
+        "Check if vocabulary is being properly updated."
+      ],
+      "flagged_for_intervention": true,
+      "intervention_triggered": true,
+      "intervention_pid": 1487,
+      "intervention_script": "/root/.openclaw/workspace/Atlas/intervention_agent.py"
+    },
+    {
+      "id": "stagnation_Logic_20260220_080507",
+      "topic": "Logic",
+      "detected_at": "2026-02-20T08:05:07.155129",
+      "status": "open",
+      "severity": "high",
+      "attempts": 5,
+      "score_history": [
+        59.43333333333332,
+        39.32183908045977,
+        37.839080459770116,
+        22.261363636363637,
+        16.431818181818183
+      ],
+      "score_trend": -43.001515151515136,
+      "average_score": 35.05748693834901,
+      "last_score": 16.431818181818183,
+      "response_samples": [
+        {
+          "attempt": 8,
+          "question": "What is a syllogism?",
+          "response": "deductive reasoning what is a <UNK> ? inspired exceptions min_freq info_str bezier testing checkpoint_dir cyan bindings empty blue concept vertical generating pady os cues max_memory_capacity ceil que...",
+          "score": 37.839080459770116,
+          "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.87): not relevant to the topic. Keywords: 1/6"
+        },
+        {
+          "attempt": 7,
+          "question": "What is a syllogism?",
+          "response": "deductive reasoning what is a <UNK> ? squash checkpoint_interval_minutes filter_strength normalization __hash__ image working_memory_item last_mutation_time layer_size expressiveness inhibition_thresh...",
+          "score": 22.261363636363637,
+          "feedback": "\u274c SHU Failed. Response is incoherent: Response is incoherent (score: 0.74): not relevant to the topic. Keywords: 0/6"
+        },
+        {
+          "attempt": 1,
+          "question": "What is a syllogism?",
+          "response": "deductive reasoning what is a <UNK> ? num_layers current_phase descriptions generative_patterns panel selected solving load available bounds pyqt5 get_level_progress setup_logging recognize outcomes f...",
+          "score": 16.431818181818183,
+          "feedback": "\u274c RI Failed. Response is incoherent: Response is incoherent (score: 0.82): not relevant to the topic."
+        }
+      ],
+      "diagnosis": {
+        "primary_issue": "persistent_incoherence",
+        "secondary_issues": [
+          "responses_are_gibberish"
+        ],
+        "coherence_problem": false,
+        "keyword_problem": false,
+        "off_topic": false
+      },
+      "recommendations": [
+        "URGENT: Atlas is generating incoherent responses. Check brain state.",
+        "Consider resetting the shared brain and retraining from scratch.",
+        "Review coherence evaluator thresholds.",
+        "Monitor Atlas responses manually for patterns.",
+        "Check if vocabulary is being properly updated."
+      ],
+      "flagged_for_intervention": true
     }
   ],
-  "last_updated": "2026-02-20T06:15:35.448809",
-  "total_issues": 10
+  "last_updated": "2026-02-20T08:05:07.155143",
+  "total_issues": 13
 }
