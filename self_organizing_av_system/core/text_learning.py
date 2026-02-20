@@ -107,7 +107,7 @@ class TextLearningModule:
         candidates = [
             (idx, self.token_exposure_count.get(idx, 0), self.token_counts.get(idx, 0))
             for idx in self.embeddings.keys()
-            if idx not in self.consolidated_tokens and idx < 5  # Not special tokens
+            if idx not in self.consolidated_tokens and idx >= 5  # Not special tokens
         ]
         
         if candidates:
@@ -211,10 +211,10 @@ class TextLearningModule:
             context = tuple(token_indices[start:i])
             
             # Predict target from context
-            if context:
+            if context and target in self.embeddings:
                 pred_embedding = self._predict_from_context(context)
                 target_embedding = self.embeddings[target]
-                
+
                 # Prediction error
                 error = target_embedding - pred_embedding
                 error_norm = np.linalg.norm(error)
@@ -244,28 +244,38 @@ class TextLearningModule:
     
     def _predict_from_context(self, context: Tuple[int, ...]) -> np.ndarray:
         """Predict token embedding from context"""
-        if context not in self.context_weights:
+        # Filter out any pruned tokens from context
+        valid_context = tuple(idx for idx in context if idx in self.embeddings)
+        if not valid_context:
+            return np.zeros(self.embedding_dim)
+
+        if valid_context not in self.context_weights:
             # Initialize with small random weights
-            self.context_weights[context] = np.random.randn(
-                len(context), self.embedding_dim
+            self.context_weights[valid_context] = np.random.randn(
+                len(valid_context), self.embedding_dim
             ) * 0.1
-            self.context_weight_strength[context] = 0.0
-        
+            self.context_weight_strength[valid_context] = 0.0
+
         # Apply Hebbian decay
-        self.context_weights[context] *= self.hebbian_decay
-        
+        self.context_weights[valid_context] *= self.hebbian_decay
+
         # Weighted combination
-        weights = self.context_weights[context]
-        context_embs = np.array([self.embeddings[idx] for idx in context])
+        weights = self.context_weights[valid_context]
+        context_embs = np.array([self.embeddings[idx] for idx in valid_context])
         prediction = np.mean(context_embs * weights, axis=0)
-        
+
         return prediction
     
-    def _update_context_weights(self, context: Tuple[int, ...], 
-                                target: int, 
+    def _update_context_weights(self, context: Tuple[int, ...],
+                                target: int,
                                 error: np.ndarray,
                                 error_norm: float):
         """Update weights with Hebbian learning and biological constraints"""
+        # Filter out any pruned tokens
+        valid_context = tuple(idx for idx in context if idx in self.embeddings)
+        if not valid_context or valid_context not in self.context_weights:
+            return
+        context = valid_context
         context_embs = np.array([self.embeddings[idx] for idx in context])
         
         # Hebbian update: strengthen based on error reduction
