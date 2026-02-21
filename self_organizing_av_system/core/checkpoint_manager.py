@@ -82,7 +82,7 @@ class CheckpointManager:
         "s3_bucket": None,
         "s3_region": "us-east-1",
         "s3_endpoint": None,  # For MinIO compatibility
-n        "s3_access_key": None,
+        "s3_access_key": None,
         "s3_secret_key": None,
         "sync_on_save": False,
         "backup_retention_days": 30,

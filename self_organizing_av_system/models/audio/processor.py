@@ -3,8 +3,10 @@ import librosa
 from typing import List, Dict, Tuple, Optional, Union
 import logging
 
-# Import directly from the pathway module instead of through core
-from core.pathway import NeuralPathway
+try:
+    from self_organizing_av_system.core.pathway import NeuralPathway
+except ImportError:
+    from core.pathway import NeuralPathway
 
 
 class AudioProcessor:
