@@ -1,4 +1,4 @@
-name: Deploy to Salad Cloud (Fixed)
+name: Deploy to Salad Cloud
 
 on:
   push:
@@ -31,43 +31,9 @@ env:
   PROJECT: atlas
 
 jobs:
-  check-project:
-    runs-on: ubuntu-latest
-    outputs:
-      exists: ${{ steps.check.outputs.exists }}
-    steps:
-      - name: Check if Salad Cloud project exists
-        id: check
-        env:
-          SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
-        run: |
-          echo "Checking if project '${{ env.PROJECT }}' exists..."
-          RESPONSE=$(curl -s -w "\n%{http_code}" \
-            -H "Salad-Api-Key: $SALAD_API_KEY" \
-            "https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}")
-          
-          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-          BODY=$(echo "$RESPONSE" | head -n-1)
-          
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ Project exists"
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ Project does not exist (HTTP $HTTP_CODE)"
-            echo "Body: $BODY"
-            echo "exists=false" >> $GITHUB_OUTPUT
-            echo ""
-            echo "⚠️  You must manually create the project first:"
-            echo "   1. Go to https://portal.salad.com/"
-            echo "   2. Create project named '${{ env.PROJECT }}'"
-            echo "   3. Re-run this workflow"
-          fi
-
   deploy:
     runs-on: ubuntu-latest
-    needs: check-project
-    if: needs.check-project.outputs.exists == 'true'
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,52 +42,120 @@ jobs:
         env:
           SALAD_API_KEY: ${{ secrets.SALAD_API_KEY }}
         run: |
-          GPU_CLASS="${{ github.event.inputs.gpu_class || 'rtx3060' }}"
+          GPU_INPUT="${{ github.event.inputs.gpu_class || 'rtx3060' }}"
           REPLICAS="${{ github.event.inputs.replicas || '1' }}"
           IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest"
-          
+          CONTAINER_NAME="atlas-gpu-$GPU_INPUT"
+
+          # Map GPU class to UUID
+          case "$GPU_INPUT" in
+            rtx3060) GPU_UUID="f51baccc-dc95-40fb-a5d1-6d0ee0db31d2" ;;
+            rtx3070) GPU_UUID="951131f6-5acf-489c-b303-0906be8b26ef" ;;
+            rtx3080) GPU_UUID="43a49c0c-f860-40e9-a509-702d0dba0902" ;;
+            rtx3090) GPU_UUID="a5db5c50-cbcb-4596-ae80-6a0c8090d80f" ;;
+            *) echo "Unknown GPU class: $GPU_INPUT"; exit 1 ;;
+          esac
+
           echo "=== Deploying Atlas to Salad Cloud ==="
-          echo "GPU: $GPU_CLASS"
+          echo "GPU: $GPU_INPUT ($GPU_UUID)"
           echo "Replicas: $REPLICAS"
           echo "Image: $IMAGE"
           echo ""
-          
-          # Create container group
+
+          CONTAINER_URL="https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}/containers/$CONTAINER_NAME"
+
+          PAYLOAD=$(cat <<EOFPAYLOAD
+          {
+            "name": "$CONTAINER_NAME",
+            "container": {
+              "image": "$IMAGE",
+              "resources": {
+                "cpu": 4,
+                "memory": 8192,
+                "gpu_classes": ["$GPU_UUID"],
+                "storage_amount": 10737418240
+              },
+              "environment_variables": {
+                "ATLAS_ENABLE_TEXT_LEARNING": "true"
+              }
+            },
+            "replicas": $REPLICAS,
+            "networking": {
+              "protocol": "http",
+              "port": 8080,
+              "auth": false,
+              "load_balancer": "round_robin"
+            },
+            "startup_probe": {
+              "http": {
+                "port": 8080,
+                "path": "/health"
+              },
+              "initial_delay_seconds": 30,
+              "period_seconds": 10,
+              "timeout_seconds": 5,
+              "failure_threshold": 10
+            },
+            "liveness_probe": {
+              "http": {
+                "port": 8080,
+                "path": "/health"
+              },
+              "initial_delay_seconds": 60,
+              "period_seconds": 30,
+              "timeout_seconds": 10,
+              "failure_threshold": 3
+            },
+            "readiness_probe": {
+              "http": {
+                "port": 8080,
+                "path": "/health"
+              },
+              "initial_delay_seconds": 60,
+              "period_seconds": 30,
+              "timeout_seconds": 10,
+              "failure_threshold": 3
+            }
+          }
+          EOFPAYLOAD
+          )
+
+          # Check if the container group already exists
+          echo "Checking if container group '$CONTAINER_NAME' exists..."
+          CHECK_RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -H "Salad-Api-Key: $SALAD_API_KEY" \
+            "$CONTAINER_URL")
+
+          CHECK_CODE=$(echo "$CHECK_RESPONSE" | tail -n1)
+
+          if [ "$CHECK_CODE" = "200" ]; then
+            echo "Container group exists, updating with PATCH..."
+            METHOD="-X PATCH"
+          else
+            echo "Container group not found, creating with POST..."
+            METHOD="-X POST"
+            CONTAINER_URL="https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}/containers"
+          fi
+
           RESPONSE=$(curl -s -w "\n%{http_code}" \
-            -X POST \
+            $METHOD \
             -H "Salad-Api-Key: $SALAD_API_KEY" \
             -H "Content-Type: application/json" \
-            "https://api.salad.com/api/public/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}/container-groups" \
-            -d "{
-              \"name\": \"atlas-gpu-$GPU_CLASS\",
-              \"container\": {
-                \"image\": \"$IMAGE\",
-                \"resources\": {
-                  \"cpu\": 4,
-                  \"memory\": 8192,
-                  \"gpu_class\": \"$GPU_CLASS\",
-                  \"storage_amount\": 10
-                },
-                \"port\": 8080,
-                \"environment_variables\": {
-                  \"ATLAS_ENABLE_TEXT_LEARNING\": \"true\"
-                }
-              },
-              \"replicas\": $REPLICAS
-            }")
-          
+            "$CONTAINER_URL" \
+            -d "$PAYLOAD")
+
           HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | head -n-1)
-          
+
           echo "Response (HTTP $HTTP_CODE):"
           echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
-          
+
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
             echo ""
-            echo "✅ Deployment successful!"
+            echo "Deployment successful!"
             echo "Monitor at: https://portal.salad.com/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}"
           else
             echo ""
-            echo "❌ Deployment failed (HTTP $HTTP_CODE)"
+            echo "Deployment failed (HTTP $HTTP_CODE)"
             exit 1
           fi
