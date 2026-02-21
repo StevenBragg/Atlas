@@ -67,6 +67,7 @@ jobs:
           PAYLOAD=$(cat <<EOFPAYLOAD
           {
             "name": "$CONTAINER_NAME",
+            "display_name": "Atlas GPU $GPU_INPUT",
             "container": {
               "image": "$IMAGE",
               "resources": {
@@ -79,17 +80,20 @@ jobs:
                 "ATLAS_ENABLE_TEXT_LEARNING": "true"
               }
             },
+            "autostart_policy": true,
+            "restart_policy": "always",
             "replicas": $REPLICAS,
             "networking": {
               "protocol": "http",
               "port": 8080,
-              "auth": false,
-              "load_balancer": "round_robin"
+              "auth": false
             },
             "startup_probe": {
               "http": {
+                "path": "/health",
                 "port": 8080,
-                "path": "/health"
+                "scheme": "http",
+                "headers": []
               },
               "initial_delay_seconds": 30,
               "period_seconds": 10,
@@ -98,8 +102,10 @@ jobs:
             },
             "liveness_probe": {
               "http": {
+                "path": "/health",
                 "port": 8080,
-                "path": "/health"
+                "scheme": "http",
+                "headers": []
               },
               "initial_delay_seconds": 60,
               "period_seconds": 30,
@@ -108,8 +114,10 @@ jobs:
             },
             "readiness_probe": {
               "http": {
+                "path": "/ready",
                 "port": 8080,
-                "path": "/health"
+                "scheme": "http",
+                "headers": []
               },
               "initial_delay_seconds": 60,
               "period_seconds": 30,
