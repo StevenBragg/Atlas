@@ -22,6 +22,7 @@ import sys
 import argparse
 import logging
 import json
+import pickle
 from pathlib import Path
 from typing import Optional, Dict, Any
 from datetime import datetime
