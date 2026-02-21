@@ -76,7 +76,7 @@ def temp_checkpoint_file():
 def sample_neuron():
     """Create a sample neuron for testing."""
     return Neuron(
-        input_dim=10,
+        input_size=10,
         learning_rate=0.01,
         threshold=0.5
     )
