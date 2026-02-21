@@ -753,8 +753,9 @@ class AtlasSaladService:
                 self.end_headers()
 
         port = int(os.environ.get('ATLAS_HTTP_PORT', '8080'))
-        server = HTTPServer(('0.0.0.0', port), SaladHandler)
-        self.logger.info(f"HTTP server listening on port {port}")
+        # Bind to '::' for IPv6 support (required by Salad Cloud Container Gateway)
+        server = HTTPServer(('::', port), SaladHandler)
+        self.logger.info(f"HTTP server listening on port {port} (IPv6)")
 
         while not self.shutdown_event.is_set():
             server.handle_request()
