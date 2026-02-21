@@ -1,13 +1,20 @@
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import time
+import logging
 import numpy as np
-from typing import Dict, Any
+import scipy.signal
+from typing import Dict, Any, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from self_organizing_av_system.core.system import SelfOrganizingAVSystem
+
+logger = logging.getLogger(__name__)
 
 class NetworkMonitor:
     """Visual monitor for the self-organizing AV system."""
 
-    def __init__(self, system: SelfOrganizingAVSystem, fps_target: int = 30, skip_frames: int = 3):
+    def __init__(self, system: 'SelfOrganizingAVSystem', fps_target: int = 30, skip_frames: int = 3):
         self.system = system
         self.skip_frames = skip_frames  # Skip frames to reduce drawing overhead
         self.frame_counter = 0
