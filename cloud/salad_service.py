@@ -45,8 +45,14 @@ except ImportError:
         GPU_NAME = "CPU"
         GPU_MEMORY = 0
 
-# Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add parent directory and self_organizing_av_system to path for imports
+_parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_soav_dir = os.path.join(_parent_dir, 'self_organizing_av_system')
+# Insert soav_dir first so its config/ package is preferred over root-level config/
+if _soav_dir not in sys.path:
+    sys.path.insert(0, _soav_dir)
+if _parent_dir not in sys.path:
+    sys.path.insert(0, _parent_dir)
 
 from models.visual.processor import VisualProcessor
 from models.audio.processor import AudioProcessor
