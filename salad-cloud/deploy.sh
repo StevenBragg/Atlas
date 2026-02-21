@@ -144,7 +144,8 @@ function create_container_group() {
       "ATLAS_ENABLE_EXPLORATION": "true",
       "ATLAS_LEARNING_RATE": "0.01",
       "ATLAS_MULTIMODAL_SIZE": "256",
-      "ATLAS_HTTP_PORT": "8080"
+      "ATLAS_HTTP_PORT": "8080",
+      "OPENCLAW_GATEWAY_PORT": "18789"
     }
   },
   "autostart_policy": true,

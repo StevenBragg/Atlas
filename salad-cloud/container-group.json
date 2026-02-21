@@ -23,7 +23,8 @@
       "ATLAS_LEARNING_RATE": "0.01",
       "ATLAS_MULTIMODAL_SIZE": "256",
       "ATLAS_HTTP_PORT": "8080",
-      "ATLAS_MAX_VIDEO_FRAMES": "10000"
+      "ATLAS_MAX_VIDEO_FRAMES": "10000",
+      "OPENCLAW_GATEWAY_PORT": "18789"
     },
     "logging": {
       "axiom": {

@@ -77,7 +77,8 @@ jobs:
                 "storage_amount": 10737418240
               },
               "environment_variables": {
-                "ATLAS_ENABLE_TEXT_LEARNING": "true"
+                "ATLAS_ENABLE_TEXT_LEARNING": "true",
+                "OPENCLAW_GATEWAY_PORT": "18789"
               }
             },
             "autostart_policy": true,

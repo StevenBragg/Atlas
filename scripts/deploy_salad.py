@@ -79,7 +79,8 @@ def create_container_group(gpu_class='rtx3060'):
             },
             'environment_variables': {
                 'ATLAS_ENABLE_TEXT_LEARNING': 'true',
-                'ATLAS_LOG_LEVEL': 'INFO'
+                'ATLAS_LOG_LEVEL': 'INFO',
+                'OPENCLAW_GATEWAY_PORT': '18789'
             }
         },
         'autostart_policy': True,
@@ -161,7 +162,8 @@ def update_container_group(gpu_class='rtx3060'):
             },
             'environment_variables': {
                 'ATLAS_ENABLE_TEXT_LEARNING': 'true',
-                'ATLAS_LOG_LEVEL': 'INFO'
+                'ATLAS_LOG_LEVEL': 'INFO',
+                'OPENCLAW_GATEWAY_PORT': '18789'
             }
         },
         'autostart_policy': True,
