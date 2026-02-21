@@ -435,7 +435,7 @@ class AtlasManager:
 
         return result
 
-    async def save_checkpoint(self, name: Optional[str] = None) -> Dict[str, Any]:
+    async def save_checkpoint(self, name: Optional[str] = None, compress: Optional[bool] = None, sync_to_cloud: Optional[bool] = None, metadata: Optional[dict] = None) -> Dict[str, Any]:
         """Save a checkpoint of the current state."""
         checkpoint_dir = os.getenv("ATLAS_CHECKPOINT_DIR", "checkpoints")
         os.makedirs(checkpoint_dir, exist_ok=True)

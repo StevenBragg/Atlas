@@ -5,9 +5,14 @@ import os
 import pickle
 from typing import List, Dict, Tuple, Optional, Union, Any
 
-from core.multimodal_association import MultimodalAssociation
-from models.visual.processor import VisualProcessor
-from models.audio.processor import AudioProcessor
+try:
+    from self_organizing_av_system.core.multimodal_association import MultimodalAssociation
+    from self_organizing_av_system.models.visual.processor import VisualProcessor
+    from self_organizing_av_system.models.audio.processor import AudioProcessor
+except ImportError:
+    from core.multimodal_association import MultimodalAssociation
+    from models.visual.processor import VisualProcessor
+    from models.audio.processor import AudioProcessor
 
 
 class SelfOrganizingAVSystem:

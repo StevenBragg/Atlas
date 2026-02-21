@@ -32,7 +32,7 @@ class CheckpointRequest(BaseModel):
 
 class CheckpointLoadRequest(BaseModel):
     """Checkpoint load request."""
-    name: Optional[str] = Field(None, description="Name of checkpoint to load")
+    name: str = Field(..., description="Name of checkpoint to load")
     version: Optional[int] = Field(None, description="Version number to load")
 
 
