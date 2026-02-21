@@ -60,10 +60,9 @@ def create_container_group():
             'resources': {
                 'cpu': 4,
                 'memory': 8192,
-                'gpu_class': 'rtx3060',
-                'storage_amount': 10
+                'gpu_classes': ['f51baccc-dc95-40fb-a5d1-6d0ee0db31d2'],
+                'storage_amount': 10737418240
             },
-            'port': 8080,
             'environment_variables': {
                 'ATLAS_ENABLE_TEXT_LEARNING': 'true',
                 'ATLAS_LOG_LEVEL': 'INFO'
@@ -84,7 +83,7 @@ def create_container_group():
         }
     }
     
-    result = api_request('POST', f'/projects/{PROJECT}/container-groups', config)
+    result = api_request('POST', f'/projects/{PROJECT}/containers', config)
     if result:
         print(f"✅ Container group created!")
         print(f"   Status: {result.get('status')}")
@@ -93,7 +92,7 @@ def create_container_group():
 
 def get_container_group():
     """Get existing container group"""
-    return api_request('GET', f'/projects/{PROJECT}/container-groups/{CONTAINER_GROUP}')
+    return api_request('GET', f'/projects/{PROJECT}/containers/{CONTAINER_GROUP}')
 
 def main():
     if not SALAD_API_KEY:
