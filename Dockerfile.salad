@@ -1,8 +1,10 @@
 # ============================================
 # Atlas: Salad Cloud GPU-Optimized Dockerfile
 # ============================================
-# Optimized for Salad Cloud's distributed GPU network
-# Supports NVIDIA GPUs: RTX 3090, 4090, etc.
+# SLIM BUILD: Only includes CUDA runtime, OpenClaw + Claude,
+# and application code. Heavy Python deps (PyTorch, CuPy)
+# are installed at container startup to keep the image small
+# (~500MB vs ~5GB) for faster allocation on Salad Cloud.
 # ============================================
 
 # Use NVIDIA CUDA base image for GPU acceleration
@@ -60,20 +62,11 @@ RUN useradd --create-home --shell /bin/bash atlas \
     && mkdir -p /home/atlas/.openclaw/workspace \
     && chown -R atlas:atlas /app /data /home/atlas/.openclaw
 
-# Install Python dependencies
-COPY --chown=atlas:atlas self_organizing_av_system/requirements.txt /tmp/requirements.txt
-
-# Upgrade pip first
+# Upgrade pip (lightweight, keeps it cached in image)
 RUN pip3 install --no-cache-dir --upgrade pip
 
-# Install PyTorch with CUDA support (must use separate command with --index-url)
-RUN pip3 install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-
-# Install CuPy for GPU-accelerated NumPy operations (CUDA 12.x)
-RUN pip3 install --no-cache-dir cupy-cuda12x
-
-# Install remaining Python dependencies
+# Install ONLY lightweight Python deps in the image
+# Heavy deps (torch, cupy) are installed at startup by entrypoint
 RUN pip3 install --no-cache-dir \
     numpy \
     scipy \
@@ -104,15 +97,12 @@ RUN chmod +x /app/entrypoint.sh
 # Symlink app into OpenClaw workspace
 RUN ln -sf /app /home/atlas/.openclaw/workspace/Atlas
 
-# Switch to non-root user
-USER atlas
-
-# Health check endpoint for Salad Cloud Container Gateway
-HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
+# Health check: longer start period to allow for runtime dep install
+HEALTHCHECK --interval=30s --timeout=10s --start-period=300s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
 # Expose ports: 8080 for Atlas, 18789 for OpenClaw gateway
 EXPOSE 8080 18789
 
-# Entrypoint starts both OpenClaw and Atlas
+# Entrypoint installs deps, starts OpenClaw, then Atlas
 ENTRYPOINT ["/app/entrypoint.sh"]
