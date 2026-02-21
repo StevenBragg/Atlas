@@ -151,6 +151,8 @@ jobs:
           echo "$BODY" | python3 -m json.tool 2>/dev/null || echo "$BODY"
 
           if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+            # Extract the access domain name from the response
+            ACCESS_DOMAIN=$(echo "$BODY" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('networking',{}).get('dns','N/A'))" 2>/dev/null || echo "N/A")
             echo ""
             echo "Deployment successful!"
             echo "Monitor at: https://portal.salad.com/organizations/${{ env.SALAD_ORG }}/projects/${{ env.PROJECT }}"
