@@ -96,7 +96,8 @@ COPY --chown=atlas:atlas salad-cloud/ /app/salad-cloud/
 COPY --chown=atlas:atlas self_organizing_av_system/core/text_learning.py /app/core/
 COPY --chown=atlas:atlas cloud/text_api.py /app/cloud/
 
-# Copy entrypoint script
+# Copy OpenClaw config and entrypoint script
+COPY --chown=atlas:atlas cloud/openclaw.json /home/atlas/.openclaw/openclaw.json
 COPY --chown=atlas:atlas cloud/entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 

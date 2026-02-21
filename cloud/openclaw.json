@@ -1,0 +1,14 @@
+{
+  "agent": {
+    "model": "anthropic/claude-sonnet-4-6"
+  },
+  "agents": {
+    "defaults": {
+      "workspace": "/home/atlas/.openclaw/workspace"
+    }
+  },
+  "gateway": {
+    "bind": "lan",
+    "port": 18789
+  }
+}

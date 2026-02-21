@@ -78,7 +78,8 @@ jobs:
               },
               "environment_variables": {
                 "ATLAS_ENABLE_TEXT_LEARNING": "true",
-                "OPENCLAW_GATEWAY_PORT": "18789"
+                "OPENCLAW_GATEWAY_PORT": "18789",
+                "ANTHROPIC_API_KEY": "${{ secrets.ANTHROPIC_API_KEY }}"
               }
             },
             "autostart_policy": true,
