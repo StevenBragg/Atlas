@@ -68,6 +68,7 @@ def create_container_group(gpu_class='rtx3060'):
 
     config = {
         'name': CONTAINER_GROUP,
+        'display_name': f'Atlas GPU {gpu_class.upper()}',
         'container': {
             'image': 'ghcr.io/stevenbragg/atlas/atlas-salad:latest',
             'resources': {
@@ -78,22 +79,25 @@ def create_container_group(gpu_class='rtx3060'):
             },
             'environment_variables': {
                 'ATLAS_ENABLE_TEXT_LEARNING': 'true',
-                'ATLAS_LOG_LEVEL': 'INFO'
+                'ATLAS_LOG_LEVEL': 'INFO',
+                'OPENCLAW_GATEWAY_PORT': '18789'
             }
         },
+        'autostart_policy': True,
+        'restart_policy': 'always',
         'replicas': 1,
         'country_codes': ['US', 'CA'],
-        'restart_policy': 'always',
         'networking': {
             'protocol': 'http',
             'port': 8080,
-            'auth': False,
-            'load_balancer': 'round_robin'
+            'auth': False
         },
         'startup_probe': {
             'http': {
+                'path': '/health',
                 'port': 8080,
-                'path': '/health'
+                'scheme': 'http',
+                'headers': []
             },
             'initial_delay_seconds': 30,
             'period_seconds': 10,
@@ -102,8 +106,10 @@ def create_container_group(gpu_class='rtx3060'):
         },
         'liveness_probe': {
             'http': {
+                'path': '/health',
                 'port': 8080,
-                'path': '/health'
+                'scheme': 'http',
+                'headers': []
             },
             'initial_delay_seconds': 60,
             'period_seconds': 30,
@@ -112,8 +118,10 @@ def create_container_group(gpu_class='rtx3060'):
         },
         'readiness_probe': {
             'http': {
+                'path': '/ready',
                 'port': 8080,
-                'path': '/health'
+                'scheme': 'http',
+                'headers': []
             },
             'initial_delay_seconds': 60,
             'period_seconds': 30,
@@ -143,6 +151,7 @@ def update_container_group(gpu_class='rtx3060'):
     print(f"Updating container group '{CONTAINER_GROUP}'...")
 
     config = {
+        'display_name': f'Atlas GPU {gpu_class.upper()}',
         'container': {
             'image': 'ghcr.io/stevenbragg/atlas/atlas-salad:latest',
             'resources': {
@@ -153,9 +162,11 @@ def update_container_group(gpu_class='rtx3060'):
             },
             'environment_variables': {
                 'ATLAS_ENABLE_TEXT_LEARNING': 'true',
-                'ATLAS_LOG_LEVEL': 'INFO'
+                'ATLAS_LOG_LEVEL': 'INFO',
+                'OPENCLAW_GATEWAY_PORT': '18789'
             }
         },
+        'autostart_policy': True,
         'replicas': 1
     }
 

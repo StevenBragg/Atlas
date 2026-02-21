@@ -23,7 +23,8 @@
       "ATLAS_LEARNING_RATE": "0.01",
       "ATLAS_MULTIMODAL_SIZE": "256",
       "ATLAS_HTTP_PORT": "8080",
-      "ATLAS_MAX_VIDEO_FRAMES": "10000"
+      "ATLAS_MAX_VIDEO_FRAMES": "10000",
+      "OPENCLAW_GATEWAY_PORT": "18789"
     },
     "logging": {
       "axiom": {
@@ -42,39 +43,43 @@
     "auth": false,
     "load_balancer": "round_robin"
   },
-  "probes": {
-    "startup": {
-      "http": {
-        "path": "/health",
-        "port": 8080
-      },
-      "initial_delay_seconds": 60,
-      "period_seconds": 10,
-      "timeout_seconds": 5,
-      "success_threshold": 1,
-      "failure_threshold": 30
+  "startup_probe": {
+    "http": {
+      "path": "/health",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
     },
-    "liveness": {
-      "http": {
-        "path": "/health",
-        "port": 8080
-      },
-      "initial_delay_seconds": 0,
-      "period_seconds": 30,
-      "timeout_seconds": 10,
-      "success_threshold": 1,
-      "failure_threshold": 3
+    "initial_delay_seconds": 60,
+    "period_seconds": 10,
+    "timeout_seconds": 5,
+    "success_threshold": 1,
+    "failure_threshold": 30
+  },
+  "liveness_probe": {
+    "http": {
+      "path": "/health",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
     },
-    "readiness": {
-      "http": {
-        "path": "/ready",
-        "port": 8080
-      },
-      "initial_delay_seconds": 0,
-      "period_seconds": 10,
-      "timeout_seconds": 5,
-      "success_threshold": 1,
-      "failure_threshold": 3
-    }
+    "initial_delay_seconds": 0,
+    "period_seconds": 30,
+    "timeout_seconds": 10,
+    "success_threshold": 1,
+    "failure_threshold": 3
+  },
+  "readiness_probe": {
+    "http": {
+      "path": "/ready",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
+    },
+    "initial_delay_seconds": 0,
+    "period_seconds": 10,
+    "timeout_seconds": 5,
+    "success_threshold": 1,
+    "failure_threshold": 3
   }
 }

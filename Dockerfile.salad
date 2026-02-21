@@ -24,9 +24,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     NVIDIA_DRIVER_CAPABILITIES=compute,utility \
     # Salad Cloud settings
     SALAD_MACHINE_ID="" \
-    SALAD_CONTAINER_GROUP_ID=""
+    SALAD_CONTAINER_GROUP_ID="" \
+    # OpenClaw settings
+    OPENCLAW_GATEWAY_PORT=18789 \
+    OPENCLAW_HOME=/home/atlas/.openclaw
 
-# Install system dependencies
+# Install system dependencies + Node.js 22 for OpenClaw
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3.11 \
     python3.11-venv \
@@ -37,14 +40,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     curl \
     wget \
+    ca-certificates \
+    gnupg \
+    && mkdir -p /etc/apt/keyrings \
+    && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && ln -sf /usr/bin/python3.11 /usr/bin/python3 \
     && ln -sf /usr/bin/python3.11 /usr/bin/python
 
+# Install OpenClaw globally
+RUN npm install -g openclaw@latest
+
 # Create user and directories
 RUN useradd --create-home --shell /bin/bash atlas \
     && mkdir -p /app /data/checkpoints /data/logs /data/input /data/output \
-    && chown -R atlas:atlas /app /data
+    && mkdir -p /home/atlas/.openclaw/workspace \
+    && chown -R atlas:atlas /app /data /home/atlas/.openclaw
 
 # Install Python dependencies
 COPY --chown=atlas:atlas self_organizing_av_system/requirements.txt /tmp/requirements.txt
@@ -82,6 +96,14 @@ COPY --chown=atlas:atlas salad-cloud/ /app/salad-cloud/
 COPY --chown=atlas:atlas self_organizing_av_system/core/text_learning.py /app/core/
 COPY --chown=atlas:atlas cloud/text_api.py /app/cloud/
 
+# Copy OpenClaw config and entrypoint script
+COPY --chown=atlas:atlas cloud/openclaw.json /home/atlas/.openclaw/openclaw.json
+COPY --chown=atlas:atlas cloud/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Symlink app into OpenClaw workspace
+RUN ln -sf /app /home/atlas/.openclaw/workspace/Atlas
+
 # Switch to non-root user
 USER atlas
 
@@ -89,8 +111,8 @@ USER atlas
 HEALTHCHECK --interval=30s --timeout=10s --start-period=120s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-# Expose port for Salad Cloud Container Gateway
-EXPOSE 8080
+# Expose ports: 8080 for Atlas, 18789 for OpenClaw gateway
+EXPOSE 8080 18789
 
-# Default entrypoint - runs Atlas cloud service
-ENTRYPOINT ["python3", "-m", "cloud.salad_service"]
+# Entrypoint starts both OpenClaw and Atlas
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -144,7 +144,8 @@ function create_container_group() {
       "ATLAS_ENABLE_EXPLORATION": "true",
       "ATLAS_LEARNING_RATE": "0.01",
       "ATLAS_MULTIMODAL_SIZE": "256",
-      "ATLAS_HTTP_PORT": "8080"
+      "ATLAS_HTTP_PORT": "8080",
+      "OPENCLAW_GATEWAY_PORT": "18789"
     }
   },
   "autostart_policy": true,
@@ -155,35 +156,41 @@ function create_container_group() {
     "port": 8080,
     "auth": false
   },
-  "probes": {
-    "startup": {
-      "http": {
-        "path": "/health",
-        "port": 8080
-      },
-      "initial_delay_seconds": 60,
-      "period_seconds": 10,
-      "timeout_seconds": 5,
-      "failure_threshold": 30
+  "startup_probe": {
+    "http": {
+      "path": "/health",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
     },
-    "liveness": {
-      "http": {
-        "path": "/health",
-        "port": 8080
-      },
-      "period_seconds": 30,
-      "timeout_seconds": 10,
-      "failure_threshold": 3
+    "initial_delay_seconds": 60,
+    "period_seconds": 10,
+    "timeout_seconds": 5,
+    "failure_threshold": 30
+  },
+  "liveness_probe": {
+    "http": {
+      "path": "/health",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
     },
-    "readiness": {
-      "http": {
-        "path": "/ready",
-        "port": 8080
-      },
-      "period_seconds": 10,
-      "timeout_seconds": 5,
-      "failure_threshold": 3
-    }
+    "initial_delay_seconds": 60,
+    "period_seconds": 30,
+    "timeout_seconds": 10,
+    "failure_threshold": 3
+  },
+  "readiness_probe": {
+    "http": {
+      "path": "/ready",
+      "port": 8080,
+      "scheme": "http",
+      "headers": []
+    },
+    "initial_delay_seconds": 30,
+    "period_seconds": 10,
+    "timeout_seconds": 5,
+    "failure_threshold": 3
   }
 }
 EOF
